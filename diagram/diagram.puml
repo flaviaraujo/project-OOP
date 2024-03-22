@@ -1,0 +1,56 @@
+@startuml
+
+class User {
+    name :: String
+    email :: String
+    address :: String
+    heartRate :: int
+    userType :: UserType
+    activities :: ArrayList<Activity>
+    plans :: ArrayList<Plan>
+    User()
+    User(name: String, email: String, address: String, heartRate: int,
+        userType: UserType, ArrayList<Activity> activities, ArrayList<Plan> plans)
+    User(user: user)
+    getName() :: String
+    setName(name: String) :: void
+    getEmail() :: String
+    setEmail(email: String) :: void
+    getAddress() :: String
+    setAddress(address: String) :: void
+    getHeartRate() :: int
+    setHeartRate(heartRate: int) :: void
+    getUserType() :: UserType
+    setUserType(userType: UserType) :: void
+    getActivities() :: ArrayList<Activity>
+    setActivities(activities: ArrayList<Activity>) :: void
+    getPlans() :: ArrayList<Plan>
+    setPlans(plans: ArrayList<Plan>) :: void
+    toString() :: String
+    equals(o: Object) :: boolean
+    clone() :: User
+}
+
+class Activity {
+    // attributes and methods
+}
+
+class Plan {
+    // attributes and methods
+}
+
+class Stats {
+    // attributes and methods
+}
+
+class Main {
+    // attributes and methods
+}
+
+User  *-- Activity
+User  *-- Plan
+Main  *-- User
+Main  *-- Activity
+Main  *-- Plan
+
+@enduml

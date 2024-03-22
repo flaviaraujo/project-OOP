@@ -1,0 +1,242 @@
+\documentclass[a4paper,12pt]{scrreprt}
+    %% Used for changing geometry of the page
+    %% Cover page text cannot overlay cover sketching/style
+    %% https://ctan.org/pkg/geometry?lang=en
+\usepackage{geometry}
+    %% Changes language of some packages protocols
+    %% e.g., when captioning images: Figure 1. -> Figura 1.
+    %% https://ctan.org/pkg/babel?lang=en
+\usepackage[portuguese]{babel}
+    %% Used for special fonts
+    %% Cannot be compiled with pdflatex
+    %% https://ctan.org/pkg/fontspec?lang=en
+\usepackage{fontspec}
+    %% Arial FONT
+    \setmainfont{Arial}
+
+    %% More colors and color options
+    %% https://ctan.org/pkg/xcolor?lang=en
+    %% https://ctan.org/pkg/colortbl?lang=en
+\usepackage{xcolor,colortbl}
+    %% More tabular options, like dashed/dotted lines
+    %% https://ctan.org/pkg/arydshln?lang=en
+\usepackage{arydshln}
+    %% List of acronyms
+    %% https://ctan.org/pkg/nomencl?lang=en
+\usepackage[intoc]{nomencl}
+    %% Must be called to init nomencl environment
+    \makenomenclature
+    %% More images options/settings
+    %% https://ctan.org/pkg/graphicx?lang=en
+\usepackage{graphics}
+    %% Defining subdirectories to image path enviornment
+    %% \graphicspath{{sub1}{sub2}...{subN}}
+    \graphicspath{{images}}
+
+    %% used to handle cross-referencing commands in LaTeX to produce hypertext links in the document
+    %% https://ctan.org/pkg/hyperref?lang=en
+\usepackage{hyperref}
+    %% math environments
+    %% https://ctan.org/pkg/amsmath?lang=en
+
+    %% settings
+    \hypersetup{
+        colorlinks,
+        citecolor=black,
+        filecolor=black,
+        linkcolor=black,
+        urlcolor=black
+    }
+
+\usepackage{amsmath}
+    %% Defining backgrouns, used to make the cover
+    %% https://ctan.org/pkg/background?lang=en
+\usepackage[some]{background}
+    %% Used to make drawings or complex graphics
+    %% http://pgf.sourceforge.net/pgf_CVS.pdf
+\usepackage{tikz}
+    %% Tikz library to point operations ((x1,y1) + (x2,y2))
+    \usetikzlibrary{calc}
+
+%% Defining sfdefault font and default font for document
+\renewcommand{\familydefault}{\sfdefault}
+
+%==========================================================================
+% DOCUMENT
+%==========================================================================
+
+\begin{document}
+
+\pagenumbering{gobble}
+
+%% Costume made cover
+%% From there you can use \makecover command to build the cover
+\include{cover}
+
+% builds the cover
+\makecover
+
+%% smaller footer and header size
+\newgeometry{top=3cm,left=3cm,right=3cm,bottom=4cm}
+
+%==========================================================================
+% BEGIN ABSTRACT PAGE
+%==========================================================================
+
+%% Abstract name: \Large font size, flushed left and paragraph skip before abstract content
+\renewenvironment{abstract}
+ {\par\noindent\textbf{\Large\abstractname}\par\bigskip}
+ {}
+
+\begin{flushleft}
+\begin{abstract}
+    \textcolor{red}{
+        Maybe
+    }
+\end{abstract}
+\end{flushleft}
+
+\pagebreak
+
+%==========================================================================
+% END ABSTRACT PAGE
+%==========================================================================
+
+%==========================================================================
+% BEGIN INDEXES PAGES
+%==========================================================================
+
+%% Changes table of content name
+%% Portuguese babel default : "Conteúdo"
+%% Personally I prefer "índice"
+\renewcommand{\contentsname}{Índice}
+% \renewcommand{\listfigurename}{Índice de Figuras}
+% \renewcommand{\listtablename}{Índice de Tabelas}
+
+\tableofcontents
+
+\pagebreak
+
+% \listoffigures
+%
+% \pagebreak
+%
+% \listoftables
+%
+% \pagebreak
+
+%==========================================================================
+% END INDEXES PAGES
+%==========================================================================
+
+%==========================================================================
+% BEGIN ARQUITETURA DE CLASSES
+%==========================================================================
+
+%% Starting page numbering here
+\pagenumbering{arabic}
+
+\chapter{Arquitetura de Classes}
+    \section{Diagrama de Classes}
+        \begin{center}
+            \includegraphics[scale=0.675]{images/diagram.png}
+        \end{center}
+    \section{Classe \textit{Main}}
+    \section{Classe \textit{Activity}}
+    \section{Classe \textit{User}}
+    \section{Classe \textit{Plan}}
+    \section{Classe \textit{Test}}
+
+%==========================================================================
+% END ARQUITETURA DE CLASSES
+%==========================================================================
+
+%==========================================================================
+% BEGIN DESCRIÇÃO DE FUNCIONALIDADES DA APLICAÇÃO
+%==========================================================================
+
+\chapter{Descrição de Funcionalidades da Aplicação}
+    \section{Funcionalidade 1}
+    \section{Funcionalidade 2}
+
+%==========================================================================
+% END DESCRIÇÃO DE FUNCIONALIDADES DA APLICAÇÃO
+%==========================================================================
+
+%==========================================================================
+% BEGIN CONCLUSÕES DE TRABALHO FUTURO
+%==========================================================================
+
+\chapter{Conclusões e Trabalho Futuro}
+    \textcolor{red}{
+        Maybe
+    }
+
+%==========================================================================
+% END CONCLUSÕES DE TRABALHO FUTURO
+%==========================================================================
+
+%==========================================================================
+% BEGIN BIBLIOGRAFIA
+%==========================================================================
+
+%% Changes biblibography name
+%% Portuguese babel default : "Bibliografia"
+%% Personally I prefer "Referências"
+% \renewcommand\bibname{Referências}
+
+%% https://www.overleaf.com/learn/latex/bibliography_management_with_bibtex
+% \begin{thebibliography}{9}
+% \textcolor{red}{
+%     <<Enumeração dos diversos recursos bibliográficos utilizados. Utilizar o sistema de referenciação APA (https://guias.sdum.uminho.pt/apa).>>
+% }
+% \end{thebibliography}
+
+%==========================================================================
+% END BIBLIOGRAFIA
+%==========================================================================
+
+%==========================================================================
+% BEGIN LISTA DE SIGLAS E ACRÓNIMOS
+%==========================================================================
+
+%% Portuguese babel does not translate this environment
+\renewcommand{\nomname}{Lista de Siglas e Acrónimos}
+
+%% Text that can be shown before acronyms list
+\renewcommand{\nompreamble}{
+    \textcolor{red}{
+        <<Apresentar uma lista com todas as siglas e acrónimos utilizados durante a realização do trabalho. O formato base para esta lista deverá ser da forma como abaixo se apresenta.>>
+    }
+}
+
+%% acronyms
+\nomenclature[01]{\textbf{POO}}{Programação Orientada a Objetos}
+
+%% Show acronyms
+\printnomenclature
+
+%==========================================================================
+% END LISTA DE SIGLAS E ACRÓNIMOS
+%==========================================================================
+
+%==========================================================================
+% BEGIN ANEXOS
+%==========================================================================
+
+%% Why \addchap, instead of \chapter?
+%% \addchap has no numbering but appears in table of contents.
+% \addchap{Anexos}
+%
+%     \textcolor{red}{
+%         <<Os anexos deverão ser utilizados para a inclusão de informação adicional necessária para uma melhor compreensão do relatório o para complementar tópicos, secções ou assuntos abordados. Os anexos criados deverão ser numerados e possuir uma designação. Estes dados permitirão complementar o Índice geral do relatório relativamente à enumeração e apresentação dos diversos anexos.>>
+%     }
+%
+%     %% section version of \addchap
+%     \addsec{Anexo 1}
+
+
+%==========================================================================
+% END ANEXOS
+%==========================================================================
+\end{document}
