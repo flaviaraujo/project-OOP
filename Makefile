@@ -3,6 +3,9 @@
 build: lint
 	javac src/*.java
 
+run:
+	java -cp src Main
+
 lint:
 	prettier --write "src/*.java"
 
