@@ -25,8 +25,8 @@ install:
 	npm install prettier-plugin-java --save-dev
 	@echo "Installing plantuml for diagram generation"
 	sudo apt install -y plantuml
-	@echo "Installing openjdk-17-jdk for java development"
-	sudo apt install -y openjdk-17-jdk
+	@echo "Installing openjdk-21-jdk for java development"
+	sudo apt install -y openjdk-21-jdk
 	@echo "Installing latex for report generation"
 	sudo apt install -y texlive-xetex texlive-lang-portuguese texlive-latex-recommended ttf-mscorefonts-installer
 
