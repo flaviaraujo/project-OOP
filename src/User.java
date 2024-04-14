@@ -162,7 +162,7 @@ public class User {
         return new User(this);
     }
 
-    public User createUser(Scanner sc) {
+    public User createUser(Scanner sc) { //TODO edge cases
         System.out.println("Enter your name:");
         String name = sc.nextLine();
         System.out.println("Enter the your email:");
@@ -184,7 +184,7 @@ public class User {
             email,
             address,
             heartRate,
-            UserType.values()[userType - 1],
+            userType == 1 ? UserType.PROFESSIONAL : userType == 2 ? UserType.AMATEUR : UserType.OCCASIONAL,
             activities
         );
     }
