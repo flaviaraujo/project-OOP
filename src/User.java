@@ -65,7 +65,7 @@ public class User {
         this.address = user.getAddress();
         this.heartRate = user.getHeartRate();
         this.userType = user.getUserType();
-        this.activities = user.getActivities(); // TODO does this mehod should be in the Activity class instead?
+        this.activities = user.getActivities();
     }
 
     /* Instance Methods - Getters */
@@ -92,7 +92,7 @@ public class User {
     public ArrayList<Activity> getActivities() {
         ArrayList<Activity> activities = new ArrayList<Activity>();
         for (Activity activity : this.activities) {
-            // activities.add(new Activity(activity)); // TODO clone?
+            // activities.add(new Activity(activity)); // TODO clone
         }
         return activities;
     }
@@ -119,9 +119,9 @@ public class User {
     }
 
     public void setActivities(ArrayList<Activity> activities) {
-        this.activities = new ArrayList<Activity>(); // TODO Duvida does this clear the array?
+        this.activities = new ArrayList<Activity>();
         for (Activity activity : activities) {
-            // this.activities.add(new Activity(activity)); // TODO clone?
+            // this.activities.add(new Activity(activity)); // TODO clone
         }
     }
 
@@ -163,7 +163,29 @@ public class User {
     }
 
     public User createUser(Scanner sc) {
-        // TODO
-        return new User();
+        System.out.println("Enter your name:");
+        String name = sc.nextLine();
+        System.out.println("Enter the your email:");
+        String email = sc.nextLine();
+        System.out.println("Enter the your address:");
+        String address = sc.nextLine();
+        System.out.println("Enter the your heart rate:");
+        int heartRate = sc.nextInt();
+        System.out.println("Enter the your type:");
+        System.out.println("  1 - PROFESSIONAL");
+        System.out.println("  2 - AMATEUR");
+        System.out.println("  3 - OCCASIONAL");
+        int userType = sc.nextInt();
+        sc.nextLine();
+        System.out.println("Enter the your activities:");
+        ArrayList<Activity> activities = new ArrayList<Activity>();
+        return new User(
+            name,
+            email,
+            address,
+            heartRate,
+            UserType.values()[userType - 1],
+            activities
+        );
     }
 }
