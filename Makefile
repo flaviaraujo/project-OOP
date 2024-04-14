@@ -22,6 +22,7 @@ report:
 
 install:
 	@echo "Installing prettier for code formatting"
+	npm install -g prettier
 	npm install prettier-plugin-java --save-dev
 	@echo "Installing plantuml for diagram generation"
 	sudo apt install -y plantuml
