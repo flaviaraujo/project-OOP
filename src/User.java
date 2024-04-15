@@ -1,3 +1,5 @@
+package core;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.Serializable;
@@ -33,7 +35,7 @@ public class User implements Serializable {
     private String address;
     private int heartRate; // BPM
     private Type type;
-    // TODO: private ArrayList<Activity> activities;
+    private ArrayList<Activity> activities;
     // TODO: private Dictionary<Int, ArrayList<Plan>> plans;
     // TODO: private Dictionary<Date, ArrayList<Register>> registers; // DateTime
  
@@ -45,12 +47,14 @@ public class User implements Serializable {
         this.address = "";
         this.heartRate = 0;
         this.type = Type.OCCASIONAL;
+        this.activities = new ArrayList<Activity>();
     }
 
     /* Parameterized Constructor */
     public User(
         int id, String name, String email,
-        String address, int heartRate, Type type
+        String address, int heartRate, Type type,
+        ArrayList<Activity> activities
     ) {
         this.id = id;
         this.name = name;
@@ -58,6 +62,7 @@ public class User implements Serializable {
         this.address = address;
         this.heartRate = heartRate;
         this.type = type;
+        this.activities = activities;
     }
 
     /* Copy Constructor */
@@ -68,6 +73,7 @@ public class User implements Serializable {
         this.address = user.getAddress();
         this.heartRate = user.getHeartRate();
         this.type = user.getType();
+        this.activities = user.getActivities();
     }
 
     /* Instance Methods - Getters */
@@ -95,6 +101,11 @@ public class User implements Serializable {
         return this.type;
     }
 
+    public ArrayList<Activity> getActivities() {
+        // TODO clone
+        return this.activities;
+    }
+
     /* Instance Methods - Setters */
     public void setId(int id) {
         this.id = id;
@@ -120,6 +131,11 @@ public class User implements Serializable {
         this.type = type;
     }
 
+    public void setActivities(ArrayList<Activity> activities) {
+        // TODO clone
+        this.activities = activities;
+    }
+
     /* Object methods */
     public String toString() {
         StringBuffer sb = new StringBuffer();
@@ -130,11 +146,14 @@ public class User implements Serializable {
         sb.append("  address: " + this.address + ",\n");
         sb.append("  heartRate: " + this.heartRate + " BPM,\n");
         sb.append("  type: " + this.type + ",\n");
-        // sb.append("  activities: [\n");
-        // for (Activity activity : this.activities) {
-        //     sb.append("    " + activity.toString() + ",\n");
-        // }
-        // sb.append("  ]\n");
+        sb.append("  activities: [\n");
+        for (int i = 0; i < this.activities.size() - 1; i++) {
+            sb.append("    " + this.activities.get(i).toString() + ",\n");
+        }
+        if (this.activities.size() > 0) {
+            sb.append("    " + this.activities.get(this.activities.size() - 1).toString() + "\n");
+        }
+        sb.append("  ]\n");
         sb.append("}");
         return sb.toString();
     }
@@ -151,7 +170,8 @@ public class User implements Serializable {
             user.getEmail().equals(this.email) &&
             user.getAddress().equals(this.address) &&
             user.getHeartRate() == this.heartRate &&
-            user.getType() == this.type
+            user.getType() == this.type &&
+            user.getActivities().equals(this.activities)
         );
     }
 
@@ -264,10 +284,11 @@ public class User implements Serializable {
 
         System.out.println("User created successfully. (ID: " + id + ")");
 
-        return new User(id, name, email, address, heartRate, type); // TODO clone
+        ArrayList<Activity> activities = new ArrayList<Activity>();
+        return new User(id, name, email, address, heartRate, type, activities); // TODO clone
     }
 
-    private static User search(Scanner sc, ArrayList<User> users) {
+    public static User search(Scanner sc, ArrayList<User> users) {
 
         sc.nextLine(); // clear buffer
 
