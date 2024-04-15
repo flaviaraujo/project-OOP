@@ -33,7 +33,9 @@ public class User implements Serializable {
     private String address;
     private int heartRate; // BPM
     private Type type;
-    // private Dictionary<Int, ArrayList<Plan>> plans; // TODO: multiple plans for an user?
+    // TODO: private ArrayList<Activity> activities;
+    // TODO: private Dictionary<Int, ArrayList<Plan>> plans;
+    // TODO: private Dictionary<Date, ArrayList<Register>> registers; // DateTime
  
     /* Default Constructor */
     public User() {
@@ -167,7 +169,6 @@ public class User implements Serializable {
         // increment the last user id to get the new user id
         int id = users.size() == 0 ? 1 : users.get(users.size() - 1).getId() + 1;
 
-        // TODO add upper limit
         while (true) {
             System.out.print("Enter user full name: ");
             name = sc.nextLine();
