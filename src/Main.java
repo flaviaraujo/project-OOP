@@ -1,3 +1,7 @@
+import core.User;
+import core.Activity;
+import core.Plan;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -41,14 +45,16 @@ public class Main {
         System.out.println();
         System.out.println("[Main menu] Please select an option:");
         System.out.println("(1) Manage users (create, delete, view)");
-        System.out.println("(2) Create plan for an user");
-        System.out.println("(3) Create plans based on user objectives");
-        System.out.println("(4) Start a simulation");
-        System.out.println("(5) Statistics menu");
-        System.out.println("(6) Save program state");
-        System.out.println("(7) Load program state");
-        System.out.println("(8) Exit");
+        System.out.println("(2) Manage user activities (create, delete, view, register)");
+        System.out.println("(3) Create plan for an user");
+        System.out.println("(4) Create plans based on user objectives");
+        System.out.println("(5) Start a simulation");
+        System.out.println("(6) Statistics menu");
+        System.out.println("(7) Save program state");
+        System.out.println("(8) Load program state");
+        System.out.println("(9) Exit");
         System.out.print("Option: ");
+
         int option = 0;
         try {
             option = sc.nextInt();
@@ -57,6 +63,7 @@ public class Main {
             sc.nextLine(); // clear buffer
             // e.printStackTrace(); // removed to avoid clutter
         }
+
         switch (option) {
             case 1:
                 while (true) {
@@ -107,26 +114,91 @@ public class Main {
                     }
                 }
             case 2:
+                // Manage user activities
+                // select user
+                User user = User.search(sc, m.users);
+                if (user == null) {
+                    System.out.println("No user selected");
+                    break;
+                }
+                // manage activities menu
+                while (true) {
+                    System.out.println();
+                    System.out.println("[Manage user activities menu] Please select an option:");
+                    System.out.println("(1) Create an activity");
+                    System.out.println("(2) Delete an activity");
+                    System.out.println("(3) View an activity");
+                    System.out.println("(4) View all activities");
+                    System.out.println("(5) Register an activity");
+                    System.out.println("(6) Back to main menu");
+                    System.out.print("Option: ");
+
+                    int manageActivitiesOption = 0;
+                    try {
+                        manageActivitiesOption = sc.nextInt();
+                    }
+                    catch (Exception e) {
+                        sc.nextLine(); // clear buffer
+                    }
+
+                    ArrayList<Activity> userActivities = user.getActivities();
+
+                    switch (manageActivitiesOption) {
+                        case 1:
+                            // Create an activity
+                            Activity activity = Activity.create(sc, userActivities);
+                            // user.addActivity(activity); // TODO
+                            // The state is updated when a new activity for an user is created
+                            m.updatedState = true;
+                            break;
+                        case 2:
+                            // Delete an activity
+                            // user.deleteActivity(sc); // TODO
+                            // The state is updated when an activity for an user is deleted
+                            m.updatedState = true;
+                            break;
+                        case 3:
+                            // View an activity
+                            // user.viewActivity(sc); // TODO
+                            break;
+                        case 4:
+                            // View all activities
+                            for (Activity a : userActivities) System.out.println(a);
+                            break;
+                        case 5:
+                            // Register an activity
+                            // user.registerActivity(sc); // TODO
+                            break;
+                        case 6:
+                            // Back to main menu
+                            return;
+                        default:
+                            System.out.println("Invalid option");
+                            break;
+                    }
+                }
+
+            case 3:
                 // TODO Create plan for an user
                 break;
-            case 3:
+            case 4:
                 // TODO Create plan based on user objectives
                 break;
-            case 4:
+            case 5:
                 // TODO Start a simulation
                 break;
-            case 5:
+            case 6:
                 // TODO Statistics menu
                 break;
-            case 6:
+            case 7:
                 // Save program state
                 saveState(stateFilepath, m);
                 break;
-            case 7:
+            case 8:
                 // Load program state
                 loadState(stateFilepath, m, sc);
                 break;
-            case 8:
+            case 9:
                 // state: to save or not to save
                 if (m.updatedState) {
                     System.out.print("Do you want to save the current state before exiting? [y/n]: ");
