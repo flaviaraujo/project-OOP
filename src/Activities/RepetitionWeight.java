@@ -1,37 +1,37 @@
-public class RepetitionsWeight extends Activity {
-    private int repetitions;
+public class RepetitionWeight extends Activity {
+    private int repetition;
     private int weight;
 
-    public RepetitionsWeight() {
+    public RepetitionWeight() {
         super();
-        this.repetitions = 0;
+        this.repetition = 0;
         this.weight = 0;
     }
 
-    public RepetitionsWeight(int duration, int intensity, int repetitions, int weight) {
+    public RepetitionWeight(int duration, int intensity, int repetition, int weight) {
         super(duration, intensity);
-        this.repetitions = repetitions;
+        this.repetition = repetition;
         this.weight = weight;
     }
 
-    public RepetitionsWeight(RepetitionsWeight repetitionsWeight) {
-        super(repetitionsWeight);
-        this.repetitions = repetitionsWeight.getRepetitions();
-        this.weight = repetitionsWeight.getWeight();
+    public RepetitionWeight(RepetitionWeight repetitionWeight) {
+        super(repetitionWeight);
+        this.repetition = repetitionWeight.getRepetition();
+        this.weight = repetitionWeight.getWeight();
     }
 
     @Override
     public int caloriesBurned(User u) {
-        // TODO Calculate calories burned based on user, repetitions, duration, and intensity
+        // TODO Calculate calories burned based on user, repetition, duration, and intensity
         return 0;
     }
 
-    public int getRepetitions() {
-        return this.repetitions;
+    public int getRepetition() {
+        return this.repetition;
     }
 
-    public void setRepetitions(int repetitions) {
-        this.repetitions = repetitions;
+    public void setRepetition(int repetition) {
+        this.repetition = repetition;
     }
 
     public int getWeight() {

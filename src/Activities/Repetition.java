@@ -1,33 +1,33 @@
-public class Repetitions extends Activity {
-    private int repetitions;
+public class Repetition extends Activity {
+    private int repetition;
 
-    public Repetitions() {
+    public Repetition() {
         super();
-        this.repetitions = 0;
+        this.repetition = 0;
     }
 
-    public Repetitions(int duration, int intensity, int repetitions) {
+    public Repetition(int duration, int intensity, int repetition) {
         super(duration, intensity);
-        this.repetitions = repetitions;
+        this.repetition = repetition;
     }
 
-    public Repetitions(Repetitions repetitions) {
-        super(repetitions);
-        this.repetitions = repetitions.getRepetitions();
+    public Repetition(Repetition repetition) {
+        super(repetition);
+        this.repetition = repetition.getRepetition();
     }
 
     @Override
     public int caloriesBurned(User u) {
-        // TODO Calculate calories burned based on user, repetitions, duration, and intensity
+        // TODO Calculate calories burned based on user, repetition, duration, and intensity
         return 0;
     }
 
-    public int getRepetitions() {
-        return this.repetitions;
+    public int getRepetition() {
+        return this.repetition;
     }
 
-    public void setRepetitions(int repetitions) {
-        this.repetitions = repetitions;
+    public void setRepetition(int repetition) {
+        this.repetition = repetition;
     }
 
 
