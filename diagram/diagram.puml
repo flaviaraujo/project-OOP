@@ -1,38 +1,54 @@
 @startuml
 
 class User {
-    name :: String
-    email :: String
-    address :: String
-    heartRate :: int
-    userType :: UserType
-    activities :: ArrayList<Activity>
-    plans :: ArrayList<Plan>
-    User()
-    User(name: String, email: String, address: String, heartRate: int,
-        userType: UserType, ArrayList<Activity> activities, ArrayList<Plan> plans)
-    User(user: user)
-    getName() :: String
-    setName(name: String) :: void
-    getEmail() :: String
-    setEmail(email: String) :: void
-    getAddress() :: String
-    setAddress(address: String) :: void
-    getHeartRate() :: int
-    setHeartRate(heartRate: int) :: void
-    getUserType() :: UserType
-    setUserType(userType: UserType) :: void
-    getActivities() :: ArrayList<Activity>
-    setActivities(activities: ArrayList<Activity>) :: void
-    getPlans() :: ArrayList<Plan>
-    setPlans(plans: ArrayList<Plan>) :: void
-    toString() :: String
-    equals(o: Object) :: boolean
-    clone() :: User
+    .. Attributes ..
+    -id : int
+    -name : String
+    -email : String
+    -address : String
+    -heartRate : int
+    -type : User.Type
+    --
+    .. Constructors ..
+    +User()
+    +User(int id, String name, String email,
+        String address, int heartRate, Type type)
+    +User(User user)
+    .. Methods - Getters ..
+    +getId() : int
+    +getName() : String
+    +getEmail() : String
+    +getAddress() : String
+    +getHeartRate() : int
+    +getType() : User.Type
+    .. Methods - Setters ..
+    +setId(int id) : void
+    +setName(String name) : void
+    +setEmail(String email) : void
+    +setAddress(String address) : void
+    +setHeartRate(int heartRate) : void
+    +setType(Type type) : void
+    .. Methods - Other ..
+    +toString() : String
+    +equals(Object o) : boolean
+    +clone() : User
+    +view() : void
+    +{static} create(Scanner sc, ArrayList<User> users) : User
+    -{static} search(Scanner sc, ArrayList<User> users) : User
+    +{static} view(Scanner sc, ArrayList<User> users) : void
+    +{static} delete(Scanner sc, ArrayList<User> users) : void
+}
+
+enum User.Type {
+    // TODO
 }
 
 class Activity {
     // attributes and methods
+}
+
+enum Activity.Type {
+    // TODO
 }
 
 class Plan {
@@ -40,17 +56,25 @@ class Plan {
 }
 
 class Stats {
-    // attributes and methods
+    // methods
 }
 
 class Main {
-    // attributes and methods
+    .. Attributes ..
+    -updatedState : boolean
+    -users : ArrayList<User>
+    --
+    .. Methods ..
+    +{static} main(String args[]) : void
+    -{static} mainMenu(Scanner scanner, String stateFilepath, Main m) : void
+    -{static} saveState(String stateFilepath, Main m) : void
+    -{static} loadState(String stateFilepath, Main m, Scanner sc) : void
 }
 
-User  *-- Activity
-User  *-- Plan
-Main  *-- User
-Main  *-- Activity
-Main  *-- Plan
+User *-- Plan
+Plan *-- Activity
+Main *-- User
+Main *-- Activity
+Main *-- Plan
 
 @enduml
