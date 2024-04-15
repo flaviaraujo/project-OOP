@@ -40,7 +40,7 @@ public class Main {
     private static void mainMenu(Scanner sc, String stateFilepath, Main m) {
         System.out.println();
         System.out.println("[Main menu] Please select an option:");
-        System.out.println("(1) Manage users (create, view, delete)");
+        System.out.println("(1) Manage users (create, delete, view)");
         System.out.println("(2) Create plan for an user");
         System.out.println("(3) Create plans based on user objectives");
         System.out.println("(4) Start a simulation");
@@ -63,8 +63,8 @@ public class Main {
                     System.out.println();
                     System.out.println("[Manage users menu] Please select an option:");
                     System.out.println("(1) Create an user");
-                    System.out.println("(2) View an user");
-                    System.out.println("(3) Delete an user");
+                    System.out.println("(2) Delete an user");
+                    System.out.println("(3) View an user");
                     System.out.println("(4) View all users");
                     System.out.println("(5) Back to main menu");
                     System.out.print("Option: ");
@@ -86,12 +86,13 @@ public class Main {
                             m.updatedState = true;
                             break;
                         case 2:
-                            // TODO is it worth to implement: view nultiple users by their name?
-                            User.view(sc, m.users);
-                            break;
-                        case 3:
                             // Delete an user
                             User.delete(sc, m.users);
+                            break;
+                        case 3:
+                            // View an user
+                            // TODO is it worth to implement: view nultiple users by their name?
+                            User.view(sc, m.users);
                             break;
                         case 4:
                             // View all users
