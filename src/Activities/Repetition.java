@@ -1,3 +1,8 @@
+package Activities;
+
+import core.Activity;
+import core.User;
+
 public class Repetition extends Activity {
     private int repetition;
 
@@ -6,8 +11,8 @@ public class Repetition extends Activity {
         this.repetition = 0;
     }
 
-    public Repetition(int duration, int intensity, int repetition) {
-        super(duration, intensity);
+    public Repetition(String name, int duration, int intensity, int repetition) {
+        super(name, duration, intensity);
         this.repetition = repetition;
     }
 

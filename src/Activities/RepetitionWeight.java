@@ -1,3 +1,8 @@
+package Activities;
+
+import core.Activity;
+import core.User;
+
 public class RepetitionWeight extends Activity {
     private int repetition;
     private int weight;
@@ -8,8 +13,8 @@ public class RepetitionWeight extends Activity {
         this.weight = 0;
     }
 
-    public RepetitionWeight(int duration, int intensity, int repetition, int weight) {
-        super(duration, intensity);
+    public RepetitionWeight(String name, int duration, int intensity, int repetition, int weight) {
+        super(name, duration, intensity);
         this.repetition = repetition;
         this.weight = weight;
     }

@@ -1,3 +1,8 @@
+package Activities;
+
+import core.Activity;
+import core.User;
+
 public class DistanceAltimetry extends Activity {
     private int distance;
     private int altimetry;
@@ -8,8 +13,8 @@ public class DistanceAltimetry extends Activity {
         this.altimetry = 0;
     }
 
-    public DistanceAltimetry(int duration, int intensity, int distance, int altimetry) {
-        super(duration, intensity);
+    public DistanceAltimetry(String name, int duration, int intensity, int distance, int altimetry) {
+        super(name, duration, intensity);
         this.distance = distance;
         this.altimetry = altimetry;
     }

@@ -13,18 +13,25 @@ public abstract class Activity {
     protected int intensity;
 
     public Activity() {
+        this.name = "";
         this.duration = 0;
         this.intensity = 0;
     }
 
-    public Activity(int duration, int intensity) {
+    public Activity(String name, int duration, int intensity) {
+        this.name = name;
         this.duration = duration;
         this.intensity = intensity;
     }
 
     public Activity(Activity activity) {
+        this.name = activity.getName();
         this.duration = activity.getDuration();
         this.intensity = activity.getIntensity();
+    }
+
+    public String getName() {
+        return this.name;
     }
 
     public int getDuration() {
@@ -35,6 +42,10 @@ public abstract class Activity {
         return this.intensity;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public void setDuration(int duration) {
         this.duration = duration;
     }
@@ -43,11 +54,11 @@ public abstract class Activity {
         this.intensity = intensity;
     }
 
-    public abstract void toString(Activity a);
+    public abstract String toString();
 
-    public abstract void equals(Activity a);
+    public abstract boolean equals(Object o);
 
-    public abstract void clone(Activity a);
+    public abstract Activity clone();
 
     public abstract int caloriesBurned(User u);
 
