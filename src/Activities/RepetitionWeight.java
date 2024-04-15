@@ -20,12 +20,6 @@ public class RepetitionWeight extends Activity {
         this.weight = repetitionWeight.getWeight();
     }
 
-    @Override
-    public int caloriesBurned(User u) {
-        // TODO Calculate calories burned based on user, repetition, duration, and intensity
-        return 0;
-    }
-
     public int getRepetition() {
         return this.repetition;
     }
@@ -42,4 +36,42 @@ public class RepetitionWeight extends Activity {
         this.weight = weight;
     }
 
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("Acivity {\n");
+        sb.append("  Duration: " + this.duration + " minutes,\n");
+        sb.append("  Intensity: " + this.intensity + ",\n");
+        sb.append("  Repetition: " + this.repetition + " times,\n");
+        sb.append("  Weight: " + this.weight + " kg\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) return true;
+
+        if (o == null || o.getClass() != this.getClass()) return false;
+
+        RepetitionWeight repetitionWeight = (RepetitionWeight) o;
+        return (
+            this.name.equals(repetitionWeight.getName()) &&
+            this.duration == repetitionWeight.getDuration() &&
+            this.intensity == repetitionWeight.getIntensity() &&
+            this.repetition == repetitionWeight.getRepetition() &&
+            this.weight == repetitionWeight.getWeight()
+        );
+    }
+
+    @Override
+    public RepetitionWeight clone() {
+        return new RepetitionWeight(this);
+    }
+
+    @Override
+    public int caloriesBurned(User u) {
+        // TODO Calculate calories burned based on user, repetition, weight, duration, and intensity
+        return 0;
+    }
 }
