@@ -3,8 +3,8 @@
  */
 public abstract class Activity {
 
-    private int duration; // in minutes
-    private int intensity;
+    protected int duration; // in minutes
+    protected int intensity;
 
     public Activity() {
         this.duration = 0;
@@ -38,4 +38,10 @@ public abstract class Activity {
     }
 
     public abstract int caloriesBurned(User u);
+
+    public abstract String toString();
+
+    public abstract boolean equals(Object o);
+
+    public abstract Activity clone();
 }
