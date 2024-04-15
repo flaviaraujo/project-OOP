@@ -1,13 +1,13 @@
 .PHONY: build lint doc diagram report install clean
 
-build: lint
-	javac src/*.java
+build:
+	javac -Xlint:unchecked src/*.java
 
 run:
 	java -cp src Main
 
-lint:
-	prettier --write "src/*.java"
+# lint:
+# 	prettier --write "src/*.java"
 
 doc:
 	javadoc -d doc src/*.java
@@ -21,9 +21,9 @@ report:
 	xelatex -output-directory=output -shell-restricted main.tex
 
 install:
-	@echo "Installing prettier for code formatting"
-	npm install -g prettier
-	npm install prettier-plugin-java --save-dev
+	# @echo "Installing prettier for code formatting"
+	# npm install -g prettier
+	# npm install prettier-plugin-java --save-dev
 	@echo "Installing plantuml for diagram generation"
 	sudo apt install -y plantuml
 	@echo "Installing openjdk-21-jdk for java development"
