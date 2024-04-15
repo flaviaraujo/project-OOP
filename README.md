@@ -9,7 +9,7 @@
   2. The user with the most activities in a period of time or ever
   3. The type of activity most practiced by the users
   4. How many km's were traveled by one user in a period of time or ever
-  5. How many meters od altimetry were climbed by one user in a period of time or ever
+  5. How many meters of altimetry were climbed by one user in a period of time or ever
   6. Whats the practice plan with more calories burned
   7. List the activities of a user
 - (18 points) Creating the notion of a *Hard* activity, with the possibility of adding new activities of this type by adding some lines of code (*Hard* activities have special properties when selected for a practice plan)
