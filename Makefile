@@ -1,7 +1,7 @@
 .PHONY: build lint doc diagram report install clean
 
 build:
-	javac -Xlint:unchecked src/*.java
+	javac -Xlint:unchecked src/Activities/*.java src/*.java
 
 run:
 	java -cp src Main
