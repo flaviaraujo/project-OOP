@@ -8,9 +8,9 @@ import java.util.Scanner;
  */
 public abstract class Activity {
 
-    private String name;
-    private int duration; // in minutes
-    private int intensity;
+    protected String name;
+    protected int duration; // in minutes
+    protected int intensity;
 
     public Activity() {
         this.duration = 0;
