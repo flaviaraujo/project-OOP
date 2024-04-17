@@ -17,7 +17,7 @@ public class Event implements Serializable {
     }
 
     public Event(Activity activity, int day, LocalDateTime eventDateTime) {
-        this.activity = activity; //TODO clone
+        this.activity = activity.clone();
         this.day = day;
         this.eventDateTime = eventDateTime;
     }
@@ -29,7 +29,7 @@ public class Event implements Serializable {
     }
 
     public Activity getActivity() {
-        return this.activity; //TODO clone
+        return this.activity.clone();
     }
 
     public int getDay() {
@@ -41,7 +41,7 @@ public class Event implements Serializable {
     }
 
     public void setActivity(Activity activity) {
-        this.activity = activity;
+        this.activity = activity.clone();
     }
 
     public void setDay(int day) {
@@ -52,8 +52,37 @@ public class Event implements Serializable {
         this.eventDateTime = eventDateTime;
     }
 
+    public String getDayString() {
+        switch (this.day) {
+            case 1:
+                return "Sunday";
+            case 2:
+                return "Monday";
+            case 3:
+                return "Tuesday";
+            case 4:
+                return "Wednesday";
+            case 5:
+                return "Thursday";
+            case 6:
+                return "Friday";
+            case 7:
+                return "Saturday";
+            default:
+                return "Invalid day";
+        }
+    }
+
+    public String getHourString() {
+        return String.format("%02d:00", this.eventDateTime.getHour());
+    }
+
     public String toString() {
-        return "Activity: " + this.activity.toString();
+        StringBuilder sb = new StringBuilder();
+        sb.append("Activity: " + this.activity.getName() + "\n");
+        sb.append("Day: " + getDayString() + "\n");
+        sb.append("Hour: " + getHourString() + "\n");
+        return sb.toString();
     }
 
     public boolean equals(Object o) {
@@ -75,7 +104,6 @@ public class Event implements Serializable {
         return day >= 1 && day <= 7;
     }
 
-    // Check if the hour is valid (0-23)
     public boolean isValidHour(int hour) {
         return hour >= 0 && hour <= 23;
     }
@@ -104,7 +132,7 @@ public class Event implements Serializable {
         if (activity == null) {
             System.out.println("Activity not found.");
         } else {
-            System.out.println("You have an event scheduled for: " + activity.getName() + " on day: " + day + " and hour: " + hour + ".\n");
+            System.out.println("You have an event scheduled for: " + activity.getName() + " on " + getDayString() + " at " + getHourString() + ".\n");
             this.activity = activity;
             this.day = day;
             this.eventDateTime = eventDateTime;
