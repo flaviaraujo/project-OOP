@@ -173,14 +173,6 @@ public class User implements Serializable {
         this.registers = registers;
     }
 
-    public void addActivity(Activity activity) {
-        this.activities.add(activity.clone());
-    }
-
-    public void deleteActivity(Activity activity) {
-        this.activities.remove(activity);
-    }
-
     /* Object methods */
     public String toString() {
         StringBuffer sb = new StringBuffer();
@@ -235,6 +227,7 @@ public class User implements Serializable {
         return new User(this);
     }
 
+    // Manage users methods
     public static User create(Scanner sc, ArrayList<User> users) {
         sc.nextLine();
 
@@ -420,6 +413,15 @@ public class User implements Serializable {
 
         users.remove(user);
         System.out.println("User deleted successfully.");
+    }
+
+    // Activities methods
+    public void addActivity(Activity activity) {
+        this.activities.add(activity.clone());
+    }
+
+    public void deleteActivity(Activity activity) {
+        this.activities.remove(activity);
     }
 
     // Registers methods
