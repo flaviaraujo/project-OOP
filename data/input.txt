@@ -1,0 +1,44 @@
+1
+
+1
+Miguel Carvalho
+miguel@example.com
+Rua das Oliveiras, 13
+80
+2
+
+1
+Flávia Araújo
+flavia@example.com
+Rua das Gatas, 707
+70
+3
+
+5
+2
+
+1
+2
+
+1
+
+4
+Pilates
+45
+65
+20
+5
+
+1
+
+1
+Natação
+60
+80
+2500
+
+5
+
+7
+9
+
