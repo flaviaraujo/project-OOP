@@ -8,11 +8,17 @@ class User {
     -address : String
     -heartRate : int
     -type : User.Type
+    -activities : ArrayList<Activity>
+    -registers : HashMap<LocalDateTime, Register>
     --
     .. Constructors ..
     +User()
     +User(int id, String name, String email,
         String address, int heartRate, Type type)
+    +User(int id, String name, String email,
+        String address, int heartRate, Type type,
+        ArrayList<Activity> activities,
+        HashMap<LocalDateTime, Register> registers)
     +User(User user)
     .. Methods - Getters ..
     +getId() : int
@@ -21,6 +27,8 @@ class User {
     +getAddress() : String
     +getHeartRate() : int
     +getType() : User.Type
+    +getActivities() : ArrayList<Activity>
+    +getRegisters() : HashMap<LocalDateTime, Register>
     .. Methods - Setters ..
     +setId(int id) : void
     +setName(String name) : void
@@ -28,15 +36,23 @@ class User {
     +setAddress(String address) : void
     +setHeartRate(int heartRate) : void
     +setType(Type type) : void
+    +setActivities(ArrayList<Activity> activities) : void
+    +setRegisters(HashMap<LocalDateTime, Register> registers) : void
     .. Methods - Other ..
     +toString() : String
     +equals(Object o) : boolean
     +clone() : User
-    +view() : void
+    .. Methods - Manage Users ..
     +{static} create(Scanner sc, ArrayList<User> users) : User
     -{static} search(Scanner sc, ArrayList<User> users) : User
     +{static} view(Scanner sc, ArrayList<User> users) : void
     +{static} delete(Scanner sc, ArrayList<User> users) : void
+    .. Methods - Activities ..
+    +addActivity(Activity activity) : void
+    +deleteActivity(Activity activity) : void
+    .. Methods - Registers ..
+    +registerActivity(LocalDateTime date, Register register) : void
+    +viewRegisters(LocalDateTime date, Register register) : void
 }
 
 enum User.Type {
@@ -51,7 +67,25 @@ enum User.Type {
 }
 
 class Register {
-    // TODO: attributes and methods
+    .. Attributes ..
+    -activity : Activity
+    -caloriesBurned : int
+    --
+    .. Constructors ..
+    +Register()
+    +Register(Activity activity, User user)
+    +Register(Activity activity, int caloriesBurned)
+    +Register(Register register)
+    .. Methods - Getters ..
+    +getActivity() : Activity
+    +getCaloriesBurned() : int
+    .. Methods - Setters ..
+    +setActivity(Activity activity) : void
+    +setCaloriesBurned(int caloriesBurned) : void
+    .. Methods - Others ..
+    +toString() : String
+    +equals(Object o) : boolean
+    +clone() : Register
 }
 
 class Activity {
@@ -83,6 +117,7 @@ class Event {
 
 class Stats {
     // TODO: methods for statistics calculation
+    .. Statistics methods ..
 }
 
 class Main {
@@ -95,12 +130,16 @@ class Main {
     -{static} mainMenu(Scanner scanner, String stateFilepath, Main m) : void
     -{static} saveState(String stateFilepath, Main m) : void
     -{static} loadState(String stateFilepath, Main m, Scanner sc) : void
+    --
+    TODO
 }
 
 Register *-- User
+User <|-- User.Type
 User *-- Plan
 Event *-- Plan
 Activity *-- Event
+Register *-- Activity
 Main *-- User
 Main *-- Activity
 Main *-- Plan
