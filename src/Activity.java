@@ -14,6 +14,7 @@ public abstract class Activity implements Serializable {
     protected String name;
     protected int duration; // in minutes
     protected int intensity;
+    // TODO hard activity boolean
 
     public Activity() {
         this.name = "";
