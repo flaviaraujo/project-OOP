@@ -1,8 +1,11 @@
-package core;
+package src;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.io.Serializable;
+import java.util.HashMap;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * User
@@ -36,8 +39,8 @@ public class User implements Serializable {
     private int heartRate; // BPM
     private Type type;
     private ArrayList<Activity> activities;
+    private HashMap<LocalDateTime, Register> registers; // alternative LinkedHashMap
     // TODO: private Dictionary<Int, ArrayList<Plan>> plans;
-    // TODO: private Dictionary<Date, ArrayList<Register>> registers; // DateTime
  
     /* Default Constructor */
     public User() {
@@ -48,13 +51,13 @@ public class User implements Serializable {
         this.heartRate = 0;
         this.type = Type.OCCASIONAL;
         this.activities = new ArrayList<Activity>();
+        this.registers = new HashMap<LocalDateTime, Register>();
     }
 
-    /* Parameterized Constructor */
+    /* Parameterized Constructors */
     public User(
         int id, String name, String email,
-        String address, int heartRate, Type type,
-        ArrayList<Activity> activities
+        String address, int heartRate, Type type
     ) {
         this.id = id;
         this.name = name;
@@ -62,7 +65,24 @@ public class User implements Serializable {
         this.address = address;
         this.heartRate = heartRate;
         this.type = type;
-        this.activities = activities;
+        this.activities = new ArrayList<Activity>();
+        this.registers = new HashMap<LocalDateTime, Register>();
+    }
+
+    public User(
+        int id, String name, String email,
+        String address, int heartRate, Type type,
+        ArrayList<Activity> activities,
+        HashMap<LocalDateTime, Register> registers
+    ) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.address = address;
+        this.heartRate = heartRate;
+        this.type = type;
+        this.activities = activities; // TODO clone
+        this.registers = registers; // TODO clone
     }
 
     /* Copy Constructor */
@@ -74,6 +94,7 @@ public class User implements Serializable {
         this.heartRate = user.getHeartRate();
         this.type = user.getType();
         this.activities = user.getActivities();
+        this.registers = user.getRegisters();
     }
 
     /* Instance Methods - Getters */
@@ -102,8 +123,19 @@ public class User implements Serializable {
     }
 
     public ArrayList<Activity> getActivities() {
-        // TODO clone
-        return this.activities;
+        ArrayList<Activity> activities = new ArrayList<Activity>(this.activities.size());
+        for (Activity activity : this.activities) {
+            activities.add(activity.clone());
+        }
+        return activities;
+    }
+
+    public HashMap<LocalDateTime, Register> getRegisters() {
+        HashMap<LocalDateTime, Register> registers = new HashMap<LocalDateTime, Register>(this.registers.size());
+        for (LocalDateTime date : this.registers.keySet()) {
+            registers.put(date, this.registers.get(date).clone());
+        }
+        return registers;
     }
 
     /* Instance Methods - Setters */
@@ -136,6 +168,19 @@ public class User implements Serializable {
         this.activities = activities;
     }
 
+    public void setRegisters(HashMap<LocalDateTime, Register> registers) {
+        // TODO clone
+        this.registers = registers;
+    }
+
+    public void addActivity(Activity activity) {
+        this.activities.add(activity.clone());
+    }
+
+    public void deleteActivity(Activity activity) {
+        this.activities.remove(activity);
+    }
+
     /* Object methods */
     public String toString() {
         StringBuffer sb = new StringBuffer();
@@ -146,14 +191,24 @@ public class User implements Serializable {
         sb.append("  address: " + this.address + ",\n");
         sb.append("  heartRate: " + this.heartRate + " BPM,\n");
         sb.append("  type: " + this.type + ",\n");
-        sb.append("  activities: [\n");
+
+        sb.append("  activities: [");
         for (int i = 0; i < this.activities.size() - 1; i++) {
-            sb.append("    " + this.activities.get(i).toString() + ",\n");
+            sb.append("\n    " + this.activities.get(i).getName() + ",");
         }
         if (this.activities.size() > 0) {
-            sb.append("    " + this.activities.get(this.activities.size() - 1).toString() + "\n");
+            sb.append("\n    " + this.activities.get(this.activities.size() - 1).getName() + "\n  ");
         }
-        sb.append("  ]\n");
+        sb.append("],\n");
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        sb.append("  registers: [");
+        // TODO sort registers by date
+        for (LocalDateTime date : this.registers.keySet()) {
+            sb.append("\n    " + date.format(formatter) + " - " + this.registers.get(date).getActivity().getName() + ",");
+        }
+        sb.append("]\n");
+
         sb.append("}");
         return sb.toString();
     }
@@ -171,7 +226,8 @@ public class User implements Serializable {
             user.getAddress().equals(this.address) &&
             user.getHeartRate() == this.heartRate &&
             user.getType() == this.type &&
-            user.getActivities().equals(this.activities)
+            user.getActivities().equals(this.activities) &&
+            user.getRegisters().equals(this.registers) // TODO check this
         );
     }
 
@@ -284,8 +340,7 @@ public class User implements Serializable {
 
         System.out.println("User created successfully. (ID: " + id + ")");
 
-        ArrayList<Activity> activities = new ArrayList<Activity>();
-        return new User(id, name, email, address, heartRate, type, activities); // TODO clone
+        return new User(id, name, email, address, heartRate, type); // TODO clone isn't necessary here?
     }
 
     public static User search(Scanner sc, ArrayList<User> users) {
@@ -295,7 +350,7 @@ public class User implements Serializable {
         int option;
         while (true) {
             System.out.println();
-            System.out.println("Delete an user:");
+            System.out.println("Chose how to search for an user:");
             System.out.println("(1) By ID");
             System.out.println("(2) By email");
             System.out.print("Option: ");
@@ -365,5 +420,17 @@ public class User implements Serializable {
 
         users.remove(user);
         System.out.println("User deleted successfully.");
+    }
+
+    // Registers methods
+    public void registerActivity(LocalDateTime date, Register register) {
+        this.registers.put(date, register.clone());
+    }
+
+    public void viewRegisters() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        for (LocalDateTime date : this.registers.keySet()) {
+            System.out.println(date.format(formatter) + " - " + this.registers.get(date));
+        }
     }
 }
