@@ -1,14 +1,27 @@
-package Activities;
+package src.activities;
 
-import core.Activity;
-import core.User;
+import src.Activity;
+import src.User;
 
-public class RepetitionWeight extends Activity {
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.io.Serializable;
+
+public class RepetitionWeight extends Activity implements Serializable {
+
+    private static final int ACTIVITY_TYPE = 4;
+
     private int repetition;
     private int weight;
 
     public RepetitionWeight() {
         super();
+        this.repetition = 0;
+        this.weight = 0;
+    }
+
+    public RepetitionWeight(String name, int duration, int intensity) {
+        super(name, duration, intensity);
         this.repetition = 0;
         this.weight = 0;
     }
@@ -44,7 +57,8 @@ public class RepetitionWeight extends Activity {
     @Override
     public String toString() {
         StringBuffer sb = new StringBuffer();
-        sb.append("Acivity {\n");
+        sb.append("Activity {\n");
+        sb.append("  Name: " + this.name + ",\n");
         sb.append("  Duration: " + this.duration + " minutes,\n");
         sb.append("  Intensity: " + this.intensity + ",\n");
         sb.append("  Repetition: " + this.repetition + " times,\n");
@@ -78,5 +92,55 @@ public class RepetitionWeight extends Activity {
     public int caloriesBurned(User u) {
         // TODO Calculate calories burned based on user, repetition, weight, duration, and intensity
         return 0;
+    }
+
+    @Override
+    public Activity create(Scanner sc, ArrayList<Activity> userActivities) {
+
+        RepetitionWeight activity = (RepetitionWeight) super.createAux(sc, userActivities, ACTIVITY_TYPE);
+        if (activity == null) {
+            return null;
+        }
+
+        int repetitions = 0;
+        int weight = 0;
+
+        while (true) {
+            System.out.print("Enter the number of repetitions: ");
+            try {
+                repetitions = sc.nextInt();
+            } catch (Exception e) {
+                System.out.println("Repetitions must be an integer.");
+                continue;
+            }
+
+            // check if repetitions is between 1 and 1000
+            if (repetitions < 1 || repetitions > 1000) {
+                System.out.println("Repetitions must be between 1 and 1000.");
+                continue;
+            }
+            break;
+        }
+
+        while (true) {
+            System.out.print("Enter the weight of the activity in kg: ");
+            try {
+                weight = sc.nextInt();
+            } catch (Exception e) {
+                System.out.println("Weight must be an integer.");
+                continue;
+            }
+
+            // check if weight is between 1 and 300 kg
+            if (weight < 1 || weight > 300) {
+                System.out.println("Weight must be between 1 and 300 kg.");
+                continue;
+            }
+            break;
+        }
+
+        activity.setRepetition(repetitions);
+        activity.setWeight(weight);
+        return activity; // TODO clone
     }
 }

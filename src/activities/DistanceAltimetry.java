@@ -1,14 +1,27 @@
-package Activities;
+package src.activities;
 
-import core.Activity;
-import core.User;
+import src.Activity;
+import src.User;
 
-public class DistanceAltimetry extends Activity {
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.io.Serializable;
+
+public class DistanceAltimetry extends Activity implements Serializable {
+
+    private static final int ACTIVITY_TYPE = 2;
+
     private int distance;
     private int altimetry;
 
     public DistanceAltimetry() {
         super();
+        this.distance = 0;
+        this.altimetry = 0;
+    }
+
+    public DistanceAltimetry(String name, int duration, int intensity) {
+        super(name, duration, intensity);
         this.distance = 0;
         this.altimetry = 0;
     }
@@ -45,6 +58,7 @@ public class DistanceAltimetry extends Activity {
     public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append("Acivity {\n");
+        sb.append("  Name: " + this.name + ",\n");
         sb.append("  Duration: " + this.duration + " minutes,\n");
         sb.append("  Intensity: " + this.intensity + ",\n");
         sb.append("  Distance: " + this.distance + " meters,\n");
@@ -78,5 +92,55 @@ public class DistanceAltimetry extends Activity {
     public int caloriesBurned(User u) {
         // TODO Calculate calories burned based on user, distance, altimetry, duration, and intensity
         return 0;
+    }
+
+    @Override
+    public Activity create(Scanner sc, ArrayList<Activity> userActivities) {
+
+        DistanceAltimetry activity = (DistanceAltimetry) super.createAux(sc, userActivities, ACTIVITY_TYPE);
+        if (activity == null) {
+            return null;
+        }
+
+        int distance = 0;
+        int altimetry = 0;
+
+        while (true) {
+            System.out.print("Enter the distance of the activity in meters: ");
+            try {
+                distance = sc.nextInt();
+            } catch (Exception e) {
+                System.out.println("Distance must be an integer.");
+                continue;
+            }
+
+            // check if distance is between 1 and 50000 meters
+            if (distance < 1 || distance > 50000) {
+                System.out.println("Distance must be between 1 and 50000 meters.");
+                continue;
+            }
+            break;
+        }
+
+        while (true) {
+            System.out.print("Enter the altimetry of the activity in meters: ");
+            try {
+                altimetry = sc.nextInt();
+            } catch (Exception e) {
+                System.out.println("Altimetry must be an integer.");
+                continue;
+            }
+
+            // check if altimetry is between 1 and 10000 meters
+            if (altimetry < 1 || altimetry > 10000) {
+                System.out.println("Altimetry must be between 1 and 10000 meters.");
+                continue;
+            }
+            break;
+        }
+
+        activity.setDistance(distance);
+        activity.setAltimetry(altimetry);
+        return activity; // TODO clone
     }
 }

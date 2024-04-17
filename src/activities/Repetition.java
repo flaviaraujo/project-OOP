@@ -1,13 +1,25 @@
-package Activities;
+package src.activities;
 
-import core.Activity;
-import core.User;
+import src.Activity;
+import src.User;
 
-public class Repetition extends Activity {
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.io.Serializable;
+
+public class Repetition extends Activity implements Serializable {
+
+    private static final int ACTIVITY_TYPE = 3;
+
     private int repetition;
 
     public Repetition() {
         super();
+        this.repetition = 0;
+    }
+
+    public Repetition(String name, int duration, int intensity) {
+        super(name, duration, intensity);
         this.repetition = 0;
     }
 
@@ -33,6 +45,7 @@ public class Repetition extends Activity {
     public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append("Acivity {\n");
+        sb.append("  Name: " + this.name + ",\n");
         sb.append("  Duration: " + this.duration + " minutes,\n");
         sb.append("  Intensity: " + this.intensity + ",\n");
         sb.append("  Repetition: " + this.repetition + " times\n");
@@ -64,5 +77,36 @@ public class Repetition extends Activity {
     public int caloriesBurned(User u) {
         // TODO Calculate calories burned based on user, repetition, duration, and intensity
         return 0;
+    }
+
+    @Override
+    public Activity create(Scanner sc, ArrayList<Activity> userActivities) {
+
+        Repetition activity = (Repetition) super.createAux(sc, userActivities, ACTIVITY_TYPE);
+        if (activity == null) {
+            return null;
+        }
+
+        int repetitions = 0;
+
+        while (true) {
+            System.out.print("Enter the number of repetitions: ");
+            try {
+                repetitions = sc.nextInt();
+            } catch (Exception e) {
+                System.out.println("Repetitions must be an integer.");
+                continue;
+            }
+
+            // check if repetitions is between 1 and 1000
+            if (repetitions < 1 || repetitions > 1000) {
+                System.out.println("Repetitions must be between 1 and 1000.");
+                continue;
+            }
+            break;
+        }
+
+        activity.setRepetition(repetitions);
+        return activity; // TODO clone
     }
 }
