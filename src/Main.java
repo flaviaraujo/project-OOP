@@ -409,12 +409,14 @@ public class Main {
                     }
                 }
             case 5:
-                // TODO Start a simulation
+                // Start a simulation
+                Simulation simulation = new Simulation();
+                simulation.run(sc, m.users);
                 break;
             case 6:
                 // Statistics menu
-                Stats s = new Stats();
-                s.statsMenu(sc, m.users);
+                Stats stats = new Stats();
+                stats.statsMenu(sc, m.users);
                 break;
             case 7:
                 // Save program state
