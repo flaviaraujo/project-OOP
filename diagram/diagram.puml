@@ -88,23 +88,137 @@ class Register {
     +clone() : Register
 }
 
-class Activity {
+abstract class Activity {
     .. Attributes ..
+    -name : String
     -duration : int
     -intensity : int
     --
     .. Constructors ..
     +Activity()
-    +Activity(int duration, int intensity)
+    +Activity(String name, int duration, int intensity)
     +Activity(Activity activity)
     .. Methods - Getters ..
+    +getName() : String
     +getDuration() : int
     +getIntensity() : int
     .. Methods - Setters ..
+    +setName(String name) : void
     +setDuration(int duration) : void
     +setIntensity(int intensity) : void
-    // TODO this class is a superclass
-    // TODO add subclasses
+    .. Methods - Others ..
+    +{abstract} toString() : String
+    +{abstract} equals(Object o) : boolean
+    +{abstract} clone() : Activity
+    +{abstract} caloriesBurned(User u) : int
+    .. Methods - Activity Type ..
+    +isDistance() : boolean
+    +isDistanceAltimetry() : boolean
+    +isRepetition() : boolean
+    +isRepetitionWeight() : boolean
+    .. Methods - Manage Activities ..
+    +{abstract} create(Scanner sc, ArrayList<Activity> userActivities) : Activity
+    +{static} createAux(Scanner sc, ArrayList<Activity> userActivities, int activityType) : Activity
+    +{static} createMenu(Scanner sc, ArrayList<Activity> userActivities) : Activity
+    +{static} searchActivity(Scanner sc, ArrayList<Activity> userActivities) : Activity
+}
+
+class Distance extends Activity {
+    .. Attributes ..
+    -{static} final ACTIVITY_TYPE : int = 1
+    -distance : int
+    --
+    .. Constructors ..
+    +Distance()
+    +Distance(String name, int duration, int intensity)
+    +Distance(String name, int duration, int intensity,
+        int distance)
+    +Distance(Distance distance)
+    .. Methods - Getters ..
+    +getDistance() : int
+    .. Methods - Setters ..
+    +setDistance(int distance) : void
+    .. Methods - Others ..
+    +toString() : String
+    +equals(Object o) : boolean
+    +clone() : Distance
+    +caloriesBurned(User u) : int
+    +create(Scanner sc, ArrayList<Activity> userActivities) : Activity
+}
+
+class DistanceAltimetry extends Activity {
+    .. Attributes ..
+    -{static} final ACTIVITY_TYPE : int = 2
+    -distance : int
+    -altimetry : int
+    --
+    .. Constructors ..
+    +Distance()
+    +Distance(String name, int duration, int intensity)
+    +Distance(String name, int duration, int intensity,
+        int distance, int altimetry)
+    +Distance(Distance distance)
+    .. Methods - Getters ..
+    +getDistance() : int
+    +getAltimetry() : int
+    .. Methods - Setters ..
+    +setDistance(int distance) : void
+    +setAltimetry(int altimetry) : void
+    .. Methods - Others ..
+    +toString() : String
+    +equals(Object o) : boolean
+    +clone() : Distance
+    +caloriesBurned(User u) : int
+    +create(Scanner sc, ArrayList<Activity> userActivities) : Activity
+}
+
+class Repetition extends Activity {
+    .. Attributes ..
+    -{static} final ACTIVITY_TYPE : int = 3
+    -repetitions : int
+    --
+    .. Constructors ..
+    +Repetition()
+    +Repetition(String name, int duration, int intensity)
+    +Repetition(String name, int duration, int intensity,
+        int repetitions)
+    +Repetition(Repetition repetition)
+    .. Methods - Getters ..
+    +getRepetitions() : int
+    .. Methods - Setters ..
+    +setRepetitions(int repetitions) : void
+    .. Methods - Others ..
+    +toString() : String
+    +equals(Object o) : boolean
+    +clone() : Repetition
+    +caloriesBurned(User u) : int
+    +create(Scanner sc, ArrayList<Activity> userActivities) : Activity
+}
+
+class RepetitionWeight extends Activity {
+    .. Attributes ..
+    -{static} final ACTIVITY_TYPE : int = 4
+    -repetitions : int
+    -weight : int
+    --
+    .. Constructors ..
+    +Repetition()
+    +Repetition(String name, int duration, int intensity)
+    +Repetition(String name, int duration, int intensity,
+        int repetitions, int weight)
+    +Repetition(Repetition repetition)
+    .. Methods - Getters ..
+    +getRepetitions() : int
+    +getWeight() : int
+    .. Methods - Setters ..
+    +setRepetitions(int repetitions) : void
+    +setWeight(int weight) : void
+    .. Methods - Others ..
+    +toString() : String
+    +equals(Object o) : boolean
+    +clone() : Repetition
+    +caloriesBurned(User u) : int
+    +create(Scanner sc, ArrayList<Activity> userActivities) : Activity
 }
 
 class Plan {
@@ -112,7 +226,39 @@ class Plan {
 }
 
 class Event {
-    // TODO: attributes and methods
+    .. Attributes ..
+    -{static} final MAX_REPETITIONS : int = 3
+    -activity : Activity
+    -activityRepetitions : int
+    -day : int
+    -time : LocalTime
+    --
+    .. Constructors ..
+    +Event()
+    +Event(Activity activity, int activityRepetitions, int day,
+        LocalTime time)
+    +Event(Event event)
+    .. Methods - Getters ..
+    +getMAX_REPETITIONS() : final int
+    +getActivity() : Activity
+    +getActivityRepetitions() : int
+    +getDay() : int
+    +getTime() : LocalTime
+    .. Methods - Setters ..
+    +setActivity(Activity activity) : void
+    +setActivityRepetitions(int activityRepetitions) : void
+    +setDay(int day) : void
+    +setTime(LocalTime time) : void
+    .. Methods - Others ..
+    +toString() : String
+    +equals(Object o) : boolean
+    +clone() : Event
+    +convertDayToString(int day) : String
+    +convertTimeToString(LocalTime time) : String
+    +isValidDay(int day) : boolean
+    +isValidRepetitions(int repetitions) : boolean
+    +create(Scanner sc, ArrayList<Activity> userActivities,
+        int maxRepetitions) : Event
 }
 
 class Stats {
@@ -138,7 +284,6 @@ Register *-- User
 User <|-- User.Type
 User *-- Plan
 Event *-- Plan
-Activity *-- Event
 Register *-- Activity
 Main *-- User
 Main *-- Activity
