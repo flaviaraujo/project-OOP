@@ -5,6 +5,7 @@ import src.activities.DistanceAltimetry;
 
 import java.util.ArrayList;
 import java.util.Map.Entry;
+import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -201,4 +202,254 @@ public class Stats {
 
     // TODO 7. List the activities of a user
     // (already implemented in manage user activities menu)
+
+    public void displayStatsMenu() {
+        System.out.println("[Stats Menu] Choose an option:");
+        System.out.println("(1) The user with most calories burned");
+        System.out.println("(2) The user with the most completed activities");
+        System.out.println("(3) The type of activity most practiced by the users");
+        System.out.println("(4) How many km’s were traveled by one user");
+        System.out.println("(5) How many meters of altimetry were climbed by one user");
+        System.out.println("(6) Whats the practice plan with more calories burned");
+        System.out.println("(7) List the activities of a user");
+        System.out.println("(8) Return to main menu");
+    }
+
+    public void displayStatsMenu2() {
+        System.out.println("Choose an option:");
+        System.out.println("(1) All time");
+        System.out.println("(2) In a period of time");
+        System.out.println("(3) Return to stats menu");
+    }
+
+    public LocalDate insertStartDate(Scanner sc) {
+        LocalDate start = null;
+        while (true) {
+            System.out.print("Insert the start date (yyyy-mm-dd): ");
+            String buffer = sc.next();
+            try {
+                start = LocalDate.parse(buffer);
+                break;
+            } catch (Exception e) {
+                System.out.println("Invalid date format, try again.");
+            }
+        }
+        return start;
+    }
+
+    public LocalDate insertEndDate(Scanner sc) {
+        LocalDate end = null;
+        while (true) {
+            System.out.print("Insert the end date (yyyy-mm-dd): ");
+            String buffer = sc.next();
+            try {
+                end = LocalDate.parse(buffer);
+                break;
+            } catch (Exception e) {
+                System.out.println("Invalid date format, try again.");
+            }
+        }
+        return end;
+    }
+
+    public void statsMenu(Scanner sc, ArrayList<User> users) {
+        User user = null;
+        int option = 0, option2 = 0;
+        while (true) {
+            displayStatsMenu();
+            System.out.print("Option: ");
+            try {
+                option = sc.nextInt();
+            } catch (Exception e) {
+                System.out.println("Invalid option, try again.");
+                sc.next();
+                continue;
+            }
+            switch (option) {
+                case 1:
+                    // 1. The user with most calories burned
+                    displayStatsMenu2();
+                    System.out.print("Option: ");
+                    try {
+                        option2 = sc.nextInt();
+                    } catch (Exception e) {
+                        System.out.println("Invalid option, try again.");
+                        sc.next();
+                        continue;
+                    }
+
+                    switch (option2) {
+                        case 1:
+                            user = mostCaloriesBurned(users);
+                            if (user != null) {
+                                System.out.println("The user with most calories burned is: " + user.getName());
+                            } else {
+                                System.out.println("No users found.");
+                            }
+                            break;
+                        case 2:
+                            LocalDate start = insertStartDate(sc);
+                            LocalDate end = insertEndDate(sc);
+                            user = mostCaloriesBurned(users, start, end);
+                            if (user != null) {
+                                System.out.println("The user with most calories burned between "
+                                    + start + " and " + end + " is: " + user.getName());
+                            } else {
+                                System.out.println("No users found.");
+                            }
+                            break;
+                        case 3:
+                            break;
+                        default:
+                            System.out.println("Invalid option, try again.");
+                    }
+                    break;
+                case 2:
+                    // 2. The user with the most activities (registered/completed)
+                    displayStatsMenu2();
+                    System.out.print("Option: ");
+                    try {
+                        option2 = sc.nextInt();
+                    } catch (Exception e) {
+                        System.out.println("Invalid option, try again.");
+                        sc.next();
+                        continue;
+                    }
+
+                    switch (option2) {
+                        case 1:
+                            user = mostActivities(users);
+                            if (user != null) {
+                                System.out.println("The user with most activities is: "
+                                    + user.getName() + " with " + user.getRegisters().size() + " activities.");
+                            } else {
+                                System.out.println("No users found.");
+                            }
+                            break;
+                        case 2:
+                            LocalDate start = insertStartDate(sc);
+                            LocalDate end = insertEndDate(sc);
+                            user = mostActivities(users, start, end);
+                            if (user != null) {
+                                System.out.println("The user with most activities between "
+                                    + start + " and " + end + " is: " + user.getName() + " with "
+                                    + user.getRegisters().size() + " activities.");
+                            } else {
+                                System.out.println("No users found.");
+                            }
+                            break;
+                        case 3:
+                            break;
+                        default:
+                            System.out.println("Invalid option, try again.");
+                    }
+
+                    break;
+                case 3:
+                    // 3. The type of activity most practiced by the users
+                    String activity = mostPracticedActivityType(users);
+                    System.out.println("The type of activity most practiced by the users is: " + activity);
+                    break;
+                case 4:
+                    // 4. How many km’s were traveled by one user
+                    // Select an user to get the km traveled
+                    user = User.search(sc, users);
+                    if (user == null) {
+                        System.out.println("No user selected");
+                        break;
+                    }
+
+                    displayStatsMenu2();
+                    System.out.print("Option: ");
+                    try {
+                        option2 = sc.nextInt();
+                    } catch (Exception e) {
+                        System.out.println("Invalid option, try again.");
+                        sc.next();
+                        continue;
+                    }
+
+                    switch (option2) {
+                        case 1:
+                            double km = kmTraveled(user);
+                            System.out.println("The user " + user.getName() + " has traveled " + km + " km.");
+                            break;
+                        case 2:
+                            LocalDate start = insertStartDate(sc);
+                            LocalDate end = insertEndDate(sc);
+                            km = kmTraveled(user, start, end);
+                            System.out.println("The user " + user.getName() + " has traveled " + km + " km between "
+                                + start + " and " + end + ".");
+                            break;
+                        case 3:
+                            break;
+                        default:
+                            System.out.println("Invalid option, try again.");
+                    }
+
+                    break;
+                case 5:
+                    // 5. How many meters of altimetry were climbed by one user
+                    // Select an user to get the altimetry climbed
+                    user = User.search(sc, users);
+                    if (user == null) {
+                        System.out.println("No user selected");
+                        break;
+                    }
+
+                    displayStatsMenu2();
+                    System.out.print("Option: ");
+                    try {
+                        option2 = sc.nextInt();
+                    } catch (Exception e) {
+                        System.out.println("Invalid option, try again.");
+                        sc.next();
+                        continue;
+                    }
+
+                    switch (option2) {
+                        case 1:
+                            int altimetry = altimetryClimbed(user);
+                            System.out.println("The user " + user.getName() + " has climbed " + altimetry + " meters.");
+                            break;
+                        case 2:
+                            LocalDate start = insertStartDate(sc);
+                            LocalDate end = insertEndDate(sc);
+                            altimetry = altimetryClimbed(user, start, end);
+                            System.out.println("The user " + user.getName() + " has climbed " + altimetry + " meters between "
+                                + start + " and " + end + ".");
+                            break;
+                        case 3:
+                            break;
+                        default:
+                            System.out.println("Invalid option, try again.");
+                    }
+                    break;
+                case 6:
+                    // 6. Whats the practice plan with more calories burned
+                    // TODO
+                    break;
+                case 7:
+                    // 7. List the activities of a user
+                    // Select an user to list the activities
+                    user = User.search(sc, users);
+                    if (user == null) {
+                        System.out.println("No user selected");
+                        break;
+                    }
+
+                    ArrayList<Activity> activities = user.getActivities();
+                    if (activities.size() == 0) {
+                        System.out.println("The selected user has no activities.");
+                        break;
+                    }
+                    for (Activity t : activities) System.out.println(t);
+                    break;
+                case 8:
+                    return;
+                default:
+                    System.out.println("Invalid option, try again.");
+            }
+        }
+    }
 }

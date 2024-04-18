@@ -332,7 +332,9 @@ public class Main {
                 // TODO Start a simulation
                 break;
             case 6:
-                // TODO Statistics menu
+                // Statistics menu
+                Stats s = new Stats();
+                s.statsMenu(sc, m.users);
                 break;
             case 7:
                 // Save program state
