@@ -10,8 +10,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import src.Activity;
-
 /**
  * Main
  */
@@ -25,10 +23,10 @@ public class Main {
         String stateFilepath = "data/state.ser"; // default state file path
         Scanner sc = new Scanner(System.in);
 
-        // TODO add --help option
-
         // Parse command line argument
         if (args.length > 0) {
+            // TODO --help option
+            // TODO --user <--id|--email> <id|email> [state] option
             stateFilepath = args[0];
             loadState(stateFilepath, m, sc);
         }
@@ -39,9 +37,9 @@ public class Main {
         while (true) {
             mainMenu(sc, stateFilepath, m);
         }
-
-        // sc.close(); // The scanner is closed in the exit option from the main menu
     }
+
+    // TODO user perspective
 
     private static void mainMenu(Scanner sc, String stateFilepath, Main m) {
         System.out.println();
@@ -49,7 +47,7 @@ public class Main {
         System.out.println("(1) Manage users (create, delete, view)");
         System.out.println("(2) Manage user activities (create, delete, view)");
         System.out.println("(3) Manage user registered activities (register, view)");
-        System.out.println("(4) Manage user plans (create, delete, view)");
+        System.out.println("(4) Manage user plan (create, delete, view)");
         System.out.println("(5) Start a simulation");
         System.out.println("(6) Statistics menu");
         System.out.println("(7) Save program state");
@@ -326,8 +324,90 @@ public class Main {
                     }
                 }
             case 4:
-                // TODO Manage user plans
-                break;
+                // Manage user plan
+                // Select an user to manage plan
+                user = User.search(sc, m.users);
+                if (user == null) {
+                    System.out.println("No user selected");
+                    break;
+                }
+
+                while (true) {
+                    // Manage user plan
+                    System.out.println();
+                    System.out.println("[Manage user plan menu] Please select an option:");
+                    System.out.println("(1) Create plan interactively");
+                    System.out.println("(2) Create plan based on user goals");
+                    System.out.println("(3) Delete plan");
+                    System.out.println("(4) View plan");
+                    System.out.println("(5) Back to main menu");
+                    System.out.print("Option: ");
+
+                    submenuOption = 0;
+                    try {
+                        submenuOption = sc.nextInt();
+                    }
+                    catch (Exception e) {
+                        sc.nextLine(); // clear buffer
+                    }
+
+                    ArrayList<Activity> userActivities = user.getActivities();
+
+                    switch (submenuOption) {
+                        case 1:
+                            // create plan interactively
+                            // delete plan if it already exists
+                            Plan old = user.getPlan();
+                            if (old != null) {
+                                System.out.println("A plan already exists for the selected user.");
+                                System.out.print("Do you want to delete the current plan? [y/n]: ");
+                                String delete = sc.next();
+                                if (delete.equals("y")) {
+                                    user.setPlan(null);
+                                    System.out.println("Plan deleted successfully.");
+                                }
+                                else {
+                                    System.out.println("Plan wasn't deleted.");
+                                    break;
+                                }
+                            }
+                            Plan p = new Plan();
+                            p = p.create(sc, userActivities);
+                            user.setPlan(p);
+                            if (old == null && p == null) {
+                                System.out.println("Plan not created.");
+                                break;
+                            }
+                            System.out.println("Plan created successfully.");
+                            m.updateUser(user);
+                            m.setUpdatedState(true);
+                            break;
+                        case 2:
+                            // TODO: create plan based on user goals
+                            break;
+                        case 3:
+                            // Delete plan
+                            user.setPlan(null);
+                            System.out.println("Plan deleted successfully.");
+                            m.updateUser(user);
+                            m.setUpdatedState(true);
+                            break;
+                        case 4:
+                            // View plan
+                            if (user.getPlan() == null) {
+                                System.out.println("The selected user has no plan.");
+                                break;
+                            }
+                            System.out.print(user.getPlan());
+                            break;
+                        case 5:
+                            // Back to main menu
+                            return;
+                        default:
+                            System.out.println("Invalid option");
+                            break;
+                    }
+                }
             case 5:
                 // TODO Start a simulation
                 break;
