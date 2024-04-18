@@ -44,7 +44,7 @@ class User {
     +clone() : User
     .. Methods - Manage Users ..
     +{static} create(Scanner sc, ArrayList<User> users) : User
-    -{static} search(Scanner sc, ArrayList<User> users) : User
+    +{static} search(Scanner sc, ArrayList<User> users) : User
     +{static} view(Scanner sc, ArrayList<User> users) : void
     +{static} delete(Scanner sc, ArrayList<User> users) : void
     .. Methods - Activities ..
