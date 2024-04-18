@@ -1,42 +1,34 @@
 package src;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
  * Plan
  */
-public class Plan {
+public class Plan implements Serializable {
 
-    private String name; // unique
-    private int expectedCaloriesBurned;
+    private String name;
     private ArrayList<Event> events;
 
     public Plan() {
-
         this.name = "";
-        this.expectedCaloriesBurned = 0;
         this.events = null;
     }
 
-    public Plan(String name, int expectedCaloriesBurned, ArrayList<Event> events) {
+    public Plan(String name, ArrayList<Event> events) {
         this.name = name;
-        this.expectedCaloriesBurned = expectedCaloriesBurned;
         this.events = new ArrayList<Event>(events);
     }
 
     public Plan(Plan plan) {
         this.name = plan.getName();
-        this.expectedCaloriesBurned = plan.getExpectedCaloriesBurned();
         this.events = plan.getEvents();
     }
 
     public String getName() {
         return this.name;
-    }
-
-    public int getExpectedCaloriesBurned() {
-        return this.expectedCaloriesBurned;
     }
 
     public ArrayList<Event> getEvents() {
@@ -51,18 +43,13 @@ public class Plan {
         this.name = name;
     }
 
-    public void setExpectedCaloriesBurned(int expectedCaloriesBurned) {
-        this.expectedCaloriesBurned = expectedCaloriesBurned;
-    }
-
     public void setEvents(ArrayList<Event> events) {
-        this.events = new ArrayList<Event>(events);
+        this.events = new ArrayList<Event>(events); //TODO clone
     }
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Plan: ").append(this.name).append("\n");
-        sb.append("Expected Calories Burned: ").append(this.expectedCaloriesBurned).append("\n");
         sb.append("Events: \n");
         for (Event event : this.events) {
             sb.append(event.toString()).append("\n");
@@ -80,7 +67,6 @@ public class Plan {
         Plan p = (Plan) o;
         return (
             this.name.equals(p.getName()) &&
-            this.expectedCaloriesBurned == p.getExpectedCaloriesBurned() &&
             this.events.equals(p.getEvents())
         );
     }
@@ -97,42 +83,52 @@ public class Plan {
         this.events.remove(event); //TODO dúvida é preciso fazer clone?
     }
 
-   
+    //TODO create plan based on user goals
 
-    
+    // create plan interactively
+    public void create(Scanner sc, ArrayList<Activity> userActivities) {
 
-    //create plan based on user goals
+        if (userActivities.isEmpty()) {
+            System.out.println("There are no activities available.");
+            System.out.println("Please add activities before creating a plan.");
+            return;
+        }
 
+        // Get name of the plan
+        System.out.print("Enter the name of the plan: ");
+        this.name = sc.nextLine();
 
+        Event e = new Event();
+        int maxActivities = e.getMAX_REPETITIONS();
 
-    //create plan based on user goals
-    public void createPlan(Scanner sc, ArrayList<Activity> userActivities) {
-        
-       /* System.out.println("Please select an option:");
-        System.out.println("(1) Create a plan based on your goals");
-        System.out.println("(2) Create a plan interactively");
-        System.out.println("(3) Back to main menu");
-        */
+        // start on sunday and ask how many activities wants to add on that day, and so on
+        for (int i = 1; i <= 7; i++) {
+            int activities;
+            while (true) {
+                System.out.println("How many activities do you want on " +
+                    e.convertDayToString(i) + "?");
 
+                activities = sc.nextInt(); //TODO try catch
+                if (activities < 1 || activities > maxActivities) {
+                    System.out.println("Invalid number of activities. " +
+                        "Please enter a number between 1 and " + maxActivities + ".");
+                    continue;
+                }
+                break;
+            }
 
-    }
+            for (int j = 0; j < activities;) {
+                System.out.println("Event number " + j);
+            
+                if (maxActivities - j <= 0) {
+                    System.out.println("You have reached the maximum number of activities.");
+                    break;
+                }
 
-    
-
-
-    //public class Event {
-    //     private Activity activity;
-    //     private int activityRepetitions; // number of times the activity should be repeated
-    //     // Time or DateTime for start and end? Depends if plan is for a specific date or a range of dates
-    //     private DateTime start;
-    //     private DateTime end; // (start + activity.getDuration() * activityRepetitions)
-    // }
-
-    // TODO
-    // Constructors
-    // Getters and Setters
-    // Methods - toString, clone, equals
-    // Methods - create (interactive) -> N (max 3) events for a plan and then Event.create() N times
-    // Methods - create (based on user goals) -> based on type of activities, recorrencia, etc
-    // Methods - remove
+                Event event = e.create(sc, userActivities, maxActivities - j);
+                this.addEvent(event);
+                j += event.getActivityRepetitions();
+            }
+        }
+    }       
 }
