@@ -38,16 +38,21 @@ public class RepetitionWeight extends Activity implements Serializable {
         this.weight = repetitionWeight.getWeight();
     }
 
+    @Override
+    public final int getACTIVITY_TYPE() {
+        return ACTIVITY_TYPE;
+    }
+
     public int getRepetition() {
         return this.repetition;
     }
 
-    public void setRepetition(int repetition) {
-        this.repetition = repetition;
-    }
-
     public int getWeight() {
         return this.weight;
+    }
+
+    public void setRepetition(int repetition) {
+        this.repetition = repetition;
     }
 
     public void setWeight(int weight) {

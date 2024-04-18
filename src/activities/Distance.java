@@ -33,6 +33,11 @@ public class Distance extends Activity implements Serializable {
         this.distance = distance.getDistance();
     }
 
+    @Override
+    public final int getACTIVITY_TYPE() {
+        return ACTIVITY_TYPE;
+    }
+
     public int getDistance() {
         return this.distance;
     }
