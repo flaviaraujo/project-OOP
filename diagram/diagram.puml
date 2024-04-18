@@ -222,8 +222,30 @@ class RepetitionWeight extends Activity {
 }
 
 class Plan {
-    // TODO: attributes and methods
+    .. Attributes ..
+    -name : String
+    -events : ArrayList<Event>
+    --
+    .. Constructors ..
+    +Plan()
+    +Plan(String name, ArrayList<Event> events)
+    +Plan(Plan plan)
+    .. Methods - Getters ..
+    +getName() : String
+    +getEvents() : ArrayList<Event>
+    .. Methods - Setters ..
+    +setName(String name) : void
+    +setEvents(ArrayList<Event> events) : void
+    .. Methods - Others ..
+    +toString() : String
+    +equals(Object o) : boolean
+    +clone() : Plan
+    +addEvent(Event event) : void
+    +deleteEvent(Event event) : void
+    +create(Scanner sc, ArrayList<Activity> userActivities,
+        int maxRepetitions) : Plan
 }
+
 
 class Event {
     .. Attributes ..
@@ -256,14 +278,29 @@ class Event {
     +convertDayToString(int day) : String
     +convertTimeToString(LocalTime time) : String
     +isValidDay(int day) : boolean
-    +isValidRepetitions(int repetitions) : boolean
     +create(Scanner sc, ArrayList<Activity> userActivities,
         int maxRepetitions) : Event
 }
 
 class Stats {
-    // TODO: methods for statistics calculation
-    .. Statistics methods ..
+    .. Statistics Methods ..
+    +mostCaloriesBurned(ArrayList<User> users) : User
+    +mostCaloriesBurned(ArrayList<User> users, LocalDate start, LocalDate end) : User
+    +mostActivities(ArrayList<User> users) : User
+    +mostActivities(ArrayList<User> users, LocalDate start, LocalDate end) : User
+    +mostPracticedActivityType(ArrayList<User> users) : String
+    +kmTraveled(User user) : double
+    +kmTraveled(User user, LocalDate start, LocalDate end) : double
+    +altimetryClimbed(User user) : int
+    +altimetryClimbed(User user, LocalDate start, LocalDate end) : int
+    +mostCaloriesBurnedPlan(ArrayList<User> users) : Plan
+    --
+    .. Statistics Menu Methods ..
+    +displayStatsMenu() : void
+    +displayStatsMenu2() : void
+    +insertStartDate(Scanner sc) : LocalDate
+    +insertEndDate(Scanner sc) : LocalDate
+    +statsMenu(Scanner sc, ArrayList<User> users) : void
 }
 
 class Main {
