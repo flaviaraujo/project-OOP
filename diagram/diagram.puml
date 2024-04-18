@@ -278,7 +278,6 @@ class Event {
     +convertDayToString(int day) : String
     +convertTimeToString(LocalTime time) : String
     +isValidDay(int day) : boolean
-    +isValidRepetitions(int repetitions) : boolean
     +create(Scanner sc, ArrayList<Activity> userActivities,
         int maxRepetitions) : Event
 }

@@ -1,9 +1,11 @@
 package src;
 
+import src.Activity;
 import src.activities.Distance;
 import src.activities.DistanceAltimetry;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Scanner;
 import java.time.LocalDate;
@@ -112,7 +114,36 @@ public class Stats {
 
     // TODO 3. The type of activity most practiced by the users
     public String mostPracticedActivityType(ArrayList<User> users) {
-        return ""; // activity type as string
+
+        String result = "None";
+        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+        // for each user
+        //  for each register
+        //   increment the respective value by the key: activity type
+        // return the key with the highest value
+        for (User u : users) {
+            for (Register r : u.getRegisters().values()) {
+                Activity a = r.getActivity();
+                int type = a.getType();
+                if (map.containsKey(type)) {
+                    map.put(type, map.get(type) + 1);
+                }
+                else {
+                    map.put(type, 1);
+                }
+            }
+        }
+
+        int max = 0;
+        Activity a = (Activity) new Distance();
+        for (Entry<Integer, Integer> entry : map.entrySet()) {
+            if (entry.getValue() > max) {
+                max = entry.getValue();
+                result = a.getName((int) entry.getKey());
+            }
+        }
+
+        return result;
     }
 
     // 4. How many km’s were traveled by one user
@@ -194,14 +225,49 @@ public class Stats {
         return c;
     }
 
-    // TODO 6. Whats the practice plan with more calories burned
+    // 6. Whats the practice plan with more calories burned
     public Plan mostCaloriesBurnedPlan(ArrayList<User> users) {
 
-        return null;
-    }
+        Plan result = null;
+        User user = null;
+        int max = 0, tmp = 0;
 
-    // TODO 7. List the activities of a user
-    // (already implemented in manage user activities menu)
+        for (User u : users) {
+
+            Plan p = u.getPlan();
+            if (p == null)
+                continue;
+            else if (result == null) {
+                result = p;
+                user = u;
+                for (Event e : p.getEvents()) {
+                    max += e.getActivity().caloriesBurned(u);
+                }
+                continue;
+            }
+
+            tmp = 0;
+            for (Event e : p.getEvents()) {
+                tmp += e.getActivity().caloriesBurned(u);
+            }
+            if (tmp > max) {
+                max = tmp;
+                user = u;
+                result = p;
+            }
+        }
+
+        if (result == null) {
+            System.out.println("No plans found.");
+        }
+        else {
+            System.out.println("The plan with the most calories burned is \""
+                + result.getName() + "\" with " + max + " calories burned, by "
+                + "the user: " + user.getName());
+        }
+
+        return result;
+    }
 
     public void displayStatsMenu() {
         System.out.println("[Stats Menu] Choose an option:");
@@ -410,13 +476,15 @@ public class Stats {
                     switch (option2) {
                         case 1:
                             int altimetry = altimetryClimbed(user);
-                            System.out.println("The user " + user.getName() + " has climbed " + altimetry + " meters.");
+                            System.out.println("The user " + user.getName() + " has climbed "
+                                    + altimetry + " meters.");
                             break;
                         case 2:
                             LocalDate start = insertStartDate(sc);
                             LocalDate end = insertEndDate(sc);
                             altimetry = altimetryClimbed(user, start, end);
-                            System.out.println("The user " + user.getName() + " has climbed " + altimetry + " meters between "
+                            System.out.println("The user " + user.getName() + " has climbed "
+                                + altimetry + " meters between "
                                 + start + " and " + end + ".");
                             break;
                         case 3:
@@ -427,7 +495,7 @@ public class Stats {
                     break;
                 case 6:
                     // 6. Whats the practice plan with more calories burned
-                    // TODO
+                    mostCaloriesBurnedPlan(users);
                     break;
                 case 7:
                     // 7. List the activities of a user

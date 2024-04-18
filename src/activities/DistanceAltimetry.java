@@ -38,16 +38,21 @@ public class DistanceAltimetry extends Activity implements Serializable {
         this.altimetry = distanceAltimetry.getAltimetry();
     }
 
+    @Override
+    public final int getACTIVITY_TYPE() {
+        return ACTIVITY_TYPE;
+    }
+
     public int getDistance() {
         return this.distance;
     }
 
-    public void setDistance(int distance) {
-        this.distance = distance;
-    }
-
     public int getAltimetry() {
         return this.altimetry;
+    }
+
+    public void setDistance(int distance) {
+        this.distance = distance;
     }
 
     public void setAltimetry(int altimetry) {

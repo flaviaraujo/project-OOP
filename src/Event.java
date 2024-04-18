@@ -78,8 +78,9 @@ public class Event implements Serializable {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Activity: " + this.activity.getName() + "\n");
+        sb.append("Repetitions: " + this.activityRepetitions + "\n");
         sb.append("Day: " + convertDayToString(this.day) + "\n");
-        sb.append("Time: " + convertTimeToString(this.time) + "\n");
+        sb.append("Time: " + convertTimeToString(this.time));
         return sb.toString();
     }
 
@@ -133,13 +134,7 @@ public class Event implements Serializable {
         return day >= 1 && day <= 7;
     }
 
-    public boolean isValidRepetitions(int rep) {
-        return rep >= 1 && rep <= MAX_REPETITIONS;
-    }
-
-    public Event create(Scanner sc, ArrayList<Activity> userActivities, int maxRepetitions) {
-
-        sc.nextLine(); // clear the buffer
+    public Event create(Scanner sc, ArrayList<Activity> userActivities, int maxRepetitions, int day) {
 
         if (userActivities.size() == 0) {
             System.out.println("You have no activities to schedule an event for.");
@@ -148,6 +143,7 @@ public class Event implements Serializable {
 
         Activity activity;
         while (true) {
+            sc.nextLine(); // clear the buffer
             activity = Activity.searchActivity(sc, userActivities);
             if (activity == null) {
                 System.out.println("Activity not found.");
@@ -156,54 +152,38 @@ public class Event implements Serializable {
             break;
         }
 
-        int activityRepetitions;
-        while (true) {
-            System.out.print("Enter the number of times you want to repeat " +
-                "the activity (1-" + maxRepetitions + "): ");
-            activityRepetitions = 0;
-            try {
-                activityRepetitions = sc.nextInt();
+        int activityRepetitions = 1;
+        if (maxRepetitions != 1) {
+            while (true) {
+                System.out.print("Enter the number of times you want to repeat " +
+                    "the activity (1-" + maxRepetitions + "): ");
+                activityRepetitions = 0;
+                try {
+                    activityRepetitions = sc.nextInt();
+                }
+                catch (Exception e) {
+                    System.out.println("Invalid input.");
+                    sc.nextLine();
+                    continue;
+                }
+                if (activityRepetitions < 1 || activityRepetitions > maxRepetitions) {
+                    System.out.println("Invalid number of repetitions. Please enter a number " +
+                        "between 1 and " + maxRepetitions + ".");
+                    continue;
+                }
+                break;
             }
-            catch (Exception e) {
-                System.out.println("Invalid input.");
-                sc.nextLine();
-                continue;
-            }
-            if (!isValidRepetitions(activityRepetitions)) {
-                System.out.println("Invalid number of repetitions. Please enter a number " +
-                    "between 1 and " + maxRepetitions + ".");
-                continue;
-            }
-            break;
-        }
-
-        while (true) {
-            System.out.print("Enter the day of the week (1 [Sunday] - 7 [Saturday]): ");
-            int day = 0;
-            try {
-                day = sc.nextInt();
-            }
-            catch (Exception e) {
-                System.out.println("Invalid input.");
-                sc.nextLine();
-                continue;
-            }
-            if (!isValidDay(day)) {
-                System.out.println("Invalid day. Please enter a valid day of the week (1 [Sunday] - 7 [Saturday]): ");
-                continue;
-            }
-            break;
         }
 
         LocalTime time;
         while (true) {
             System.out.print("Enter the time of the event (HH:mm): ");
-            String timeBuffer = sc.nextLine();
+            String timeBuffer = sc.next();
             try {
                 time = LocalTime.parse(timeBuffer);
             }
             catch (Exception e) {
-                System.out.println("Invalid time. Please enter a valid time (HH:mm): ");
+                System.out.println("Invalid time.");
                 continue;
             }
             break;

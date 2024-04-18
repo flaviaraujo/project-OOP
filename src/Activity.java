@@ -34,6 +34,8 @@ public abstract class Activity implements Serializable {
         this.intensity = activity.getIntensity();
     }
 
+    public abstract int getACTIVITY_TYPE();
+
     public String getName() {
         return this.name;
     }
@@ -80,6 +82,43 @@ public abstract class Activity implements Serializable {
 
     public boolean isRepetitionWeight() {
         return this instanceof RepetitionWeight;
+    }
+
+    public int getType() {
+        if (this.isDistance()) {
+            Distance distance = (Distance) this;
+            return distance.getACTIVITY_TYPE();
+        }
+        else if (this.isDistanceAltimetry()) {
+            DistanceAltimetry distanceAltimetry = (DistanceAltimetry) this;
+            return distanceAltimetry.getACTIVITY_TYPE();
+        }
+        else if (this.isRepetition()) {
+            Repetition repetition = (Repetition) this;
+            return repetition.getACTIVITY_TYPE();
+        }
+        else if (this.isRepetitionWeight()) {
+            RepetitionWeight repetitionWeight = (RepetitionWeight) this;
+            return repetitionWeight.getACTIVITY_TYPE();
+        }
+        else {
+            return 0;
+        }
+    }
+
+    public String getName(int type) {
+        switch (type) {
+            case 1:
+                return "Distance";
+            case 2:
+                return "Distance & altimetry";
+            case 3:
+                return "Repetition";
+            case 4:
+                return "Repetition with weights";
+            default:
+                return "";
+        }
     }
 
     public abstract Activity create(Scanner sc, ArrayList<Activity> userActivities);
@@ -205,11 +244,14 @@ public abstract class Activity implements Serializable {
 
     public static Activity searchActivity(Scanner sc, ArrayList<Activity> userActivities) {
 
-        sc.nextLine(); // clear the buffer
-
         System.out.println();
+        // Print activities names
+        System.out.println("User activities:");
+        for (Activity a : userActivities) {
+            System.out.println("  -> " + a.getName());
+        }
         System.out.print("Enter the name of the activity: ");
-        String name = sc.nextLine();
+        String name = sc.next();
 
         Activity activity = userActivities.stream()
             .filter(a -> a.getName().equals(name))

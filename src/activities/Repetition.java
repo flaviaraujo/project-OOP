@@ -33,6 +33,11 @@ public class Repetition extends Activity implements Serializable {
         this.repetition = repetition.getRepetition();
     }
 
+    @Override
+    public final int getACTIVITY_TYPE() {
+        return ACTIVITY_TYPE;
+    }
+
     public int getRepetition() {
         return this.repetition;
     }
