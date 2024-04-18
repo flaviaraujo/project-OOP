@@ -219,10 +219,13 @@ public class User implements Serializable {
         for (LocalDateTime date : this.registers.keySet()) {
             sb.append("\n    " + date.format(formatter) + " - " + this.registers.get(date).getActivity().getName() + ",");
         }
-        sb.append("]\n");
+        sb.append("],\n");
 
         if (this.plan != null) {
             sb.append("  plan: " + this.plan.getName() + "\n");
+        }
+        else {
+            sb.append("  no training plan\n");
         }
 
         sb.append("}");

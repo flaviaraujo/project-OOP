@@ -17,7 +17,7 @@ public class Stats {
     // 1.1 All time
     public User mostCaloriesBurned(ArrayList<User> users) {
 
-        User user = null;
+        User user = users.size() > 0 ? users.get(0) : null;
         int max = 0, tmp = 0;
 
         for (User u : users) {
@@ -41,7 +41,7 @@ public class Stats {
 
     // 1.2 In a period of time (date -> date)
     public User mostCaloriesBurned(ArrayList<User> users, LocalDate start, LocalDate end) {
-        User user = null;
+        User user = users.size() > 0 ? users.get(0) : null;
         int max = 0, tmp = 0;
 
         for (User u : users) {
@@ -73,7 +73,7 @@ public class Stats {
     // is passed return null
     // 2.1 All time
     public User mostActivities(ArrayList<User> users) {
-        User user = null;
+        User user = users.size() > 0 ? users.get(0) : null;
         int max = 0, tmp = 0;
 
         // for each user get the number of registered activities
@@ -90,7 +90,7 @@ public class Stats {
 
     // 2.2 In a period of time (date -> date)
     public User mostActivities(ArrayList<User> users, LocalDate start, LocalDate end) {
-        User user = null;
+        User user = users.size() > 0 ? users.get(0) : null;
         int max = 0, c = 0;
 
         // for each user get the number of registered activities
@@ -112,15 +112,12 @@ public class Stats {
         return user;
     }
 
-    // TODO 3. The type of activity most practiced by the users
+    // 3. The type of activity most practiced by the users
     public String mostPracticedActivityType(ArrayList<User> users) {
 
         String result = "None";
         HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
-        // for each user
-        //  for each register
-        //   increment the respective value by the key: activity type
-        // return the key with the highest value
+
         for (User u : users) {
             for (Register r : u.getRegisters().values()) {
                 Activity a = r.getActivity();
@@ -228,8 +225,8 @@ public class Stats {
     // 6. Whats the practice plan with more calories burned
     public Plan mostCaloriesBurnedPlan(ArrayList<User> users) {
 
-        Plan result = null;
         User user = null;
+        Plan result = null;
         int max = 0, tmp = 0;
 
         for (User u : users) {
@@ -347,11 +344,11 @@ public class Stats {
                     switch (option2) {
                         case 1:
                             user = mostCaloriesBurned(users);
-                            if (user != null) {
-                                System.out.println("The user with most calories burned is: " + user.getName());
-                            } else {
+                            if (user == null) {
                                 System.out.println("No users found.");
+                                break;
                             }
+                            System.out.println("The user with most calories burned is: " + user.getName());
                             break;
                         case 2:
                             LocalDate start = insertStartDate(sc);
