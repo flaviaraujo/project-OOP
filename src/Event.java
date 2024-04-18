@@ -11,30 +11,30 @@ public class Event implements Serializable {
     private static final int MAX_REPETITIONS = 3;
 
     private Activity activity;
-    private int activityRepetetions; // (1-max_repetitions)
+    private int activityRepetitions; // (1-max_repetitions)
     private int day; // week day (1-7)
     private LocalTime time;
 
     public Event() {
         this.activity = null;
-        this.activityRepetetions = 1;
+        this.activityRepetitions = 1;
         this.day = 1;
         this.time = null;
     }
 
     public Event(
-        Activity activity, int activityRepetetions, int day,
+        Activity activity, int activityRepetitions, int day,
         LocalTime time
     ) {
         this.activity = activity.clone();
-        this.activityRepetetions = activityRepetetions;
+        this.activityRepetitions = activityRepetitions;
         this.day = day;
         this.time = time;
     }
 
     public Event(Event event) {
         this.activity = event.getActivity();
-        this.activityRepetetions = event.getActivityRepetetions();
+        this.activityRepetitions = event.getActivityRepetitions();
         this.day = event.getDay();
         this.time = event.getTime();
     }
@@ -47,8 +47,8 @@ public class Event implements Serializable {
         return this.activity.clone();
     }
 
-    public int getActivityRepetetions() {
-        return this.activityRepetetions;
+    public int getActivityRepetitions() {
+        return this.activityRepetitions;
     }
 
     public int getDay() {
@@ -63,8 +63,8 @@ public class Event implements Serializable {
         this.activity = activity.clone();
     }
 
-    public void setActivityRepetetions(int activityRepetetions) {
-        this.activityRepetetions = activityRepetetions;
+    public void setActivityRepetitions(int activityRepetitions) {
+        this.activityRepetitions = activityRepetitions;
     }
 
     public void setDay(int day) {
@@ -93,7 +93,7 @@ public class Event implements Serializable {
         Event e = (Event) o;
         return (
             this.activity.equals(e.getActivity()) &&
-            this.activityRepetetions == e.getActivityRepetetions() &&
+            this.activityRepetitions == e.getActivityRepetitions() &&
             this.day == e.getDay() &&
             this.time.equals(e.getTime())
         );
@@ -156,20 +156,20 @@ public class Event implements Serializable {
             break;
         }
 
-        int activityRepetetions;
+        int activityRepetitions;
         while (true) {
             System.out.print("Enter the number of times you want to repeat " +
                 "the activity (1-" + maxRepetitions + "): ");
-            activityRepetetions = 0;
+            activityRepetitions = 0;
             try {
-                activityRepetetions = sc.nextInt();
+                activityRepetitions = sc.nextInt();
             }
             catch (Exception e) {
                 System.out.println("Invalid input.");
                 sc.nextLine();
                 continue;
             }
-            if (!isValidRepetitions(activityRepetetions)) {
+            if (!isValidRepetitions(activityRepetitions)) {
                 System.out.println("Invalid number of repetitions. Please enter a number " +
                     "between 1 and " + maxRepetitions + ".");
                 continue;
@@ -209,7 +209,7 @@ public class Event implements Serializable {
             break;
         }
 
-        Event event = new Event(activity, activityRepetetions, day, time); // TODO is clone needed here?
+        Event event = new Event(activity, activityRepetitions, day, time); // TODO is clone needed here?
         System.out.println("Event scheduled successfully.");
         return event;
     }
