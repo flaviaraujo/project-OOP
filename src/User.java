@@ -40,7 +40,7 @@ public class User implements Serializable {
     private Type type;
     private ArrayList<Activity> activities;
     private HashMap<LocalDateTime, Register> registers; // alternative LinkedHashMap
-    // TODO: private Dictionary<Int, ArrayList<Plan>> plans;
+    private Plan plan;
  
     /* Default Constructor */
     public User() {
@@ -52,6 +52,7 @@ public class User implements Serializable {
         this.type = Type.OCCASIONAL;
         this.activities = new ArrayList<Activity>();
         this.registers = new HashMap<LocalDateTime, Register>();
+        this.plan = new Plan();
     }
 
     /* Parameterized Constructors */
@@ -67,13 +68,15 @@ public class User implements Serializable {
         this.type = type;
         this.activities = new ArrayList<Activity>();
         this.registers = new HashMap<LocalDateTime, Register>();
+        this.plan = null;
     }
 
     public User(
         int id, String name, String email,
         String address, int heartRate, Type type,
         ArrayList<Activity> activities,
-        HashMap<LocalDateTime, Register> registers
+        HashMap<LocalDateTime, Register> registers,
+        Plan plan
     ) {
         this.id = id;
         this.name = name;
@@ -83,6 +86,7 @@ public class User implements Serializable {
         this.type = type;
         this.activities = activities; // TODO clone
         this.registers = registers; // TODO clone
+        this.plan = plan.clone();
     }
 
     /* Copy Constructor */
@@ -95,6 +99,7 @@ public class User implements Serializable {
         this.type = user.getType();
         this.activities = user.getActivities();
         this.registers = user.getRegisters();
+        this.plan = user.getPlan();
     }
 
     /* Instance Methods - Getters */
@@ -138,6 +143,13 @@ public class User implements Serializable {
         return registers;
     }
 
+    public Plan getPlan() {
+        if (this.plan == null) {
+            return null;
+        }
+        return this.plan.clone();
+    }
+
     /* Instance Methods - Setters */
     public void setId(int id) {
         this.id = id;
@@ -173,6 +185,14 @@ public class User implements Serializable {
         this.registers = registers;
     }
 
+    public void setPlan(Plan plan) {
+        if (plan == null) {
+            this.plan = null;
+            return;
+        }
+        this.plan = plan.clone();
+    }
+
     /* Object methods */
     public String toString() {
         StringBuffer sb = new StringBuffer();
@@ -201,6 +221,10 @@ public class User implements Serializable {
         }
         sb.append("]\n");
 
+        if (this.plan != null) {
+            sb.append("  plan: " + this.plan.getName() + "\n");
+        }
+
         sb.append("}");
         return sb.toString();
     }
@@ -219,7 +243,8 @@ public class User implements Serializable {
             user.getHeartRate() == this.heartRate &&
             user.getType() == this.type &&
             user.getActivities().equals(this.activities) &&
-            user.getRegisters().equals(this.registers) // TODO check this
+            user.getRegisters().equals(this.registers) && // TODO check this
+            user.getPlan().equals(this.plan)
         );
     }
 
@@ -386,6 +411,9 @@ public class User implements Serializable {
                 .findFirst()
                 .orElse(null);
         }
+
+        if (user != null)
+            System.out.println("Selected user: " + user.getName());
 
         return user;
     }

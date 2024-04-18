@@ -14,7 +14,7 @@ public class Plan implements Serializable {
 
     public Plan() {
         this.name = "";
-        this.events = null;
+        this.events = new ArrayList<Event>();
     }
 
     public Plan(String name, ArrayList<Event> events) {
@@ -49,7 +49,7 @@ public class Plan implements Serializable {
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Plan: ").append(this.name).append("\n");
+        sb.append("Plan: " + this.name + "\n");
         sb.append("Events: \n");
         for (Event event : this.events) {
             sb.append(event.toString()).append("\n");
@@ -86,49 +86,74 @@ public class Plan implements Serializable {
     //TODO create plan based on user goals
 
     // create plan interactively
-    public void create(Scanner sc, ArrayList<Activity> userActivities) {
+    public Plan create(Scanner sc, ArrayList<Activity> userActivities) {
 
         if (userActivities.isEmpty()) {
             System.out.println("There are no activities available.");
             System.out.println("Please add activities before creating a plan.");
-            return;
+            return null;
         }
 
-        // Get name of the plan
-        System.out.print("Enter the name of the plan: ");
-        this.name = sc.nextLine();
+        sc.nextLine(); // clear the buffer
 
+        // TODO use one Event only
         Event e = new Event();
         int maxActivities = e.getMAX_REPETITIONS();
 
+        // Plan
+        Plan plan = new Plan();
+
+        // Get name of the plan
+        System.out.print("Enter the name of the plan: ");
+        String name = sc.nextLine();
+        plan.setName(name);
+
         // start on sunday and ask how many activities wants to add on that day, and so on
+        int counterDaysOff = 0;
         for (int i = 1; i <= 7; i++) {
             int activities;
             while (true) {
-                System.out.println("How many activities do you want on " +
-                    e.convertDayToString(i) + "?");
+                System.out.print("How many activities do you want on " +
+                    e.convertDayToString(i) + "? (0-" + maxActivities + "): ");
 
-                activities = sc.nextInt(); //TODO try catch
-                if (activities < 1 || activities > maxActivities) {
+                try {
+                    activities = sc.nextInt();
+                }
+                catch (Exception ex) {
+                    System.out.println("Invalid input. Please enter a number.");
+                    sc.nextLine();
+                    continue;
+                }
+                if (activities < 0 || activities > maxActivities) {
                     System.out.println("Invalid number of activities. " +
-                        "Please enter a number between 1 and " + maxActivities + ".");
+                        "Please enter a number between 0 and " + maxActivities + ".");
                     continue;
                 }
                 break;
             }
 
-            for (int j = 0; j < activities;) {
-                System.out.println("Event number " + j);
-            
-                if (maxActivities - j <= 0) {
-                    System.out.println("You have reached the maximum number of activities.");
-                    break;
-                }
+            if (activities == 0) {
+                counterDaysOff++;
+                continue;
+            }
 
-                Event event = e.create(sc, userActivities, maxActivities - j);
-                this.addEvent(event);
+            int eventCount = 0;
+            for (int j = 0; j < activities;) {
+
+                System.out.println("Event number " + (++eventCount));
+
+                Event event = e.create(sc, userActivities, activities - j, i);
+                plan.addEvent(event);
                 j += event.getActivityRepetitions();
             }
         }
-    }       
+
+        if (counterDaysOff == 7) {
+            System.out.println("You have scheduled no activities for the week.");
+            System.out.println("You must be joking with the programmer kings.");
+            return null;
+        }
+
+        return plan;
+    }
 }
