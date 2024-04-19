@@ -12,7 +12,7 @@
 \contentsline {chapter}{\numberline {2}Descrição de Funcionalidades da Aplicação}{4}{chapter.2}%
 \contentsline {section}{\numberline {2.1}Gestão de Utilizadores}{4}{section.2.1}%
 \contentsline {section}{\numberline {2.2}Gestão de Atividades}{4}{section.2.2}%
-\contentsline {section}{\numberline {2.3}Gestão de Registos de Atividades}{4}{section.2.3}%
+\contentsline {section}{\numberline {2.3}Registo e Visualização de Atividades Completas}{4}{section.2.3}%
 \contentsline {section}{\numberline {2.4}Gestão de Planos de Treino}{4}{section.2.4}%
 \contentsline {section}{\numberline {2.5}Simulação}{4}{section.2.5}%
 \contentsline {section}{\numberline {2.6}Estatísticas}{4}{section.2.6}%
