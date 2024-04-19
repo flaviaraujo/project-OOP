@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2024.3.14)  19 APR 2024 16:23
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2024.4.14)  19 APR 2024 16:43
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1038,6 +1038,8 @@ File: bkm-dvipdfm.def 2020-11-06 v1.29 bookmark driver for dvipdfm (HO)
 
 File: images/eeum.png Graphic file (type bmp)
 <images/eeum.png>
+LaTeX Font Info:    Font shape `TU/lmss/bx/it' in size <24.88> not available
+(Font)              Font shape `TU/lmss/bx/sl' tried instead on input line 77.
  [1
 
 
@@ -1161,11 +1163,11 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 27335 strings out of 478174
- 572001 string characters out of 5854282
+ 27338 strings out of 478174
+ 572079 string characters out of 5854282
  1043852 words of memory out of 5000000
- 47474 multiletter control sequences out of 15000+600000
- 473237 words of font info for 67 fonts, out of 8000000 for 9000
+ 47476 multiletter control sequences out of 15000+600000
+ 473245 words of font info for 68 fonts, out of 8000000 for 9000
  16 hyphenation exceptions out of 8191
  108i,13n,106p,10620b,1160s stack positions out of 5000i,500n,10000p,200000b,80000s
 
