@@ -150,7 +150,7 @@ package activities {
         +caloriesBurned(User u) : int
         +create(Scanner sc, ArrayList<Activity> userActivities) : Activity
     }
-    
+
     class DistanceAltimetry extends Activity {
         .. Attributes ..
         -{static} final ACTIVITY_TYPE : int = 2
@@ -177,7 +177,7 @@ package activities {
         +caloriesBurned(User u) : int
         +create(Scanner sc, ArrayList<Activity> userActivities) : Activity
     }
-    
+
     class Repetition extends Activity {
         .. Attributes ..
         -{static} final ACTIVITY_TYPE : int = 3
@@ -201,7 +201,7 @@ package activities {
         +caloriesBurned(User u) : int
         +create(Scanner sc, ArrayList<Activity> userActivities) : Activity
     }
-    
+
     class RepetitionWeight extends Activity {
         .. Attributes ..
         -{static} final ACTIVITY_TYPE : int = 4
@@ -335,5 +335,7 @@ Main "1" *-- "N" User
 Main --> Activity : uses
 Main --> Plan : uses
 Main --> Stats : uses
+Event "1" *- "1" Activity
+Register "1" *-left- "1" Activity
 
 @enduml
