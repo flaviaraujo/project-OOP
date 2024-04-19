@@ -18,7 +18,7 @@ class User {
     +User(int id, String name, String email,
         String address, int heartRate, Type type,
         ArrayList<Activity> activities,
-        HashMap<LocalDateTime, Register> registers)
+        HashMap<LocalDateTime, Register> registers, Plan plan)
     +User(User user)
     .. Methods - Getters ..
     +getId() : int
@@ -29,6 +29,7 @@ class User {
     +getType() : User.Type
     +getActivities() : ArrayList<Activity>
     +getRegisters() : HashMap<LocalDateTime, Register>
+    +getPlan() : Plan
     .. Methods - Setters ..
     +setId(int id) : void
     +setName(String name) : void
@@ -38,6 +39,7 @@ class User {
     +setType(Type type) : void
     +setActivities(ArrayList<Activity> activities) : void
     +setRegisters(HashMap<LocalDateTime, Register> registers) : void
+    +setPlan(Plan plan) : void
     .. Methods - Other ..
     +toString() : String
     +equals(Object o) : boolean
@@ -90,15 +92,16 @@ class Register {
 
 abstract class Activity {
     .. Attributes ..
-    -name : String
-    -duration : int
-    -intensity : int
+    #name : String
+    #duration : int
+    #intensity : int
     --
     .. Constructors ..
     +Activity()
     +Activity(String name, int duration, int intensity)
     +Activity(Activity activity)
     .. Methods - Getters ..
+    +{abstract} getACTIVITY_TYPE() : int
     +getName() : String
     +getDuration() : int
     +getIntensity() : int
@@ -136,6 +139,7 @@ package activities {
             int distance)
         +Distance(Distance distance)
         .. Methods - Getters ..
+        +{final} getACTIVITY_TYPE() : int
         +getDistance() : int
         .. Methods - Setters ..
         +setDistance(int distance) : void
@@ -154,12 +158,13 @@ package activities {
         -altimetry : int
         --
         .. Constructors ..
-        +Distance()
-        +Distance(String name, int duration, int intensity)
-        +Distance(String name, int duration, int intensity,
+        +DistanceAltimetry()
+        +DistanceAltimetry(String name, int duration, int intensity)
+        +DistanceAltimetry(String name, int duration, int intensity,
             int distance, int altimetry)
-        +Distance(Distance distance)
+        +DistanceAltimetry(DistanceAltimetry distanceAltimetry)
         .. Methods - Getters ..
+        +{final} getACTIVITY_TYPE() : int
         +getDistance() : int
         +getAltimetry() : int
         .. Methods - Setters ..
@@ -168,7 +173,7 @@ package activities {
         .. Methods - Others ..
         +toString() : String
         +equals(Object o) : boolean
-        +clone() : Distance
+        +clone() : DistanceAltimetry
         +caloriesBurned(User u) : int
         +create(Scanner sc, ArrayList<Activity> userActivities) : Activity
     }
@@ -176,18 +181,19 @@ package activities {
     class Repetition extends Activity {
         .. Attributes ..
         -{static} final ACTIVITY_TYPE : int = 3
-        -repetitions : int
+        -repetition : int
         --
         .. Constructors ..
         +Repetition()
         +Repetition(String name, int duration, int intensity)
         +Repetition(String name, int duration, int intensity,
-            int repetitions)
+            int repetition)
         +Repetition(Repetition repetition)
         .. Methods - Getters ..
-        +getRepetitions() : int
+        +{final} getACTIVITY_TYPE() : int
+        +getRepetition() : int
         .. Methods - Setters ..
-        +setRepetitions(int repetitions) : void
+        +setRepetition(int repetition) : void
         .. Methods - Others ..
         +toString() : String
         +equals(Object o) : boolean
@@ -199,25 +205,26 @@ package activities {
     class RepetitionWeight extends Activity {
         .. Attributes ..
         -{static} final ACTIVITY_TYPE : int = 4
-        -repetitions : int
+        -repetition : int
         -weight : int
         --
         .. Constructors ..
-        +Repetition()
-        +Repetition(String name, int duration, int intensity)
-        +Repetition(String name, int duration, int intensity,
-            int repetitions, int weight)
-        +Repetition(Repetition repetition)
+        +RepetitionWeight()
+        +RepetitionWeight(String name, int duration, int intensity)
+        +RepetitionWeight(String name, int duration, int intensity,
+            int repetition, int weight)
+        +RepetitionWeight(RepetitionWeight repetitionWeight)
         .. Methods - Getters ..
-        +getRepetitions() : int
+        +{final} getACTIVITY_TYPE() : int
+        +getRepetition() : int
         +getWeight() : int
         .. Methods - Setters ..
-        +setRepetitions(int repetitions) : void
+        +setRepetition(int repetition) : void
         +setWeight(int weight) : void
         .. Methods - Others ..
         +toString() : String
         +equals(Object o) : boolean
-        +clone() : Repetition
+        +clone() : RepetitionWeight
         +caloriesBurned(User u) : int
         +create(Scanner sc, ArrayList<Activity> userActivities) : Activity
     }
@@ -263,7 +270,7 @@ class Event {
         LocalTime time)
     +Event(Event event)
     .. Methods - Getters ..
-    +getMAX_REPETITIONS() : final int
+    +{final} getMAX_REPETITIONS() : int
     +getActivity() : Activity
     +getActivityRepetitions() : int
     +getDay() : int
