@@ -78,25 +78,26 @@
 
 %% smaller footer and header size
 \newgeometry{top=3cm,left=3cm,right=3cm,bottom=4cm}
+\savegeometry{default}
 
 %==========================================================================
 % BEGIN ABSTRACT PAGE
 %==========================================================================
 
 %% Abstract name: \Large font size, flushed left and paragraph skip before abstract content
-\renewenvironment{abstract}
- {\par\noindent\textbf{\Large\abstractname}\par\bigskip}
- {}
-
-\begin{flushleft}
-\begin{abstract}
-    \textcolor{red}{
-        Maybe
-    }
-\end{abstract}
-\end{flushleft}
-
-\pagebreak
+% \renewenvironment{abstract}
+%  {\par\noindent\textbf{\Large\abstractname}\par\bigskip}
+%  {}
+%
+% \begin{flushleft}
+% \begin{abstract}
+%     \textcolor{red}{
+%         Maybe
+%     }
+% \end{abstract}
+% \end{flushleft}
+%
+% \pagebreak
 
 %==========================================================================
 % END ABSTRACT PAGE
@@ -137,15 +138,20 @@
 \pagenumbering{arabic}
 
 \chapter{Arquitetura de Classes}
-    \section{Diagrama de Classes}
-        \begin{center}
-            \includegraphics[scale=0.675]{images/diagram.png}
-        \end{center}
-    \section{Classe \textit{Main}}
-    \section{Classe \textit{Activity}}
-    \section{Classe \textit{User}}
-    \section{Classe \textit{Plan}}
-    \section{Classe \textit{Test}}
+\section{Diagrama de Classes}
+\newgeometry{top=3cm,left=0cm,right=0cm,bottom=4cm}
+\begin{center}
+    \includegraphics[scale=0.25]{images/diagram.png}
+\end{center}
+\loadgeometry{default}
+\section{Classe \textit{Main}}
+\section{Classe \textit{User}}
+\section{Classe \textit{Activity}}
+\section{Classe \textit{Plan}}
+\section{Classe \textit{Register}}
+\section{Classe \textit{Event}}
+\section{Classe \textit{Stats}}
+\section{Classe \textit{Simulation}}
 
 %==========================================================================
 % END ARQUITETURA DE CLASSES
@@ -156,8 +162,40 @@
 %==========================================================================
 
 \chapter{Descrição de Funcionalidades da Aplicação}
-    \section{Funcionalidade 1}
-    \section{Funcionalidade 2}
+\section{Gestão de Utilizadores}
+\section{Gestão de Atividades}
+\section{Gestão de Registos de Atividades}
+\section{Gestão de Planos de Treino}
+\section{Simulação}
+\section{Estatísticas}
+
+\clearpage
+\section{Salvaguarda do Estado da Aplicação}
+Para garantir que o estado da aplicação é preservado entre execuções, esta
+permite guardar e carregar o estado atual através de um ficheiro binário.
+As opcões de guardar e carregar o estado do programa estão disponíveis no menu principal da aplicação. Adicionalmente o ficheiro binário pode ser carregado diretamente no início da execução do programa através da passagem da localização deste na linha de comandos.
+Este ficheiro, por definição, é guardado na diretoria \textit{data} e tem o nome \textit{state.ser}, havendo a opção de carregar diferentes estados através da funcionalidade da linha de comandos supramencionada.
+
+Para a implementação desta funcionalidade foram definidos dois métodos na classe \textit{Main}:
+\begin{itemize}
+    \item \textit{saveState} - Método que guarda o estado atual da aplicação num ficheiro binário, passado como argumento. Este método deteta se alguma mudança foi feita no estado do programa antes de a guardar, de forma evitar salvar o mesmo estado.
+    \item \textit{loadState} - Método que carrega o estado da aplicação a partir de um ficheiro binário, passado como argumento.
+\end{itemize}
+
+Como os objetos da classe \textit{User} contêm referências para todos os objetos relevantes de serem guardados/carregados - lista de Atividades, conjunto de Registos de atividades, Plano de treino semanal com os respetivos Eventos - foi necessário garantir que estes e a própria classe referente ao Utilizador implementassem a interface \textit{Serializable}, de forma a que fossem possíveis de ser guardados, e futuramente carregados, num ficheiro binário.
+
+A aplicação também dispõe de uma capacidade inteligente de detetar mudanças no seu estado, através do atributo booleano \textit{updatedState} na classe \textit{Main}, o que permitiu a implementação das seguintes funcionalidades:
+
+\begin{itemize}
+    \item Notificar o utilizador de que o estado atual não foi guardado, caso este tente sair da aplicação, dando a opção de o guardar, caso o utilizador o deseje fazer.
+    \item Notificar o utilizador que, ao carregar um novo estado, o estado atual será perdido, se houver alterações, dando a opção de retornar atrás se este não quiser perder o estado atual.
+\end{itemize}
+
+O valor do atributo \textit{updatedState} é incializado a \textit{false} no ínicio da execução do programa e é alterado para \textit{false} sempre que o estado da aplicação é guardado, no método \textit{saveState}, ou carregado, no método \textit{loadState}, referidos anteriormente.
+
+Este valor booleano é alterado para \textit{true} sempre que o estado da aplicação é alterado, seja através da adição, edição ou remoção de um utilizador, de uma atualização de uma atividade de um utilizador, do registo de uma nova atividade ou da criação/remoção de um plano de treino para um utlizador em específico.
+
+\section{Argumentos de Linha de Comandos}
 
 %==========================================================================
 % END DESCRIÇÃO DE FUNCIONALIDADES DA APLICAÇÃO
