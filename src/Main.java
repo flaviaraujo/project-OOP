@@ -1,10 +1,13 @@
 package src;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -17,13 +20,14 @@ public class Main {
 
     private boolean updatedState = false;
     private ArrayList<User> users = new ArrayList<>(); // currently loaded users
+    private final String defaultStateFilepath = "data/state.ser"; // default state file path
 
     public static void main(String[] args) {
         Main m = new Main();
-        String stateFilepath = "data/state.ser"; // default state file path
+        String stateFilepath = m.defaultStateFilepath;
         Scanner sc = new Scanner(System.in);
 
-        // Parse command line argument
+        // Parse command line arguments
         if (args.length > 0) {
             // TODO --help option
             // TODO --user <--id|--email> <id|email> [state] option
@@ -59,7 +63,7 @@ public class Main {
         try {
             option = sc.nextInt();
         }
-        catch (Exception e) {
+        catch (Exception e) { // TODO catch specific exceptions
             sc.nextLine(); // clear buffer
             // e.printStackTrace(); // removed to avoid clutter
         }
@@ -500,12 +504,27 @@ public class Main {
         try {
             FileOutputStream fileOut = new FileOutputStream(stateFilepath);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
+
             out.writeObject(m.users);
+
+            out.flush();
             out.close();
             fileOut.close();
+
             System.out.println("State saved successfully, " + m.users.size() + " users saved.");
             m.updatedState = false;
-        } catch (Exception e) {
+        }
+        catch (NotSerializableException e) {
+            System.out.println("Object not serializable: " + e.getMessage());
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("File not found: \"" + stateFilepath + "\"");
+        }
+        catch (IOException e) {
+            System.out.println("IOException. Couldn't read file \"" + stateFilepath + "\".\n" +
+                "Error: " + e.getMessage());
+        }
+        catch (Exception e) {
             System.out.println("Error saving state: " + e.getMessage());
             e.printStackTrace();
         }
@@ -523,18 +542,38 @@ public class Main {
         try {
             FileInputStream fileIn = new FileInputStream(stateFilepath);
             ObjectInputStream in = new ObjectInputStream(fileIn);
+
             ArrayList<?> tempUsers = (ArrayList<?>) in.readObject();
             m.users = new ArrayList<>(tempUsers.size());
             for (Object obj : tempUsers) {
                 if (obj instanceof User) {
-                    m.users.add((User) obj); // TODO should I clone the obj and them destroy him?
+                    m.users.add((User) obj); // TODO should I clone the obj?
                 }
             }
+
             in.close();
             fileIn.close();
             System.out.println("State loaded successfully, " + m.users.size() + " users loaded.");
             m.updatedState = false;
-        } catch (Exception e) {
+
+        }
+        catch (NotSerializableException e) {
+            System.out.println("Object not serializable: " + e.getMessage());
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("File not found: \"" + stateFilepath + "\"");
+        }
+        catch (IOException e) {
+            System.out.println("IOException. Couldn't read file \"" + stateFilepath + "\".\n" +
+                "Error: " + e.getMessage());
+        }
+        catch (ClassNotFoundException e) {
+            System.out.println("Couldn't find class: " + e.getMessage());
+        }
+        catch (ClassCastException e) {
+            System.out.println("Couldn't cast object: " + e.getMessage());
+        }
+        catch (Exception e) {
             System.out.println("Error loading state: " + e.getMessage());
             e.printStackTrace();
         }
