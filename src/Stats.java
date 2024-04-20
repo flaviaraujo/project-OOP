@@ -136,7 +136,7 @@ public class Stats {
         for (Entry<Integer, Integer> entry : map.entrySet()) {
             if (entry.getValue() > max) {
                 max = entry.getValue();
-                result = a.getName((int) entry.getKey());
+                result = a.getType((int) entry.getKey());
             }
         }
 
