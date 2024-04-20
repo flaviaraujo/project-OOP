@@ -96,15 +96,14 @@ public class DistanceAltimetry extends Activity implements Serializable {
 
     @Override
     public int caloriesBurned(User u) {
-        // TODO Calculate calories burned based on user, distance, altimetry, duration, and intensity
-
         int weight = u.getWeight();
         int duration = this.getDuration();
         int intensity = this.getIntensity();
+        int nutritionMultiplier = u.getType().getNutritionMultiplier();
         double met = MET_VALUE; // MET value for this activity
 
         double caloriesBurned = met * weight * (duration / 60.0);
-        caloriesBurned *= intensity;
+        caloriesBurned *= (intensity * nutritionMultiplier);
         return (int) caloriesBurned;
     }
 

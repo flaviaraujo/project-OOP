@@ -81,15 +81,15 @@ public class Repetition extends Activity implements Serializable {
 
     @Override
     public int caloriesBurned(User u) {
-          // Calculate calories burned based on user, repetition, duration, and intensity
-          
         double weight = u.getWeight();
         int duration = this.getDuration();
         int intensity = this.getIntensity();
+        int nutritionMultiplier = u.getType().getNutritionMultiplier();
+
         double met = MET_VALUE;
 
         double caloriesBurned = met * weight * (duration / 60.0);
-        caloriesBurned *= intensity;
+        caloriesBurned *= (intensity * nutritionMultiplier);
         return (int) caloriesBurned;
     }
 

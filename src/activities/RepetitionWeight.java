@@ -96,20 +96,16 @@ public class RepetitionWeight extends Activity implements Serializable {
 
     @Override
     public int caloriesBurned(User u) {
-        // Calculate calories burned based on user, repetition, weight, duration, and intensity
-
         int weight = u.getWeight();
         int duration = this.getDuration();
         int intensity = this.getIntensity();
+        int nutritionMultiplier = u.getType().getNutritionMultiplier();
         double met = MET_VALUE; // MET value for this activity
 
         // Calculate calories burned using the formula: Calories burned = MET * weight * duration in hours
-        double caloriesBurned = met * weight * (duration / 60.0); // Convert duration from minutes to hours
+        double caloriesBurned = met * weight * (duration / 60.0);
 
-        // Adjust calories burned based on intensity
-        caloriesBurned *= intensity;
-
-        // Return the calculated calories burned as an integer
+        caloriesBurned *= (intensity * nutritionMultiplier);
         return (int) caloriesBurned;
     }
 

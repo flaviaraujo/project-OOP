@@ -11,7 +11,7 @@ public class Distance extends Activity implements Serializable {
 
     private static final int ACTIVITY_TYPE = 1;
     private static final double MET_VALUE = 11.5;
-    
+
 
     private int distance;
 
@@ -82,15 +82,15 @@ public class Distance extends Activity implements Serializable {
 
     @Override
     public int caloriesBurned(User u) {
-        // TODO Calculate calories burned based on user, distance, duration, and intensity
-
         int weight = u.getWeight();
         int duration = this.getDuration();
         int intensity = this.getIntensity();
+        int nutritionMultiplier = u.getType().getNutritionMultiplier();
         double met = MET_VALUE; // MET value for this activity
 
         double caloriesBurned = met * weight * (duration / 60.0);
-        caloriesBurned *= intensity;
+
+        caloriesBurned *= (intensity * nutritionMultiplier);
         return (int) caloriesBurned;
     }
 
