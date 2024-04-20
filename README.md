@@ -30,7 +30,7 @@
 - [ ] Remove class Register
 - [ ] Change user to include weight, height and age
 - [ ] functions to get calories burned
-- [ ] Change the users from ArrayList to a HashMap (Notes - 1)
+- [x] Change the users from ArrayList to a HashMap (Notes - 1)
 - [ ] Command line arguments
 - [ ] Add user perspective
 - [ ] Add more exception handling
@@ -54,11 +54,11 @@ Where the key is the user id.
 
 When changing the users from ArrayList to a HashMap, the following will change:
 
-- [ ] User.create()
-- [ ] User.delete()
-- [ ] User.view()
+- [x] User.create()
+- [x] User.delete()
+- [x] User.view()
 - [x] Case 4: user manage menu: for (User u : m.users) System.out.println(u);
-- [ ] User.search()
+- [x] User.search()
 - [x] Simulation.run()
-- [ ] Stats.statsMenu()
-- [ ] Main.loadState()
+- [x] Stats.statsMenu()
+- [x] Main.loadState()
