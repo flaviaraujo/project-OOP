@@ -139,7 +139,7 @@ package activities {
             int distance)
         +Distance(Distance distance)
         .. Methods - Getters ..
-        +{final} getACTIVITY_TYPE() : int
+        +getACTIVITY_TYPE() : final int
         +getDistance() : int
         .. Methods - Setters ..
         +setDistance(int distance) : void
@@ -164,7 +164,7 @@ package activities {
             int distance, int altimetry)
         +DistanceAltimetry(DistanceAltimetry distanceAltimetry)
         .. Methods - Getters ..
-        +{final} getACTIVITY_TYPE() : int
+        +getACTIVITY_TYPE() : final int
         +getDistance() : int
         +getAltimetry() : int
         .. Methods - Setters ..
@@ -190,7 +190,7 @@ package activities {
             int repetition)
         +Repetition(Repetition repetition)
         .. Methods - Getters ..
-        +{final} getACTIVITY_TYPE() : int
+        +getACTIVITY_TYPE() : final int
         +getRepetition() : int
         .. Methods - Setters ..
         +setRepetition(int repetition) : void
@@ -215,7 +215,7 @@ package activities {
             int repetition, int weight)
         +RepetitionWeight(RepetitionWeight repetitionWeight)
         .. Methods - Getters ..
-        +{final} getACTIVITY_TYPE() : int
+        +getACTIVITY_TYPE() : final int
         +getRepetition() : int
         +getWeight() : int
         .. Methods - Setters ..
@@ -270,7 +270,7 @@ class Event {
         LocalTime time)
     +Event(Event event)
     .. Methods - Getters ..
-    +{final} getMAX_REPETITIONS() : int
+    +getMAX_REPETITIONS() : final int
     +getActivity() : Activity
     +getActivityRepetitions() : int
     +getDay() : int
@@ -310,6 +310,12 @@ class Stats {
     +insertStartDate(Scanner sc) : LocalDate
     +insertEndDate(Scanner sc) : LocalDate
     +statsMenu(Scanner sc, ArrayList<User> users) : void
+}
+
+class Simulation {
+    .. Methods ..
+    +run(Scanner sc, ArrayList<User> users) : void
+    +getSimulationEndDate(Scanner sc, LocalDate startDate) : LocalDate
 }
 
 class Main {
