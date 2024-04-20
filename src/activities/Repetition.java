@@ -10,6 +10,7 @@ import java.io.Serializable;
 public class Repetition extends Activity implements Serializable {
 
     private static final int ACTIVITY_TYPE = 3;
+    private static final double MET_VALUE = 8.0;
 
     private int repetition;
 
@@ -80,8 +81,16 @@ public class Repetition extends Activity implements Serializable {
 
     @Override
     public int caloriesBurned(User u) {
-        // TODO Calculate calories burned based on user, repetition, duration, and intensity
-        return 0;
+          // Calculate calories burned based on user, repetition, duration, and intensity
+          
+        double weight = u.getWeight();
+        int duration = this.getDuration();
+        int intensity = this.getIntensity();
+        double met = MET_VALUE;
+
+        double caloriesBurned = met * weight * (duration / 60.0);
+        caloriesBurned *= intensity;
+        return (int) caloriesBurned;
     }
 
     @Override

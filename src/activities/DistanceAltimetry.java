@@ -10,6 +10,7 @@ import java.io.Serializable;
 public class DistanceAltimetry extends Activity implements Serializable {
 
     private static final int ACTIVITY_TYPE = 2;
+    private static final double MET_VALUE = 16.0;
 
     private int distance;
     private int altimetry;
@@ -96,7 +97,15 @@ public class DistanceAltimetry extends Activity implements Serializable {
     @Override
     public int caloriesBurned(User u) {
         // TODO Calculate calories burned based on user, distance, altimetry, duration, and intensity
-        return 0;
+
+        int weight = u.getWeight();
+        int duration = this.getDuration();
+        int intensity = this.getIntensity();
+        double met = MET_VALUE; // MET value for this activity
+
+        double caloriesBurned = met * weight * (duration / 60.0);
+        caloriesBurned *= intensity;
+        return (int) caloriesBurned;
     }
 
     @Override

@@ -10,6 +10,7 @@ import java.io.Serializable;
 public class RepetitionWeight extends Activity implements Serializable {
 
     private static final int ACTIVITY_TYPE = 4;
+    private static final double MET_VALUE = 6.0;
 
     private int repetition;
     private int weight;
@@ -95,8 +96,21 @@ public class RepetitionWeight extends Activity implements Serializable {
 
     @Override
     public int caloriesBurned(User u) {
-        // TODO Calculate calories burned based on user, repetition, weight, duration, and intensity
-        return 0;
+        // Calculate calories burned based on user, repetition, weight, duration, and intensity
+
+        int weight = u.getWeight();
+        int duration = this.getDuration();
+        int intensity = this.getIntensity();
+        double met = MET_VALUE; // MET value for this activity
+
+        // Calculate calories burned using the formula: Calories burned = MET * weight * duration in hours
+        double caloriesBurned = met * weight * (duration / 60.0); // Convert duration from minutes to hours
+
+        // Adjust calories burned based on intensity
+        caloriesBurned *= intensity;
+
+        // Return the calculated calories burned as an integer
+        return (int) caloriesBurned;
     }
 
     @Override
