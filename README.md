@@ -29,7 +29,7 @@
 
 - [ ] Remove class Register
 - [x] Change user to include weight, height and age
-- [ ] functions to get calories burned
+- [x] functions to get calories burned **need review**
 - [ ] Change the users from ArrayList to a HashMap (Notes - 1)
 - [ ] Command line arguments
 - [ ] Add user perspective
