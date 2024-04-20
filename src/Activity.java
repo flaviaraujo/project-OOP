@@ -288,7 +288,7 @@ public abstract class Activity implements Serializable {
             System.out.println("  -> " + a.getName());
         }
         System.out.print("Enter the name of the activity: ");
-        String name = sc.next();
+        String name = sc.nextLine();
 
         Activity activity = userActivities.stream()
             .filter(a -> a.getName().equals(name))
