@@ -1,5 +1,7 @@
 package src;
 
+import src.exceptions.UserNotFoundException;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -303,15 +305,15 @@ public class User implements Serializable {
     }
 
     // Manage users methods
-    public static User create(Scanner sc, ArrayList<User> users) {
+    public static User create(Scanner sc, HashMap<Integer, User> users) {
         sc.nextLine();
 
         String name, email, address;
         int heartRate, weight, height, age;
         Type type;
 
-        // increment the last user id to get the new user id
-        int id = users.size() == 0 ? 1 : users.get(users.size() - 1).getId() + 1;
+        // increment the biggest id by 1 and set it as the new user id
+        int id = users.size() == 0 ? 1 : users.keySet().stream().max(Integer::compare).get() + 1;
 
         while (true) {
             System.out.print("Enter user full name: ");
@@ -338,7 +340,8 @@ public class User implements Serializable {
                 continue;
             }
             // check if email is unique
-            boolean isUnique = users.stream().noneMatch(user -> user.getEmail().equals(emailBuffer));
+            boolean isUnique = users.entrySet().stream()
+                .noneMatch(entry -> entry.getValue().getEmail().equals(emailBuffer));
             if (!isUnique) {
                 System.out.println("Email already exists.");
                 continue;
@@ -460,12 +463,10 @@ public class User implements Serializable {
 
         sc.nextLine(); // clear buffer
 
-        System.out.println("User created successfully. (ID: " + id + ")");
-
         return new User(id, name, email, address, heartRate, weight, height, age, type); // TODO clone isn't necessary here?
     }
 
-    public static User search(Scanner sc, ArrayList<User> users) {
+    public static User search(Scanner sc, HashMap<Integer, User> users) throws UserNotFoundException {
 
         sc.nextLine(); // clear buffer
 
@@ -483,11 +484,12 @@ public class User implements Serializable {
                 System.out.println("Invalid option.");
                 continue;
             }
-            if (option == 1 || option == 2) {
+            if (!(option == 1 || option == 2)) {
                 sc.nextLine(); // clear buffer
-                break;
+                System.out.println("Invalid option.");
+                continue;
             }
-            System.out.println("Invalid option.");
+            break;
         }
 
         int id;
@@ -503,47 +505,49 @@ public class User implements Serializable {
                 System.out.println("Invalid ID.");
                 return null;
             }
-            user = users.stream()
-                .filter(u -> u.getId() == id)
-                .findFirst()
-                .orElse(null);
+            user = users.get(id);
         } else {
             System.out.print("Enter the user email: ");
+            sc.nextLine(); // clear buffer
             email = sc.nextLine();
-            user = users.stream()
+            user = users.values().stream()
                 .filter(u -> u.getEmail().equals(email))
                 .findFirst()
                 .orElse(null);
         }
 
-        if (user != null)
-            System.out.println("Selected user: " + user.getName());
+        if (user == null) {
+            throw new UserNotFoundException("User not found.");
+        }
 
+        System.out.println("Selected user: " + user.getName());
         return user;
     }
 
-    public static void view(Scanner sc, ArrayList<User> users) {
+    public static void view(Scanner sc, HashMap<Integer, User> users) throws UserNotFoundException {
 
-        User user = search(sc, users);
-
-        if (user == null) {
-            System.out.println("User not found.");
+        User user;
+        try {
+            user = search(sc, users);
+        } catch (UserNotFoundException e) {
+            System.out.println(e.getMessage());
             return;
         }
 
         System.out.println(user);
     }
 
-    public static void delete(Scanner sc, ArrayList<User> users) {
+    public static void delete(Scanner sc, HashMap<Integer, User> users) throws UserNotFoundException {
 
-        User user = search(sc, users);
-
-        if (user == null) {
-            System.out.println("User not found.");
+        User user;
+        try {
+            user = search(sc, users);
+        } catch (UserNotFoundException e) {
+            System.out.println(e.getMessage());
             return;
         }
 
-        users.remove(user);
+        users.remove(user.getId());
         System.out.println("User deleted successfully.");
     }
 

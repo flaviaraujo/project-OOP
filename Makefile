@@ -1,7 +1,7 @@
 .PHONY: build lint doc diagram report install clean
 
 build:
-	javac -Xlint:unchecked src/activities/*.java src/*.java
+	javac -Xlint:unchecked src/*.java
 
 run:
 	java src.Main
@@ -32,4 +32,4 @@ install:
 	sudo apt install -y texlive-xetex texlive-lang-portuguese texlive-latex-recommended ttf-mscorefonts-installer
 
 clean:
-	rm -rf src/activities/*.class src/*.class
+	rm -rf src/activities/*.class src/extensions/*.class src/*.class

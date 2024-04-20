@@ -1,5 +1,8 @@
 package src;
 
+import src.User;
+import src.exceptions.UserNotFoundException;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -11,6 +14,8 @@ import java.io.ObjectOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.Scanner;
 
 /**
@@ -19,7 +24,7 @@ import java.util.Scanner;
 public class Main {
 
     private boolean updatedState = false;
-    private ArrayList<User> users = new ArrayList<>(); // currently loaded users
+    private HashMap<Integer, User> users = new HashMap<>(); // currently loaded users
     private final String defaultStateFilepath = "data/state.ser"; // default state file path
 
     public static void main(String[] args) {
@@ -97,26 +102,40 @@ public class Main {
                     switch (submenuOption) {
                         case 1:
                             // Create an user
-                            user = User.create(sc, m.users);
-
-                            // Add user to the loaded users array
-                            m.addUser(user);
-                            // state is updated when a new user is created
-                            m.setUpdatedState(true);
+                            try {
+                                user = User.create(sc, m.users);
+                                m.addUser(user, user.getId());
+                                m.setUpdatedState(true);
+                                System.out.println("User created successfully. (ID: " + user.getId() + ")");
+                            }
+                            catch (IllegalArgumentException e) {
+                                System.out.println(e.getMessage());
+                            }
                             break;
                         case 2:
                             // Delete an user
-                            User.delete(sc, m.users);
-                            // state is updated when an user is deleted
-                            m.setUpdatedState(true);
+                            try {
+                                User.delete(sc, m.users);
+                                m.setUpdatedState(true);
+                            }
+                            catch (UserNotFoundException e) {
+                                System.out.println(e.getMessage());
+                            }
                             break;
                         case 3:
                             // View an user
-                            User.view(sc, m.users);
+                            try {
+                                User.view(sc, m.users);
+                            }
+                            catch (UserNotFoundException e) {
+                                System.out.println(e.getMessage());
+                            }
                             break;
                         case 4:
                             // View all users
-                            for (User u : m.users) System.out.println(u);
+                            for (Entry<Integer, User> entry : m.users.entrySet()) {
+                                System.out.println(entry.getValue());
+                            }
                             break;
                         case 5:
                             // Back to main menu
@@ -128,9 +147,11 @@ public class Main {
                 }
             case 2:
                 // Select an user to manage activities
-                user = User.search(sc, m.users);
-                if (user == null) {
-                    System.out.println("No user selected");
+                try {
+                    user = User.search(sc, m.users);
+                }
+                catch (UserNotFoundException e) {
+                    System.out.println(e.getMessage());
                     break;
                 }
 
@@ -169,7 +190,13 @@ public class Main {
                             // Add activity to user
                             user.addActivity(activity);
                             // Update the Main instance by replacing the user
-                            m.updateUser(user);
+                            try {
+                                m.updateUser(user);
+                            }
+                            catch (UserNotFoundException e) {
+                                System.out.println(e.getMessage());
+                                break;
+                            }
                             // The state is updated when a new activity for an user is created
                             m.setUpdatedState(true);
                             System.out.println("Activity created successfully.");
@@ -189,7 +216,13 @@ public class Main {
                             }
                             user.deleteActivity(a);
                             // Update the Main instance by replacing the user
-                            m.updateUser(user);
+                            try {
+                                m.updateUser(user);
+                            }
+                            catch (UserNotFoundException e) {
+                                System.out.println(e.getMessage());
+                                break;
+                            }
                             // The state is updated when an activity for an user is deleted
                             m.setUpdatedState(true);
                             System.out.println("Activity deleted successfully.");
@@ -227,9 +260,11 @@ public class Main {
                 }
             case 3:
                 // Select an user to add a registered activity or view them
-                user = User.search(sc, m.users);
-                if (user == null) {
-                    System.out.println("No user selected");
+                try {
+                    user = User.search(sc, m.users);
+                }
+                catch (UserNotFoundException e) {
+                    System.out.println(e.getMessage());
                     break;
                 }
 
@@ -310,7 +345,13 @@ public class Main {
                             System.out.println(register.getCaloriesBurned() + " calories burned.");
 
                             // Update the Main instance by replacing the user
-                            m.updateUser(user);
+                            try {
+                                m.updateUser(user);
+                            }
+                            catch (UserNotFoundException e) {
+                                System.out.println(e.getMessage());
+                                break;
+                            }
 
                             // The state is updated when an activity for an user is registered
                             m.setUpdatedState(true);
@@ -330,9 +371,11 @@ public class Main {
             case 4:
                 // Manage user plan
                 // Select an user to manage plan
-                user = User.search(sc, m.users);
-                if (user == null) {
-                    System.out.println("No user selected");
+                try {
+                    user = User.search(sc, m.users);
+                }
+                catch (UserNotFoundException e) {
+                    System.out.println(e.getMessage());
                     break;
                 }
 
@@ -383,7 +426,13 @@ public class Main {
                                 break;
                             }
                             System.out.println("Plan created successfully.");
-                            m.updateUser(user);
+                            try {
+                                m.updateUser(user);
+                            }
+                            catch (UserNotFoundException e) {
+                                System.out.println(e.getMessage());
+                                break;
+                            }
                             m.setUpdatedState(true);
                             break;
                         case 2:
@@ -393,7 +442,13 @@ public class Main {
                             // Delete plan
                             user.setPlan(null);
                             System.out.println("Plan deleted successfully.");
-                            m.updateUser(user);
+                            try {
+                                m.updateUser(user);
+                            }
+                            catch (UserNotFoundException e) {
+                                System.out.println(e.getMessage());
+                                break;
+                            }
                             m.setUpdatedState(true);
                             break;
                         case 4:
@@ -456,42 +511,42 @@ public class Main {
         this.updatedState = updatedState;
     }
 
-    public ArrayList<User> getUsers() {
-        ArrayList<User> users = new ArrayList<>(this.users.size());
-        for (User user : this.users) {
-            users.add(user.clone());
+    public HashMap<Integer, User> getUsers() {
+        HashMap<Integer, User> users = new HashMap<>(this.users.size());
+        for (Entry<Integer, User> entry : this.users.entrySet()) {
+            users.put(entry.getKey(), entry.getValue().clone());
         }
         return users;
     }
 
-    public void setUsers(ArrayList<User> users) {
-        ArrayList<User> tmpUsers = new ArrayList<>(users.size());
-        for (User user : users) {
-            tmpUsers.add(user.clone());
+    public void setUsers(HashMap<Integer, User> users) {
+        HashMap<Integer, User> tmpUsers = new HashMap<>(users.size());
+        for (Entry<Integer, User> entry : users.entrySet()) {
+            tmpUsers.put(entry.getKey(), entry.getValue().clone());
         }
         this.users = tmpUsers;
     }
 
-    public void addUser(User user) {
-        this.users.add(user.clone());
+    public void addUser(User user, int id) throws IllegalArgumentException {
+        if (this.users.containsKey(id)) {
+            throw new IllegalArgumentException("User with id " + id + " already exists.");
+        }
+        this.users.put(id, user.clone());
     }
 
     public void removeUser(User user) {
-        this.users.remove(user);
+        this.users.remove(user.getId());
     }
 
     /**
-     * @brief Update the user loaded in the ArrayList in the
-     * Main instance with the user passed as argument.
      *
      * @param user the new updated user
      */
-    public void updateUser(User user) {
-        for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).getId() == user.getId()) {
-                users.set(i, user.clone());
-                break;
-            }
+    public void updateUser(User user) throws UserNotFoundException {
+        if (this.users.containsKey(user.getId())) {
+            this.users.put(user.getId(), user.clone());
+        } else {
+            throw new UserNotFoundException("User with ID " + user.getId() + " does not exist.");
         }
     }
 
@@ -521,8 +576,7 @@ public class Main {
             System.out.println("File not found: \"" + stateFilepath + "\"");
         }
         catch (IOException e) {
-            System.out.println("IOException. Couldn't read file \"" + stateFilepath + "\".\n" +
-                "Error: " + e.getMessage());
+            System.out.println("IOException. Error: " + e.getMessage());
         }
         catch (Exception e) {
             System.out.println("Error saving state: " + e.getMessage());
@@ -544,10 +598,10 @@ public class Main {
             ObjectInputStream in = new ObjectInputStream(fileIn);
 
             ArrayList<?> tempUsers = (ArrayList<?>) in.readObject();
-            m.users = new ArrayList<>(tempUsers.size());
+            m.users = new HashMap<>(tempUsers.size());
             for (Object obj : tempUsers) {
                 if (obj instanceof User) {
-                    m.users.add((User) obj); // TODO should I clone the obj?
+                    m.users.put(((User) obj).getId(), ((User) obj).clone());
                 }
             }
 
@@ -564,8 +618,7 @@ public class Main {
             System.out.println("File not found: \"" + stateFilepath + "\"");
         }
         catch (IOException e) {
-            System.out.println("IOException. Couldn't read file \"" + stateFilepath + "\".\n" +
-                "Error: " + e.getMessage());
+            System.out.println("IOException. Error: " + e.getMessage());
         }
         catch (ClassNotFoundException e) {
             System.out.println("Couldn't find class: " + e.getMessage());

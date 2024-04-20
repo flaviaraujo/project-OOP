@@ -1,5 +1,7 @@
 package src;
 
+import src.exceptions.UserNotFoundException;
+
 import src.Activity;
 import src.activities.Distance;
 import src.activities.DistanceAltimetry;
@@ -15,13 +17,17 @@ public class Stats {
 
     // 1. The user with most calories burned
     // 1.1 All time
-    public User mostCaloriesBurned(ArrayList<User> users) {
+    public User mostCaloriesBurned(HashMap<Integer, User> users) {
 
-        User user = users.size() > 0 ? users.get(0) : null;
-        int max = 0, tmp = 0;
+        User user = null;
+        if (!users.isEmpty()) {
+            user = users.entrySet().iterator().next().getValue();
+        }
+        int max = 0;
 
-        for (User u : users) {
-            tmp = 0;
+        for (User u : users.values()) {
+
+            int tmp = 0;
 
             // calculate the total calories burned by the user
             for (Register r : u.getRegisters().values()) {
@@ -40,12 +46,17 @@ public class Stats {
     }
 
     // 1.2 In a period of time (date -> date)
-    public User mostCaloriesBurned(ArrayList<User> users, LocalDate start, LocalDate end) {
-        User user = users.size() > 0 ? users.get(0) : null;
-        int max = 0, tmp = 0;
+    public User mostCaloriesBurned(HashMap<Integer, User> users, LocalDate start, LocalDate end) {
 
-        for (User u : users) {
-            tmp = 0;
+        User user = null;
+        if (!users.isEmpty()) {
+            user = users.entrySet().iterator().next().getValue();
+        }
+        int max = 0;
+
+        for (User u : users.values()) {
+
+            int tmp = 0;
 
             // calculate the total calories burned by the user
             // checking if the key on the map entry is between the start and end date
@@ -72,13 +83,18 @@ public class Stats {
     // in case of draw returns the first user, if empty users array
     // is passed return null
     // 2.1 All time
-    public User mostActivities(ArrayList<User> users) {
-        User user = users.size() > 0 ? users.get(0) : null;
-        int max = 0, tmp = 0;
+    public User mostActivities(HashMap<Integer, User> users) {
+
+        User user = null;
+        if (!users.isEmpty()) {
+            user = users.entrySet().iterator().next().getValue();
+        }
+        int max = 0;
 
         // for each user get the number of registered activities
-        for (User u : users) {
-            tmp = u.getRegisters().size();
+        for (User u : users.values()) {
+
+            int tmp = u.getRegisters().size();
             if (tmp > max) {
                 max = tmp;
                 user = u;
@@ -89,15 +105,19 @@ public class Stats {
     }
 
     // 2.2 In a period of time (date -> date)
-    public User mostActivities(ArrayList<User> users, LocalDate start, LocalDate end) {
-        User user = users.size() > 0 ? users.get(0) : null;
-        int max = 0, c = 0;
+    public User mostActivities(HashMap<Integer, User> users, LocalDate start, LocalDate end) {
+
+        User user = null;
+        if (!users.isEmpty()) {
+            user = users.get(0);
+        }
+        int max = 0;
 
         // for each user get the number of registered activities
-        for (User u : users) {
-            c = 0;
-            for (Entry<LocalDateTime, Register> entry : u.getRegisters().entrySet()) {
-                LocalDateTime date = entry.getKey();
+        for (User u : users.values()) {
+
+            int c = 0;
+            for (LocalDateTime date : u.getRegisters().keySet()) {
 
                 if (date.isAfter(start.atStartOfDay()) && date.isBefore(end.atStartOfDay())) {
                     c++;
@@ -113,12 +133,13 @@ public class Stats {
     }
 
     // 3. The type of activity most practiced by the users
-    public String mostPracticedActivityType(ArrayList<User> users) {
+    public String mostPracticedActivityType(HashMap<Integer, User> users) {
 
         String result = "None";
         HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
 
-        for (User u : users) {
+        for (User u : users.values()) {
+
             for (Register r : u.getRegisters().values()) {
                 Activity a = r.getActivity();
                 int type = a.getType();
@@ -169,6 +190,7 @@ public class Stats {
         int c = 0;
 
         for (Entry<LocalDateTime, Register> entry : user.getRegisters().entrySet()) {
+
             LocalDateTime date = entry.getKey();
             if (date.isAfter(start.atStartOfDay()) && date.isBefore(end.atStartOfDay())) {
                 Activity a = entry.getValue().getActivity();
@@ -209,6 +231,7 @@ public class Stats {
         int c = 0;
 
         for (Entry<LocalDateTime, Register> entry : user.getRegisters().entrySet()) {
+
             LocalDateTime date = entry.getKey();
             if (date.isAfter(start.atStartOfDay()) && date.isBefore(end.atStartOfDay())) {
                 Activity a = entry.getValue().getActivity();
@@ -223,13 +246,13 @@ public class Stats {
     }
 
     // 6. Whats the practice plan with more calories burned
-    public Plan mostCaloriesBurnedPlan(ArrayList<User> users) {
+    public Plan mostCaloriesBurnedPlan(HashMap<Integer, User> users) {
 
         User user = null;
         Plan result = null;
-        int max = 0, tmp = 0;
+        int max = 0;
 
-        for (User u : users) {
+        for (User u : users.values()) {
 
             Plan p = u.getPlan();
             if (p == null)
@@ -243,7 +266,7 @@ public class Stats {
                 continue;
             }
 
-            tmp = 0;
+            int tmp = 0;
             for (Event e : p.getEvents()) {
                 tmp += e.getActivity().caloriesBurned(u);
             }
@@ -315,7 +338,7 @@ public class Stats {
         return end;
     }
 
-    public void statsMenu(Scanner sc, ArrayList<User> users) {
+    public void statsMenu(Scanner sc, HashMap<Integer, User> users) {
         User user = null;
         int option = 0, option2 = 0;
         while (true) {
@@ -416,9 +439,11 @@ public class Stats {
                 case 4:
                     // 4. How many km’s were traveled by one user
                     // Select an user to get the km traveled
-                    user = User.search(sc, users);
-                    if (user == null) {
-                        System.out.println("No user selected");
+                    try {
+                        user = User.search(sc, users);
+                    }
+                    catch (UserNotFoundException e) {
+                        System.out.println(e.getMessage());
                         break;
                     }
 
@@ -448,15 +473,17 @@ public class Stats {
                             break;
                         default:
                             System.out.println("Invalid option, try again.");
-                    }
+                        }
 
                     break;
                 case 5:
                     // 5. How many meters of altimetry were climbed by one user
                     // Select an user to get the altimetry climbed
-                    user = User.search(sc, users);
-                    if (user == null) {
-                        System.out.println("No user selected");
+                    try {
+                        user = User.search(sc, users);
+                    }
+                    catch (UserNotFoundException e) {
+                        System.out.println(e.getMessage());
                         break;
                     }
 
@@ -497,9 +524,11 @@ public class Stats {
                 case 7:
                     // 7. List the activities of a user
                     // Select an user to list the activities
-                    user = User.search(sc, users);
-                    if (user == null) {
-                        System.out.println("No user selected");
+                    try {
+                        user = User.search(sc, users);
+                    }
+                    catch (UserNotFoundException e) {
+                        System.out.println(e.getMessage());
                         break;
                     }
 
