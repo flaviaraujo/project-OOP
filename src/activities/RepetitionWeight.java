@@ -21,14 +21,14 @@ public class RepetitionWeight extends Activity implements Serializable {
         this.weight = 0;
     }
 
-    public RepetitionWeight(String name, int duration, int intensity) {
-        super(name, duration, intensity);
+    public RepetitionWeight(String name, int duration, int intensity, boolean hard) {
+        super(name, duration, intensity, hard);
         this.repetition = 0;
         this.weight = 0;
     }
 
-    public RepetitionWeight(String name, int duration, int intensity, int repetition, int weight) {
-        super(name, duration, intensity);
+    public RepetitionWeight(String name, int duration, int intensity, boolean hard, int repetition, int weight) {
+        super(name, duration, intensity, hard);
         this.repetition = repetition;
         this.weight = weight;
     }
@@ -105,7 +105,7 @@ public class RepetitionWeight extends Activity implements Serializable {
         // Calculate calories burned using the formula: Calories burned = MET * weight * duration in hours
         double caloriesBurned = met * weight * (duration / 60.0);
 
-        caloriesBurned *= (intensity * nutritionMultiplier);
+        caloriesBurned *= ((intensity/100) * (nutritionMultiplier/100));
         return (int) caloriesBurned;
     }
 
