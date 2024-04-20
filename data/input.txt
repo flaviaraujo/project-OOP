@@ -5,6 +5,8 @@ Miguel Carvalho
 miguel@example.com
 Rua das Oliveiras, 13
 80
+60
+180
 2
 
 1
@@ -12,6 +14,8 @@ Flávia Araújo
 flavia@example.com
 Rua das Gatas, 707
 70
+60
+170
 3
 
 5
@@ -26,6 +30,7 @@ Rua das Gatas, 707
 Pilates
 45
 65
+y
 20
 5
 
@@ -35,6 +40,7 @@ Pilates
 Natação
 60
 80
+y
 2500
 
 5

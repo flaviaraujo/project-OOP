@@ -19,13 +19,13 @@ public class Repetition extends Activity implements Serializable {
         this.repetition = 0;
     }
 
-    public Repetition(String name, int duration, int intensity) {
-        super(name, duration, intensity);
+    public Repetition(String name, int duration, int intensity, boolean hard) {
+        super(name, duration, intensity, hard);
         this.repetition = 0;
     }
 
-    public Repetition(String name, int duration, int intensity, int repetition) {
-        super(name, duration, intensity);
+    public Repetition(String name, int duration, int intensity, boolean hard, int repetition) {
+        super(name, duration, intensity, hard);
         this.repetition = repetition;
     }
 
@@ -50,7 +50,7 @@ public class Repetition extends Activity implements Serializable {
     @Override
     public String toString() {
         StringBuffer sb = new StringBuffer();
-        sb.append("Acivity {\n");
+        sb.append("Activity {\n");
         sb.append("  Name: " + this.name + ",\n");
         sb.append("  Duration: " + this.duration + " minutes,\n");
         sb.append("  Intensity: " + this.intensity + ",\n");
@@ -89,7 +89,7 @@ public class Repetition extends Activity implements Serializable {
         double met = MET_VALUE;
 
         double caloriesBurned = met * weight * (duration / 60.0);
-        caloriesBurned *= (intensity * nutritionMultiplier);
+        caloriesBurned *= ((intensity/100) * (nutritionMultiplier/100));
         return (int) caloriesBurned;
     }
 

@@ -20,13 +20,13 @@ public class Distance extends Activity implements Serializable {
         this.distance = 0;
     }
 
-    public Distance(String name, int duration, int intensity) {
-        super(name, duration, intensity);
+    public Distance(String name, int duration, int intensity, boolean hard) {
+        super(name, duration, intensity, hard);
         this.distance = 0;
     }
 
-    public Distance(String name, int duration, int intensity, int distance) {
-        super(name, duration, intensity);
+    public Distance(String name, int duration, int intensity, boolean hard, int distance) {
+        super(name, duration, intensity, hard);
         this.distance = distance;
     }
 
@@ -51,7 +51,7 @@ public class Distance extends Activity implements Serializable {
     @Override
     public String toString() {
         StringBuffer sb = new StringBuffer();
-        sb.append("Acivity {\n");
+        sb.append("Activity {\n");
         sb.append("  Name: " + this.name + ",\n");
         sb.append("  Duration: " + this.duration + " minutes,\n");
         sb.append("  Intensity: " + this.intensity + ",\n");
@@ -82,16 +82,19 @@ public class Distance extends Activity implements Serializable {
 
     @Override
     public int caloriesBurned(User u) {
-        int weight = u.getWeight();
+
         int duration = this.getDuration();
         int intensity = this.getIntensity();
+        int distance = this.getDistance();
+        int weight = u.getWeight();
+        int height = u.getHeight();
         int nutritionMultiplier = u.getType().getNutritionMultiplier();
-        double met = MET_VALUE; // MET value for this activity
+        double met = MET_VALUE;
 
-        double caloriesBurned = met * weight * (duration / 60.0);
-
-        caloriesBurned *= (intensity * nutritionMultiplier);
-        return (int) caloriesBurned;
+        return (int)
+            (weight * (height / 100.0) * (nutritionMultiplier / 100.0) *
+            met * (duration / 60.0) * (intensity / 100.0) *
+            (distance / 1000.0));
     }
 
     @Override

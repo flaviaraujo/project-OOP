@@ -225,13 +225,13 @@ public abstract class Activity implements Serializable {
 
         switch (activityType) {
             case 1:
-                return new Distance(name, duration, intensity);
+                return new Distance(name, duration, intensity, hard);
             case 2:
-                return new DistanceAltimetry(name, duration, intensity);
+                return new DistanceAltimetry(name, duration, intensity, hard);
             case 3:
-                return new Repetition(name, duration, intensity);
+                return new Repetition(name, duration, intensity, hard);
             case 4:
-                return new RepetitionWeight(name, duration, intensity);
+                return new RepetitionWeight(name, duration, intensity, hard);
             default:
                 return null;
         }
