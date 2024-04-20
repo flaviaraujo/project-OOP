@@ -54,12 +54,12 @@ Where the key is the user id.
 
 When changing the users from ArrayList to a HashMap, the following will change:
 
-- User.create()
-- User.delete()
-- User.view()
-- Case 4: user manage menu: for (User u : m.users) System.out.println(u);
-- User.search()
-- Simulation.run()
-- Stats.statsMenu()
-- Main.loadState()
+- [ ] User.create()
+- [ ] User.delete()
+- [ ] User.view()
+- [x] Case 4: user manage menu: for (User u : m.users) System.out.println(u);
+- [ ] User.search()
+- [x] Simulation.run()
+- [ ] Stats.statsMenu()
+- [ ] Main.loadState()
 

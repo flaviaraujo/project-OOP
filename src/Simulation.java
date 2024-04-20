@@ -14,7 +14,7 @@ import java.time.DayOfWeek;
 
 public class Simulation {
 
-    public void run(Scanner sc, ArrayList<User> users) {
+    public void run(Scanner sc, HashMap<Integer, User> users) {
 
         LocalDate startDate = LocalDate.now();
         LocalDate endDate = getSimulationEndDate(sc, startDate);
@@ -31,7 +31,8 @@ public class Simulation {
 
         int usersCount = 0; // number of users with training plans
 
-        for (User u : users) {
+        for (Entry<Integer, User> entry : users.entrySet()) {
+            User u = entry.getValue();
             if (u.getPlan() != null) {
                 // System.out.println("User \"" + u.getName() + "\" has a training plan.");
                 usersCount++;
@@ -58,7 +59,8 @@ public class Simulation {
                 startDate.plusDays(day).format(dateFormatter)
             );
 
-            for (User u : users) {
+            for (Entry<Integer, User> entry : users.entrySet()) {
+                User u = entry.getValue();
                 Plan p = u.getPlan();
                 if (p == null) {
                     continue;
