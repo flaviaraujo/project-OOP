@@ -64,7 +64,7 @@ public class User implements Serializable {
     /* Parameterized Constructors */
     public User(
         int id, String name, String email,
-        String address, int heartRate, int weight, 
+        String address, int heartRate, int weight,
         int height, int age, Type type
     ) {
         this.id = id;
@@ -83,9 +83,11 @@ public class User implements Serializable {
 
     public User(
         int id, String name, String email,
-        String address, int heartRate, int weight, 
-        int height, int age, Type type, ArrayList<Activity> activities,
-        HashMap<LocalDateTime, Register> registers, Plan plan
+        String address, int heartRate, int weight,
+        int height, int age, Type type,
+        ArrayList<Activity> activities,
+        HashMap<LocalDateTime, Register> registers,
+        Plan plan
     ) {
         this.id = id;
         this.name = name;
@@ -384,9 +386,9 @@ public class User implements Serializable {
                 sc.nextLine(); // clear buffer
                 continue;
             }
-            // check if weight is between 20 and 130
-            if (20 > weight || weight > 130) {
-                System.out.println("Weight must be between 20 and 130 kg.");
+            // check if weight is between 20 and 200
+            if (20 > weight || weight > 200) {
+                System.out.println("Weight must be between 20 and 200 kg.");
                 continue;
             }
             break;

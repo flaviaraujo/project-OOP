@@ -59,7 +59,6 @@ When changing the users from ArrayList to a HashMap, the following will change:
 - [ ] User.view()
 - [x] Case 4: user manage menu: for (User u : m.users) System.out.println(u);
 - [ ] User.search()
-- [ ] Simulation.run()
+- [x] Simulation.run()
 - [ ] Stats.statsMenu()
 - [ ] Main.loadState()
-
