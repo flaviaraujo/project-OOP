@@ -1,6 +1,9 @@
 package src;
 
-import src.activities.*;
+import src.activities.Distance;
+import src.activities.DistanceAltimetry;
+import src.activities.Repetition;
+import src.activities.RepetitionWeight;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -14,24 +17,27 @@ public abstract class Activity implements Serializable {
     protected String name;
     protected int duration; // in minutes
     protected int intensity;
-    // TODO hard activity boolean
+    protected boolean hard;
 
     public Activity() {
         this.name = "";
         this.duration = 0;
         this.intensity = 0;
+        this.hard = false;
     }
 
-    public Activity(String name, int duration, int intensity) {
+    public Activity(String name, int duration, int intensity, boolean hard) {
         this.name = name;
         this.duration = duration;
         this.intensity = intensity;
+        this.hard = hard;
     }
 
     public Activity(Activity activity) {
         this.name = activity.getName();
         this.duration = activity.getDuration();
         this.intensity = activity.getIntensity();
+        this.hard = activity.isHard();
     }
 
     public abstract int getACTIVITY_TYPE();
@@ -48,6 +54,10 @@ public abstract class Activity implements Serializable {
         return this.intensity;
     }
 
+    public boolean isHard() {
+        return this.hard;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -58,6 +68,10 @@ public abstract class Activity implements Serializable {
 
     public void setIntensity(int intensity) {
         this.intensity = intensity;
+    }
+
+    public void setHard(boolean hard) {
+        this.hard = hard;
     }
 
     public abstract String toString();
@@ -128,6 +142,7 @@ public abstract class Activity implements Serializable {
         String name = "";
         int duration = 0;
         int intensity = 0;
+        boolean hard = false;
 
         sc.nextLine(); // clear the buffer
         System.out.println();
@@ -183,6 +198,28 @@ public abstract class Activity implements Serializable {
                 continue;
             }
             break;
+        }
+
+        while (true) {
+            System.out.print("Is the activity hard? (y/n): ");
+            String hardBuffer = "";
+            try {
+                hardBuffer = sc.nextLine();
+            }
+            catch (Exception e) {
+                System.out.println("Invalid choice. Please enter 'y' or 'n'.");
+                continue;
+            }
+
+            if (hardBuffer.equals("y")) {
+                hard = true;
+                break;
+            } else if (hardBuffer.equals("n")) {
+                hard = false;
+                break;
+            } else {
+                System.out.println("Invalid choice. Please enter 'y' or 'n'.");
+            }
         }
 
         switch (activityType) {
@@ -244,7 +281,6 @@ public abstract class Activity implements Serializable {
 
     public static Activity searchActivity(Scanner sc, ArrayList<Activity> userActivities) {
 
-        System.out.println();
         // Print activities names
         System.out.println("User activities:");
         for (Activity a : userActivities) {
