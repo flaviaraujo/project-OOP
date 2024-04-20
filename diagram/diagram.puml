@@ -7,17 +7,22 @@ class User {
     -email : String
     -address : String
     -heartRate : int
+    -weight : int
+    -height : int
+    -age : int
     -type : User.Type
     -activities : ArrayList<Activity>
     -registers : HashMap<LocalDateTime, Register>
+    -plan : Plan
     --
     .. Constructors ..
     +User()
     +User(int id, String name, String email,
-        String address, int heartRate, Type type)
+        String address, int heartRate, int weight,
+        int height, int age, Type type)
     +User(int id, String name, String email,
-        String address, int heartRate, Type type,
-        ArrayList<Activity> activities,
+        String address, int heartRate, int weight, int height,
+        int age, Type type, ArrayList<Activity> activities,
         HashMap<LocalDateTime, Register> registers, Plan plan)
     +User(User user)
     .. Methods - Getters ..
@@ -26,6 +31,9 @@ class User {
     +getEmail() : String
     +getAddress() : String
     +getHeartRate() : int
+    +getWeight() : int
+    +getHeight() : int
+    +getAge() : int
     +getType() : User.Type
     +getActivities() : ArrayList<Activity>
     +getRegisters() : HashMap<LocalDateTime, Register>
@@ -36,6 +44,9 @@ class User {
     +setEmail(String email) : void
     +setAddress(String address) : void
     +setHeartRate(int heartRate) : void
+    +setWeight(int weight) : void
+    +setHeight(int height) : void
+    +setAge(int age) : void
     +setType(Type type) : void
     +setActivities(ArrayList<Activity> activities) : void
     +setRegisters(HashMap<LocalDateTime, Register> registers) : void
