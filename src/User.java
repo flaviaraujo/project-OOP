@@ -41,7 +41,6 @@ public class User implements Serializable {
     private int heartRate; // BPM
     private int weight; // kg
     private int height; // cm
-    private int age;
     private Type type;
     private ArrayList<Activity> activities;
     private HashMap<LocalDateTime, Register> registers; // alternative LinkedHashMap
@@ -56,7 +55,6 @@ public class User implements Serializable {
         this.heartRate = 0;
         this.weight = 0;
         this.height = 0;
-        this.age = 0;
         this.type = Type.OCCASIONAL;
         this.activities = new ArrayList<Activity>();
         this.registers = new HashMap<LocalDateTime, Register>();
@@ -67,7 +65,7 @@ public class User implements Serializable {
     public User(
         int id, String name, String email,
         String address, int heartRate, int weight,
-        int height, int age, Type type
+        int height, Type type
     ) {
         this.id = id;
         this.name = name;
@@ -76,7 +74,6 @@ public class User implements Serializable {
         this.heartRate = heartRate;
         this.weight = weight;
         this.height = height;
-        this.age = age;
         this.type = type;
         this.activities = new ArrayList<Activity>();
         this.registers = new HashMap<LocalDateTime, Register>();
@@ -86,7 +83,7 @@ public class User implements Serializable {
     public User(
         int id, String name, String email,
         String address, int heartRate, int weight,
-        int height, int age, Type type,
+        int height, Type type,
         ArrayList<Activity> activities,
         HashMap<LocalDateTime, Register> registers,
         Plan plan
@@ -98,7 +95,6 @@ public class User implements Serializable {
         this.heartRate = heartRate;
         this.weight = weight;
         this.height = height;
-        this.age = age;
         this.type = type;
         this.activities = activities; // TODO clone
         this.registers = registers; // TODO clone
@@ -114,7 +110,6 @@ public class User implements Serializable {
         this.heartRate = user.getHeartRate();
         this.weight = user.getWeight();
         this.height = user.getHeight();
-        this.age = user.getAge();
         this.type = user.getType();
         this.activities = user.getActivities();
         this.registers = user.getRegisters();
@@ -148,10 +143,6 @@ public class User implements Serializable {
 
     public int getHeight() {
         return this.height;
-    }
-
-    public int getAge() {
-        return this.age;
     }
 
     public Type getType() {
@@ -210,10 +201,6 @@ public class User implements Serializable {
         this.height = height;
     }
 
-    public void setAge(int age) {
-        this.age = age;
-    }
-
     public void setType(Type type) {
         this.type = type;
     }
@@ -247,7 +234,6 @@ public class User implements Serializable {
         sb.append("  heartRate: " + this.heartRate + " BPM,\n");
         sb.append("  weight: " + this.weight + " kg,\n");
         sb.append("  height: " + this.height + " cm,\n");
-        sb.append("  age: " + this.age + " years,\n");
         sb.append("  type: " + this.type + ",\n");
 
         sb.append("  activities: [");
@@ -292,7 +278,6 @@ public class User implements Serializable {
             user.getHeartRate() == this.heartRate &&
             user.getWeight() == this.weight &&
             user.getHeight() == this.height &&
-            user.getAge() == this.age &&
             user.getType() == this.type &&
             user.getActivities().equals(this.activities) &&
             user.getRegisters().equals(this.registers) && // TODO check this
@@ -309,7 +294,7 @@ public class User implements Serializable {
         sc.nextLine();
 
         String name, email, address;
-        int heartRate, weight, height, age;
+        int heartRate, weight, height;
         Type type;
 
         // increment the biggest id by 1 and set it as the new user id
@@ -416,24 +401,6 @@ public class User implements Serializable {
         }
 
         while (true) {
-            System.out.print("Enter the user age: ");
-            try {
-                age = sc.nextInt();
-            }
-            catch (Exception e) {
-                System.out.println("Invalid age.");
-                sc.nextLine(); // clear buffer
-                continue;
-            }
-            // check if age is between 10 and 100
-            if (10 > age || age > 100) {
-                System.out.println("Age must be between 10 and 100 years.");
-                continue;
-            }
-            break;
-        }
-
-        while (true) {
             System.out.println("Possible user types:");
             System.out.println("  1 - OCCASIONAL");
             System.out.println("  2 - AMATEUR");
@@ -463,7 +430,7 @@ public class User implements Serializable {
 
         sc.nextLine(); // clear buffer
 
-        return new User(id, name, email, address, heartRate, weight, height, age, type); // TODO clone isn't necessary here?
+        return new User(id, name, email, address, heartRate, weight, height, type); // TODO clone isn't necessary here?
     }
 
     public static User search(Scanner sc, HashMap<Integer, User> users) throws UserNotFoundException {
