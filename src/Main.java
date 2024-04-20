@@ -597,11 +597,12 @@ public class Main {
             FileInputStream fileIn = new FileInputStream(stateFilepath);
             ObjectInputStream in = new ObjectInputStream(fileIn);
 
-            ArrayList<?> tempUsers = (ArrayList<?>) in.readObject();
-            m.users = new HashMap<>(tempUsers.size());
-            for (Object obj : tempUsers) {
+            HashMap<Integer, User> tmpUsers = (HashMap<Integer, User>) in.readObject(); //TODO cast exception
+
+            m.users = new HashMap<>(tmpUsers.size());
+            for (Object obj : tmpUsers.values()) {
                 if (obj instanceof User) {
-                    m.users.put(((User) obj).getId(), ((User) obj).clone());
+                    m.users.put(((User) obj).getId(), ((User) obj));
                 }
             }
 
