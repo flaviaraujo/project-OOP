@@ -24,3 +24,42 @@
 - Allowing saving and loading the state of the program
 - Simulating the user's progress by skipping time
 - Allow each user to register the activities they have done (with indicators of the activity like distance, altimetry, time, calories, etc)
+
+## TODO list
+
+- [ ] Remove class Register
+- [ ] Change user to include weight, height and age
+- [ ] functions to get calories burned
+- [ ] Change the users from ArrayList to a HashMap (Notes - 1)
+- [ ] Command line arguments
+- [ ] Add user perspective
+- [ ] Add more exception handling
+- [ ] Add throw to functions that can return null (search, get, etc)
+- [ ] When calling User.deleteActivity() check in the registers if the activity is being used and if so throw exception.
+- [ ] Add option to create activity when registering a register
+- [ ] Sort events in a plan by date time
+- [ ] Add hard notion to activities
+- [ ] Add create plan based on user objectives
+- [ ] MVC in Main
+
+## Notes
+
+### 1.
+
+```java
+HashMap<Integer, User> users;
+```
+
+Where the key is the user id.
+
+When changing the users from ArrayList to a HashMap, the following will change:
+
+- User.create()
+- User.delete()
+- User.view()
+- Case 4: user manage menu: for (User u : m.users) System.out.println(u);
+- User.search()
+- Simulation.run()
+- Stats.statsMenu()
+- Main.loadState()
+
