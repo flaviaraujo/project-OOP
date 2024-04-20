@@ -28,9 +28,9 @@
 ## TODO list
 
 - [ ] Remove class Register
-- [ ] Change user to include weight, height and age
-- [ ] functions to get calories burned
 - [x] Change the users from ArrayList to a HashMap (Notes - 1)
+- [x] Change user to include weight, height and age
+- [x] functions to get calories burned **need review**
 - [ ] Command line arguments
 - [ ] Add user perspective
 - [ ] Add more exception handling
