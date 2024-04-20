@@ -204,6 +204,7 @@ public abstract class Activity implements Serializable {
             System.out.print("Is the activity hard? (y/n): ");
             String hardBuffer = "";
             try {
+                sc.nextLine();
                 hardBuffer = sc.nextLine();
             }
             catch (Exception e) {
