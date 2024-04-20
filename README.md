@@ -62,4 +62,3 @@ When changing the users from ArrayList to a HashMap, the following will change:
 - [x] Simulation.run()
 - [ ] Stats.statsMenu()
 - [ ] Main.loadState()
-
