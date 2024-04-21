@@ -5,9 +5,11 @@ import src.activities.DistanceAltimetry;
 import src.activities.Repetition;
 import src.activities.RepetitionWeight;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Activity
@@ -292,6 +294,7 @@ public abstract class Activity implements Serializable {
                         .create(sc, userActivities);
                 default:
                     System.out.println("Invalid choice. Please enter a number between 1 and 4.");
+                    continue;
             }
         }
     }
@@ -323,5 +326,106 @@ public abstract class Activity implements Serializable {
 
             return activity;
         }
+    }
+
+    public static User registerActivity(Scanner sc, User u) {
+
+        Activity a = null;
+
+        while (true) {
+            System.out.println("Choose an option:");
+            System.out.println("(1) Register an existing activity");
+            System.out.println("(2) Register a new activity");
+            System.out.print("Option: ");
+
+            int option = 0;
+            try {
+                option = sc.nextInt();
+            } catch (Exception e) {
+                System.out.println("Invalid choice. Please enter a number.");
+                sc.nextLine(); // clear the buffer
+                continue;
+            }
+
+            ArrayList<Activity> userActivities = u.getActivities();
+            switch (option) {
+                case 1:
+                    if (userActivities.isEmpty()) {
+                        System.out.println("No activities found.");
+                        System.out.println("Please register a new activity.");
+                        continue;
+                    }
+                    a = searchActivity(sc, userActivities);
+                    if (a == null) {
+                        System.out.println("Activity not found.");
+                        continue;
+                    }
+                    u.addActivity(a);
+                    break;
+                case 2:
+                    a = createMenu(sc, userActivities);
+                    u.addActivity(a);
+                    break;
+                default:
+                    System.out.println("Invalid choice.");
+                    continue;
+            }
+            break;
+        }
+
+        // Enter date manually or use current date
+        System.out.println("");
+        System.out.println("Registering activity: " + a.getName());
+        System.out.println("(1) Enter date manually");
+        System.out.println("(2) Use current date");
+        System.out.print("Option: ");
+
+        int dateOption = 0;
+        try {
+            dateOption = sc.nextInt();
+        }
+        catch (Exception e) {
+            sc.nextLine(); // clear buffer
+        }
+
+        LocalDateTime datetime = LocalDateTime.now();
+
+        if (dateOption == 1) {
+            while (true) {
+                try {
+                    System.out.print("Enter date (yyyy-mm-dd): ");
+                    String date = sc.next();
+                    System.out.print("Enter time (hh:mm): ");
+                    String time = sc.next();
+                    datetime = LocalDateTime.parse(date + "T" + time);
+                }
+                catch (Exception e) {
+                    System.out.println("Invalid date or time format.");
+                    continue;
+                }
+                if (datetime.isBefore(LocalDateTime.now())) {
+                    break;
+                }
+                System.out.println("Date must be less than current date.");
+            }
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        // Create a new register
+        Activity register = a.clone();
+
+        int calories = register.calculateCalories(u);
+        register.setCalories(calories);
+
+        // Register an activity in the user
+        u.registerActivity(datetime, register);
+
+        // Print the registered activity
+        System.out.println("Activity registered successfully: ");
+        System.out.println(register.getName() + " on " + datetime.format(formatter));
+        System.out.println(register.getCalories() + " calories burned.");
+
+        return u;
     }
 }

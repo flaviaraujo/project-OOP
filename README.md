@@ -33,8 +33,8 @@
 - [x] Change user to include weight, height and age
 - [ ] fix activity name input in create plan interactively
 - [ ] review functions to get calories burned
-- [ ] Command line arguments
-- [ ] Add user perspective
+- [x] Command line arguments
+- [x] Add user perspective
 - [ ] Encapsulate app; add clone's
 - [ ] Add more exception handling - nextInt, next and nextLine
 - [ ] Add throw to functions that can return null (search, get, etc)
