@@ -200,15 +200,16 @@ public abstract class Activity implements Serializable {
             break;
         }
 
+        sc.nextLine(); // clear the buffer
         while (true) {
             System.out.print("Is the activity hard? (y/n): ");
             String hardBuffer = "";
             try {
-                sc.nextLine();
                 hardBuffer = sc.nextLine();
             }
             catch (Exception e) {
                 System.out.println("Invalid choice. Please enter 'y' or 'n'.");
+                sc.nextLine(); // clear the buffer
                 continue;
             }
 
@@ -282,20 +283,31 @@ public abstract class Activity implements Serializable {
 
     public static Activity searchActivity(Scanner sc, ArrayList<Activity> userActivities) {
 
-        // Print activities names
-        System.out.println("User activities:");
-        for (Activity a : userActivities) {
-            System.out.println("  -> " + a.getName());
+        sc.nextLine(); // clear the buffer
+
+        Activity activity = null;
+        while (true) {
+            // Print activities names
+            System.out.println("User activities:");
+            for (Activity a : userActivities) {
+                System.out.println("  -> " + a.getName());
+            }
+            System.out.print("Enter the name of the activity: ");
+            String name = sc.nextLine();
+
+            activity = userActivities.stream()
+                .filter(a -> a.getName().equals(name))
+                .findFirst()
+                .orElse(null);
+
+            if (activity == null) {
+                System.out.println("Activity not found.");
+                sc.nextLine(); // clear the buffer
+                continue;
+            }
+
+            return activity;
         }
-        System.out.print("Enter the name of the activity: ");
-        String name = sc.nextLine();
-
-        Activity activity = userActivities.stream()
-            .filter(a -> a.getName().equals(name))
-            .findFirst()
-            .orElse(null);
-
-        return activity;
     }
 }
 
