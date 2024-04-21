@@ -30,8 +30,8 @@ public class Stats {
             int tmp = 0;
 
             // calculate the total calories burned by the user
-            for (Register r : u.getRegisters().values()) {
-                tmp += r.getCaloriesBurned();
+            for (Activity r : u.getRegisters().values()) {
+                tmp += r.getCalories();
             }
 
             // if the user has burned more calories than the current max
@@ -60,11 +60,11 @@ public class Stats {
 
             // calculate the total calories burned by the user
             // checking if the key on the map entry is between the start and end date
-            for (Entry<LocalDateTime, Register> entry : u.getRegisters().entrySet()) {
+            for (Entry<LocalDateTime, Activity> entry : u.getRegisters().entrySet()) {
                 LocalDateTime date = entry.getKey();
 
                 if (date.isAfter(start.atStartOfDay()) && date.isBefore(end.atStartOfDay())) {
-                    tmp += entry.getValue().getCaloriesBurned();
+                    tmp += entry.getValue().getCalories();
                 }
             }
 
@@ -140,9 +140,8 @@ public class Stats {
 
         for (User u : users.values()) {
 
-            for (Register r : u.getRegisters().values()) {
-                Activity a = r.getActivity();
-                int type = a.getType();
+            for (Activity r : u.getRegisters().values()) {
+                int type = r.getType();
                 if (map.containsKey(type)) {
                     map.put(type, map.get(type) + 1);
                 }
@@ -170,14 +169,14 @@ public class Stats {
 
         int c = 0;
 
-        for (Register r : user.getRegisters().values()) {
-            Activity a = r.getActivity();
-            if (a.isDistance()) {
-                Distance da = (Distance) a;
+        for (Activity r : user.getRegisters().values()) {
+
+            if (r.isDistance()) {
+                Distance da = (Distance) r;
                 c += da.getDistance();
             }
-            else if (a.isDistanceAltimetry()) {
-                DistanceAltimetry da = (DistanceAltimetry) a;
+            else if (r.isDistanceAltimetry()) {
+                DistanceAltimetry da = (DistanceAltimetry) r;
                 c += da.getDistance();
             }
         }
@@ -189,17 +188,20 @@ public class Stats {
     public double kmTraveled(User user, LocalDate start, LocalDate end) {
         int c = 0;
 
-        for (Entry<LocalDateTime, Register> entry : user.getRegisters().entrySet()) {
+        for (Entry<LocalDateTime, Activity> entry : user.getRegisters().entrySet()) {
 
             LocalDateTime date = entry.getKey();
+
             if (date.isAfter(start.atStartOfDay()) && date.isBefore(end.atStartOfDay())) {
-                Activity a = entry.getValue().getActivity();
-                if (a.isDistance()) {
-                    Distance da = (Distance) a;
+
+                Activity r = entry.getValue();
+
+                if (r.isDistance()) {
+                    Distance da = (Distance) r;
                     c += da.getDistance();
                 }
-                else if (a.isDistanceAltimetry()) {
-                    DistanceAltimetry da = (DistanceAltimetry) a;
+                else if (r.isDistanceAltimetry()) {
+                    DistanceAltimetry da = (DistanceAltimetry) r;
                     c += da.getDistance();
                 }
             }
@@ -214,10 +216,10 @@ public class Stats {
 
         int c = 0;
 
-        for (Register r : user.getRegisters().values()) {
-            Activity a = r.getActivity();
-            if (a.isDistanceAltimetry()) {
-                DistanceAltimetry da = (DistanceAltimetry) a;
+        for (Activity r : user.getRegisters().values()) {
+
+            if (r.isDistanceAltimetry()) {
+                DistanceAltimetry da = (DistanceAltimetry) r;
                 c += da.getAltimetry();
             }
         }
@@ -230,13 +232,16 @@ public class Stats {
 
         int c = 0;
 
-        for (Entry<LocalDateTime, Register> entry : user.getRegisters().entrySet()) {
+        for (Entry<LocalDateTime, Activity> entry : user.getRegisters().entrySet()) {
 
             LocalDateTime date = entry.getKey();
+
             if (date.isAfter(start.atStartOfDay()) && date.isBefore(end.atStartOfDay())) {
-                Activity a = entry.getValue().getActivity();
-                if (a.isDistanceAltimetry()) {
-                    DistanceAltimetry da = (DistanceAltimetry) a;
+
+                Activity r = entry.getValue();
+
+                if (r.isDistanceAltimetry()) {
+                    DistanceAltimetry da = (DistanceAltimetry) r;
                     c += da.getAltimetry();
                 }
             }
@@ -261,14 +266,14 @@ public class Stats {
                 result = p;
                 user = u;
                 for (Event e : p.getEvents()) {
-                    max += e.getActivity().caloriesBurned(u);
+                    max += e.getActivity().calculateCalories(u);
                 }
                 continue;
             }
 
             int tmp = 0;
             for (Event e : p.getEvents()) {
-                tmp += e.getActivity().caloriesBurned(u);
+                tmp += e.getActivity().calculateCalories(u);
             }
             if (tmp > max) {
                 max = tmp;

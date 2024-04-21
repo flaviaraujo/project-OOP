@@ -1,5 +1,6 @@
 package src;
 
+import src.Activity;
 import src.User;
 import src.exceptions.UserNotFoundException;
 
@@ -332,15 +333,17 @@ public class Main {
                             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
                             // Create a new register
-                            Register register = new Register(a, user);
+                            Activity register = a.clone();
+
+                            a.setCalories(a.calculateCalories(user));
 
                             // Register an activity in the user
                             user.registerActivity(datetime, register);
 
                             // Print the registered activity
                             System.out.println("Activity registered successfully: ");
-                            System.out.println(register.getActivity().getName() + " on " + datetime.format(formatter));
-                            System.out.println(register.getCaloriesBurned() + " calories burned.");
+                            System.out.println(register.getName() + " on " + datetime.format(formatter));
+                            System.out.println(register.getCalories() + " calories burned.");
 
                             // Update the Main instance by replacing the user
                             try {

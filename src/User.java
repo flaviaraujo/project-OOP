@@ -43,7 +43,7 @@ public class User implements Serializable {
     private int height; // cm
     private Type type;
     private ArrayList<Activity> activities;
-    private HashMap<LocalDateTime, Register> registers; // alternative LinkedHashMap
+    private HashMap<LocalDateTime, Activity> registers; // alternative LinkedHashMap
     private Plan plan;
  
     /* Default Constructor */
@@ -57,7 +57,7 @@ public class User implements Serializable {
         this.height = 0;
         this.type = Type.OCCASIONAL;
         this.activities = new ArrayList<Activity>();
-        this.registers = new HashMap<LocalDateTime, Register>();
+        this.registers = new HashMap<LocalDateTime, Activity>();
         this.plan = new Plan();
     }
 
@@ -76,7 +76,7 @@ public class User implements Serializable {
         this.height = height;
         this.type = type;
         this.activities = new ArrayList<Activity>();
-        this.registers = new HashMap<LocalDateTime, Register>();
+        this.registers = new HashMap<LocalDateTime, Activity>();
         this.plan = null;
     }
 
@@ -85,7 +85,7 @@ public class User implements Serializable {
         String address, int heartRate, int weight,
         int height, Type type,
         ArrayList<Activity> activities,
-        HashMap<LocalDateTime, Register> registers,
+        HashMap<LocalDateTime, Activity> registers,
         Plan plan
     ) {
         this.id = id;
@@ -157,8 +157,10 @@ public class User implements Serializable {
         return activities;
     }
 
-    public HashMap<LocalDateTime, Register> getRegisters() {
-        HashMap<LocalDateTime, Register> registers = new HashMap<LocalDateTime, Register>(this.registers.size());
+    public HashMap<LocalDateTime, Activity> getRegisters() {
+        HashMap<LocalDateTime, Activity> registers =
+            new HashMap<LocalDateTime, Activity>(this.registers.size());
+
         for (LocalDateTime date : this.registers.keySet()) {
             registers.put(date, this.registers.get(date).clone());
         }
@@ -210,9 +212,15 @@ public class User implements Serializable {
         this.activities = activities;
     }
 
-    public void setRegisters(HashMap<LocalDateTime, Register> registers) {
-        // TODO clone
-        this.registers = registers;
+    public void setRegisters(HashMap<LocalDateTime, Activity> registers) {
+        // TODO check this clone
+        HashMap<LocalDateTime, Activity> tmpRegisters =
+            new HashMap<LocalDateTime, Activity>(registers.size());
+
+        for (LocalDateTime date : registers.keySet()) {
+            tmpRegisters.put(date, registers.get(date).clone());
+        }
+        this.registers = tmpRegisters;
     }
 
     public void setPlan(Plan plan) {
@@ -249,7 +257,7 @@ public class User implements Serializable {
         sb.append("  registers: [");
         // TODO sort registers by date
         for (LocalDateTime date : this.registers.keySet()) {
-            sb.append("\n    " + date.format(formatter) + " - " + this.registers.get(date).getActivity().getName() + ",");
+            sb.append("\n    " + date.format(formatter) + " - " + this.registers.get(date).getName() + ",");
         }
         sb.append("],\n");
 
@@ -528,7 +536,7 @@ public class User implements Serializable {
     }
 
     // Registers methods
-    public void registerActivity(LocalDateTime date, Register register) {
+    public void registerActivity(LocalDateTime date, Activity register) {
         this.registers.put(date, register.clone());
     }
 

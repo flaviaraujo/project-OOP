@@ -2,6 +2,7 @@ package src;
 
 import java.util.Scanner;
 
+import src.Activity;
 import src.User;
 
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ public class Simulation {
 
         int activitiesCount = 0;
         int registeredActivities = 0;
-        int totalCaloriesBurned = 0;
+        int totalCalories = 0;
 
         Event event = new Event();
         for (int day = 0; day <= days; day++) {
@@ -79,23 +80,26 @@ public class Simulation {
 
                         Activity a = e.getActivity();
 
-                        int caloriesBurned = a.caloriesBurned(u); // calories burned in each repetition
+                        int calories = a.calculateCalories(u); // calories burned in each repetition
 
                         for (int repetition = 0; repetition < repetitions; repetition++)
                         {
                             registeredActivities++;
-                            totalCaloriesBurned += caloriesBurned;
+                            totalCalories += calories;
 
                             LocalTime eventTime = e.getTime().plusMinutes(a.getDuration() * repetition);
                             LocalDateTime eventDateTime = LocalDateTime.of(eventDate, eventTime);
-                            Register r = new Register(a, caloriesBurned);
+
+                            // register the activity
+                            Activity r = a.clone();
+                            r.setCalories(calories);
                             u.registerActivity(eventDateTime, r);
 
                             System.out.println(
                                 "User \"" + u.getName() + '"' +
                                 " completed activity \"" + a.getName() + '"' +
                                 " at " + eventTime.format(timeFormatter) +
-                                " and burned " + caloriesBurned + " calories."
+                                " and burned " + calories + " calories."
                             );
                         }
                     }
@@ -109,7 +113,7 @@ public class Simulation {
         System.out.println("Users with training plans: " + usersCount);
         System.out.println("Activities: " + activitiesCount);
         System.out.println("Registered activities: " + registeredActivities);
-        System.out.println("Total calories burned: " + totalCaloriesBurned);
+        System.out.println("Total calories burned: " + totalCalories);
     }
 
     public LocalDate getSimulationEndDate(Scanner sc, LocalDate startDate) {

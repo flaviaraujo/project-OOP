@@ -22,14 +22,20 @@ public class DistanceAltimetry extends Activity implements Serializable {
         this.altimetry = 0;
     }
 
-    public DistanceAltimetry(String name, int duration, int intensity, boolean hard) {
-        super(name, duration, intensity, hard);
+    public DistanceAltimetry(
+        String name, int duration, int intensity,
+        boolean hard, int calories
+    ) {
+        super(name, duration, intensity, hard, calories);
         this.distance = 0;
         this.altimetry = 0;
     }
 
-    public DistanceAltimetry(String name, int duration, int intensity, boolean hard, int distance, int altimetry) {
-        super(name, duration, intensity, hard);
+    public DistanceAltimetry(
+        String name, int duration, int intensity,
+        boolean hard, int calories, int distance, int altimetry
+    ) {
+        super(name, duration, intensity, hard, calories);
         this.distance = distance;
         this.altimetry = altimetry;
     }
@@ -70,6 +76,10 @@ public class DistanceAltimetry extends Activity implements Serializable {
         sb.append("  Intensity: " + this.intensity + ",\n");
         sb.append("  Distance: " + this.distance + " meters,\n");
         sb.append("  Altimetry: " + this.altimetry + " meters\n");
+        sb.append("  Hard: " + this.hard + ",\n");
+        if (this.calories != 0) {
+            sb.append("  Calories: " + this.calories + ",\n");
+        }
         sb.append("}");
         return sb.toString();
     }
@@ -86,7 +96,9 @@ public class DistanceAltimetry extends Activity implements Serializable {
             this.duration == distanceAltimetry.getDuration() &&
             this.intensity == distanceAltimetry.getIntensity() &&
             this.distance == distanceAltimetry.getDistance() &&
-            this.altimetry == distanceAltimetry.getAltimetry()
+            this.altimetry == distanceAltimetry.getAltimetry() &&
+            this.hard == distanceAltimetry.getHard()
+            // this.calories == distanceAltimetry.getCalories()
         );
     }
 
@@ -96,7 +108,7 @@ public class DistanceAltimetry extends Activity implements Serializable {
     }
 
     @Override
-    public int caloriesBurned(User u) {
+    public int calculateCalories(User u) {
 
         int altimetry = this.getAltimetry();
         int intensity = this.getIntensity();
@@ -106,10 +118,17 @@ public class DistanceAltimetry extends Activity implements Serializable {
         int nutritionMultiplier = u.getType().getNutritionMultiplier();
         double met = MET_VALUE;
 
+        double weightFactor = Math.min(weight / 200.0, 2);
+        weightFactor = Math.max(weightFactor, 1);
+
+        // return (int)
+        //     (weightFactor * (height / 100.0) * (nutritionMultiplier / 100.0) *
+        //     met * (intensity / 100.0) * duration *
+        //     ((distance + altimetry * ALTIMETRY_FACTOR) / 1000.0));
+
         return (int)
-            (weight * (height / 100.0) * (nutritionMultiplier / 100.0) *
-            met * (intensity / 100.0) *
-            ((distance + altimetry * ALTIMETRY_FACTOR) / 1000.0));
+            (weight * (nutritionMultiplier / 100.0) *
+            met * (intensity / 100.0) * ((distance + (altimetry * ALTIMETRY_FACTOR)) / 1000.0));
     }
 
     @Override

@@ -20,13 +20,19 @@ public class Distance extends Activity implements Serializable {
         this.distance = 0;
     }
 
-    public Distance(String name, int duration, int intensity, boolean hard) {
-        super(name, duration, intensity, hard);
+    public Distance(
+        String name, int duration, int intensity,
+        boolean hard, int calories
+    ) {
+        super(name, duration, intensity, hard, calories);
         this.distance = 0;
     }
 
-    public Distance(String name, int duration, int intensity, boolean hard, int distance) {
-        super(name, duration, intensity, hard);
+    public Distance(
+        String name, int duration, int intensity,
+        boolean hard, int calories, int distance
+    ) {
+        super(name, duration, intensity, hard, calories);
         this.distance = distance;
     }
 
@@ -56,6 +62,10 @@ public class Distance extends Activity implements Serializable {
         sb.append("  Duration: " + this.duration + " minutes,\n");
         sb.append("  Intensity: " + this.intensity + ",\n");
         sb.append("  Distance: " + this.distance + " meters\n");
+        sb.append("  Hard: " + this.hard + ",\n");
+        if (this.calories != 0) {
+            sb.append("  Calories: " + this.calories + ",\n");
+        }
         sb.append("}");
         return sb.toString();
     }
@@ -71,7 +81,9 @@ public class Distance extends Activity implements Serializable {
             this.name.equals(distance.getName()) &&
             this.duration == distance.getDuration() &&
             this.intensity == distance.getIntensity() &&
-            this.distance == distance.getDistance()
+            this.distance == distance.getDistance() &&
+            this.hard == distance.getHard()
+            // this.calories == distance.getCalories()
         );
     }
 
@@ -81,7 +93,7 @@ public class Distance extends Activity implements Serializable {
     }
 
     @Override
-    public int caloriesBurned(User u) {
+    public int calculateCalories(User u) {
 
         int intensity = this.getIntensity();
         int distance = this.getDistance();
@@ -90,10 +102,17 @@ public class Distance extends Activity implements Serializable {
         int nutritionMultiplier = u.getType().getNutritionMultiplier();
         double met = MET_VALUE;
 
+        double weightFactor = Math.min(weight / 200.0, 2);
+        weightFactor = Math.max(weightFactor, 1);
+
+        // return (int)
+        //     (weightFactor * (height / 100.0) * (nutritionMultiplier / 100.0) *
+        //     met * (intensity / 100.0) * duration *
+        //     (distance / 1000.0));
+
         return (int)
-            (weight * (height / 100.0) * (nutritionMultiplier / 100.0) *
-            met * (intensity / 100.0) *
-            (distance / 1000.0));
+            (weight * (nutritionMultiplier / 100.0) *
+            met * (intensity / 100.0) * (distance / 1000.0));
     }
 
     @Override

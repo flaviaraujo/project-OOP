@@ -18,26 +18,33 @@ public abstract class Activity implements Serializable {
     protected int duration; // in minutes
     protected int intensity;
     protected boolean hard;
+    protected int calories; // calories burned
 
     public Activity() {
         this.name = "";
         this.duration = 0;
         this.intensity = 0;
         this.hard = false;
+        this.calories = 0;
     }
 
-    public Activity(String name, int duration, int intensity, boolean hard) {
+    public Activity(
+        String name, int duration, int intensity,
+        boolean hard, int calories
+    ) {
         this.name = name;
         this.duration = duration;
         this.intensity = intensity;
         this.hard = hard;
+        this.calories = calories;
     }
 
     public Activity(Activity activity) {
         this.name = activity.getName();
         this.duration = activity.getDuration();
         this.intensity = activity.getIntensity();
-        this.hard = activity.isHard();
+        this.hard = activity.getHard();
+        this.calories = activity.getCalories();
     }
 
     public abstract int getACTIVITY_TYPE();
@@ -54,8 +61,12 @@ public abstract class Activity implements Serializable {
         return this.intensity;
     }
 
-    public boolean isHard() {
+    public boolean getHard() {
         return this.hard;
+    }
+
+    public int getCalories() {
+        return this.calories;
     }
 
     public void setName(String name) {
@@ -74,13 +85,17 @@ public abstract class Activity implements Serializable {
         this.hard = hard;
     }
 
+    public void setCalories(int calories) {
+        this.calories = calories;
+    }
+
     public abstract String toString();
 
     public abstract boolean equals(Object o);
 
     public abstract Activity clone();
 
-    public abstract int caloriesBurned(User u);
+    public abstract int calculateCalories(User u);
 
     public boolean isDistance() {
         return this instanceof Distance;
@@ -226,13 +241,13 @@ public abstract class Activity implements Serializable {
 
         switch (activityType) {
             case 1:
-                return new Distance(name, duration, intensity, hard);
+                return new Distance(name, duration, intensity, hard, 0);
             case 2:
-                return new DistanceAltimetry(name, duration, intensity, hard);
+                return new DistanceAltimetry(name, duration, intensity, hard, 0);
             case 3:
-                return new Repetition(name, duration, intensity, hard);
+                return new Repetition(name, duration, intensity, hard, 0);
             case 4:
-                return new RepetitionWeight(name, duration, intensity, hard);
+                return new RepetitionWeight(name, duration, intensity, hard, 0);
             default:
                 return null;
         }
@@ -310,4 +325,3 @@ public abstract class Activity implements Serializable {
         }
     }
 }
-
