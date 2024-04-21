@@ -27,7 +27,7 @@
 
 ## TODO list
 
-- [ ] Remove class Register
+- [x] Remove class Register
 - [x] Activity name problem with spaces when searching
 - [x] Change the users from ArrayList to a HashMap (Notes - 1)
 - [x] Change user to include weight, height and age
