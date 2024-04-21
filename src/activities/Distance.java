@@ -83,7 +83,6 @@ public class Distance extends Activity implements Serializable {
     @Override
     public int caloriesBurned(User u) {
 
-        int duration = this.getDuration();
         int intensity = this.getIntensity();
         int distance = this.getDistance();
         int weight = u.getWeight();
@@ -93,7 +92,7 @@ public class Distance extends Activity implements Serializable {
 
         return (int)
             (weight * (height / 100.0) * (nutritionMultiplier / 100.0) *
-            met * (duration / 60.0) * (intensity / 100.0) *
+            met * (intensity / 100.0) *
             (distance / 1000.0));
     }
 
@@ -113,12 +112,14 @@ public class Distance extends Activity implements Serializable {
                 distance = sc.nextInt();
             } catch (Exception e) {
                 System.out.println("Distance must be an integer.");
+                sc.nextLine();
                 continue;
             }
 
             // check if distance is between 1 and 50000 meters
             if (distance < 1 || distance > 50000) {
                 System.out.println("Distance must be between 1 and 50000 meters.");
+                sc.nextLine();
                 continue;
             }
             break;

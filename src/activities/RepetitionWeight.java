@@ -96,18 +96,21 @@ public class RepetitionWeight extends Activity implements Serializable {
 
     @Override
     public int caloriesBurned(User u) {
-        int weight = u.getWeight();
-        int duration = this.getDuration();
+ 
+        int repetitions = this.getRepetition();
+        int repetitionWeight = this.getWeight();
         int intensity = this.getIntensity();
+        int weight = u.getWeight();
+        int height = u.getHeight();
         int nutritionMultiplier = u.getType().getNutritionMultiplier();
-        double met = MET_VALUE; // MET value for this activity
+        double met = MET_VALUE;
 
-        // Calculate calories burned using the formula: Calories burned = MET * weight * duration in hours
-        double caloriesBurned = met * weight * (duration / 60.0);
-
-        caloriesBurned *= ((intensity/100) * (nutritionMultiplier/100));
-        return (int) caloriesBurned;
+        return (int)
+            (weight * (height / 100.0) * (nutritionMultiplier / 100.0) *
+            met * (intensity / 100.0) *
+            repetitions * repetitionWeight);
     }
+
 
     @Override
     public Activity create(Scanner sc, ArrayList<Activity> userActivities) {
@@ -143,12 +146,14 @@ public class RepetitionWeight extends Activity implements Serializable {
                 weight = sc.nextInt();
             } catch (Exception e) {
                 System.out.println("Weight must be an integer.");
+                sc.nextLine();
                 continue;
             }
 
             // check if weight is between 1 and 300 kg
             if (weight < 1 || weight > 300) {
                 System.out.println("Weight must be between 1 and 300 kg.");
+                sc.nextLine();
                 continue;
             }
             break;

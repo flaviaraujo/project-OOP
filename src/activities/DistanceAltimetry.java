@@ -11,6 +11,7 @@ public class DistanceAltimetry extends Activity implements Serializable {
 
     private static final int ACTIVITY_TYPE = 2;
     private static final double MET_VALUE = 16.0;
+    private static final int ALTIMETRY_FACTOR = 4;
 
     private int distance;
     private int altimetry;
@@ -96,15 +97,19 @@ public class DistanceAltimetry extends Activity implements Serializable {
 
     @Override
     public int caloriesBurned(User u) {
-        int weight = u.getWeight();
-        int duration = this.getDuration();
-        int intensity = this.getIntensity();
-        int nutritionMultiplier = u.getType().getNutritionMultiplier();
-        double met = MET_VALUE; // MET value for this activity
 
-        double caloriesBurned = met * weight * (duration / 60.0);
-        caloriesBurned *= ((intensity/100) * (nutritionMultiplier/100));
-        return (int) caloriesBurned;
+        int altimetry = this.getAltimetry();
+        int intensity = this.getIntensity();
+        int distance = this.getDistance();
+        int weight = u.getWeight();
+        int height = u.getHeight();
+        int nutritionMultiplier = u.getType().getNutritionMultiplier();
+        double met = MET_VALUE;
+
+        return (int)
+            (weight * (height / 100.0) * (nutritionMultiplier / 100.0) *
+            met * (intensity / 100.0) *
+            ((distance + altimetry * ALTIMETRY_FACTOR) / 1000.0));
     }
 
     @Override
@@ -141,12 +146,14 @@ public class DistanceAltimetry extends Activity implements Serializable {
                 altimetry = sc.nextInt();
             } catch (Exception e) {
                 System.out.println("Altimetry must be an integer.");
+                sc.nextLine();
                 continue;
             }
 
             // check if altimetry is between 1 and 10000 meters
             if (altimetry < 1 || altimetry > 10000) {
                 System.out.println("Altimetry must be between 1 and 10000 meters.");
+                sc.nextLine();
                 continue;
             }
             break;
