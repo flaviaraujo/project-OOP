@@ -10,7 +10,7 @@ import java.io.Serializable;
 public class Repetition extends Activity implements Serializable {
 
     private static final int ACTIVITY_TYPE = 3;
-    private static final double MET_VALUE = 8.0;
+    private static final double MET_VALUE = 3.0;
 
     private int repetition;
 
@@ -104,14 +104,14 @@ public class Repetition extends Activity implements Serializable {
         double weightFactor = Math.min(weight / 200.0, 2);
         weightFactor = Math.max(weightFactor, 1);
 
-        // return (int)
         //     (weightFactor * (height / 100.0) * (nutritionMultiplier / 100.0) *
         //     met * (intensity / 100.0) * duration *
         //     repetitions);
 
         return (int)
-            (met * weight * (repetitions / 10.0)
-            * (intensity / 100.0) * (nutritionMultiplier / 100.0));
+            (met * weight * (repetitions / 10.0) *
+            (intensity / 100.0) * (nutritionMultiplier / 100.0));
+
     }
 
     @Override
