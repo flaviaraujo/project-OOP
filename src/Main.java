@@ -115,7 +115,7 @@ public class Main {
         }
     }
 
-    // TODO user perspective menu
+    // User perspective menu
     private static void userMenu(Scanner sc, String stateFilepath, Main m, User user) {
         System.out.println();
         System.out.println("[User menu] Please select an option:");
@@ -144,31 +144,99 @@ public class Main {
             // e.printStackTrace(); // removed to avoid clutter
         }
 
+        Activity a;
         ArrayList<Activity> userActivities;
 
         switch (option) {
             case 1:
-                // TODO Create an activity
+                // Create an activity
                 userActivities = user.getActivities();
+
+                Activity activity = Activity.createMenu(sc, userActivities);
+                if (activity == null) {
+                    System.out.println("Activity not created.");
+                    break;
+                }
+
+                // Add activity to user
+                user.addActivity(activity);
+                // Update the Main instance by replacing the user
+                try {
+                    m.updateUser(user);
+                }
+                catch (UserNotFoundException e) {
+                    System.out.println(e.getMessage());
+                    break;
+                }
+
+                // The state is updated when a new activity for an user is created
+                m.setUpdatedState(true);
+                System.out.println("Activity created successfully.");
                 break;
             case 2:
-                // TODO Delete an activity
+                // Delete an activity
                 userActivities = user.getActivities();
+                if (userActivities.size() == 0) {
+                    System.out.println("You have no activities.");
+                    break;
+                }
+
+                // Delete an activity
+                a = Activity.searchActivity(sc, userActivities);
+                if (a == null) {
+                    System.out.println("Activity not found.");
+                    break;
+                }
+                user.deleteActivity(a);
+
+                // Update the Main instance by replacing the user
+                try {
+                    m.updateUser(user);
+                }
+                catch (UserNotFoundException e) {
+                    System.out.println(e.getMessage());
+                    break;
+                }
+
+                // The state is updated when an activity for an user is deleted
+                m.setUpdatedState(true);
+                System.out.println("Activity deleted successfully.");
                 break;
             case 3:
-                // TODO View an activity
+                // View an activity
                 userActivities = user.getActivities();
+
+                if (userActivities.size() == 0) {
+                    System.out.println("The selected user has no activities.");
+                    break;
+                }
+
+                // View an activity
+                a = Activity.searchActivity(sc, userActivities);
+                if (a == null) {
+                    System.out.println("Activity not found.");
+                    break;
+                }
+                System.out.println(a);
+
                 break;
             case 4:
-                // TODO View all activities
+                // View all activities
                 userActivities = user.getActivities();
+                if (userActivities.size() == 0) {
+                    System.out.println("The selected user has no activities.");
+                    break;
+                }
+                for (Activity t : userActivities)
+                    System.out.println(t);
                 break;
             case 5:
                 // TODO Register activity
                 userActivities = user.getActivities();
                 break;
             case 6:
-                // TODO View registered activities
+                // View registered activities
+                user.viewRegisters();
                 break;
             case 7:
                 // Create your plan
@@ -225,7 +293,6 @@ public class Main {
                 }
                 System.out.print(user.getPlan());
                 break;
-                break;
             case 11:
                 // Statistics menu
                 Stats stats = new Stats();
@@ -242,6 +309,8 @@ public class Main {
             case 14:
                 // Exit
                 exit(stateFilepath, m, sc);
+            default:
+                System.out.println("Invalid option");
                 break;
         }
     }
@@ -685,7 +754,6 @@ public class Main {
             case 9:
                 // Exit
                 exit(stateFilepath, m, sc);
-                break;
             default:
                 System.out.println("Invalid option");
                 break;
