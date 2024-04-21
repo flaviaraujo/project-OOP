@@ -28,15 +28,15 @@
 ## TODO list
 
 - [ ] Remove class Register
-- [ ] Activity name problem with spaces when searching
-- [ ] Searchactivity function exception handling + rename method
+- [x] Activity name problem with spaces when searching
 - [x] Change the users from ArrayList to a HashMap (Notes - 1)
 - [x] Change user to include weight, height and age
-- [x] functions to get calories burned **need review**
+- [ ] review functions to get calories burned
 - [ ] Command line arguments
 - [ ] Add user perspective
-- [ ] Add more exception handling
+- [ ] Add more exception handling - nextInt, next and nextLine
 - [ ] Add throw to functions that can return null (search, get, etc)
+- [ ] searchActivity function exception handling + rename this method
 - [ ] When calling User.deleteActivity() check in the registers if the activity is being used and if so throw exception.
 - [ ] Add option to create activity when registering a register
 - [ ] Sort events in a plan by date time
