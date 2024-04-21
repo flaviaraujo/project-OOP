@@ -1,7 +1,6 @@
 package src;
 
-import src.Activity;
-import src.User;
+import src.activities.Distance;
 import src.exceptions.UserNotFoundException;
 
 import java.io.FileInputStream;
@@ -144,7 +143,7 @@ public class Main {
             // e.printStackTrace(); // removed to avoid clutter
         }
 
-        Activity a;
+        Activity a = null;
         ArrayList<Activity> userActivities;
 
         switch (option) {
@@ -152,14 +151,14 @@ public class Main {
                 // Create an activity
                 userActivities = user.getActivities();
 
-                Activity activity = Activity.createMenu(sc, userActivities);
-                if (activity == null) {
+                a = Activity.createMenu(sc, userActivities);
+                if (a == null) {
                     System.out.println("Activity not created.");
                     break;
                 }
 
                 // Add activity to user
-                user.addActivity(activity);
+                user.addActivity(a);
                 // Update the Main instance by replacing the user
                 try {
                     m.updateUser(user);
@@ -231,8 +230,21 @@ public class Main {
                     System.out.println(t);
                 break;
             case 5:
-                // TODO Register activity
-                userActivities = user.getActivities();
+                // Register activity
+                a = (Activity) new Distance();
+                user = a.registerActivity(sc, user);
+                // Update the Main instance by replacing the user
+                try {
+                    m.updateUser(user);
+                }
+                catch (UserNotFoundException e) {
+                    System.out.println(e.getMessage());
+                    break;
+                }
+
+                // The state is updated when an activity for an user is registered
+                m.setUpdatedState(true);
+
                 break;
             case 6:
                 // View registered activities
@@ -551,65 +563,8 @@ public class Main {
 
                     switch (submenuOption) {
                         case 1:
-                            a = Activity.searchActivity(sc, user.getActivities());
-                            if (a == null) {
-                                System.out.println("Activity not found.");
-                                break;
-                            }
-
-                            // Enter date manually or use current date
-                            System.out.println("");
-                            System.out.println("Registering activity: " + a.getName());
-                            System.out.println("(1) Enter date manually");
-                            System.out.println("(2) Use current date");
-                            System.out.print("Option: ");
-
-                            int dateOption = 0;
-                            try {
-                                dateOption = sc.nextInt();
-                            }
-                            catch (Exception e) {
-                                sc.nextLine(); // clear buffer
-                            }
-
-                            LocalDateTime datetime = LocalDateTime.now();
-
-                            if (dateOption == 1) {
-                                while (true) {
-                                    try {
-                                        System.out.print("Enter date (yyyy-mm-dd): ");
-                                        String date = sc.next();
-                                        System.out.print("Enter time (hh:mm): ");
-                                        String time = sc.next();
-                                        datetime = LocalDateTime.parse(date + "T" + time);
-                                    }
-                                    catch (Exception e) {
-                                        System.out.println("Invalid date or time format.");
-                                        continue;
-                                    }
-                                    if (datetime.isBefore(LocalDateTime.now())) {
-                                        break;
-                                    }
-                                    System.out.println("Date must be less than current date.");
-                                }
-                            }
-
-                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
-                            // Create a new register
-                            Activity register = a.clone();
-
-                            int calories = register.calculateCalories(user);
-                            register.setCalories(calories);
-
-                            // Register an activity in the user
-                            user.registerActivity(datetime, register);
-
-                            // Print the registered activity
-                            System.out.println("Activity registered successfully: ");
-                            System.out.println(register.getName() + " on " + datetime.format(formatter));
-                            System.out.println(register.getCalories() + " calories burned.");
-
+                            Activity activity = (Activity) new Distance();
+                            user = activity.registerActivity(sc, user);
                             // Update the Main instance by replacing the user
                             try {
                                 m.updateUser(user);
