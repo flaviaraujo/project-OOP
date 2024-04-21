@@ -11,6 +11,7 @@ public class Repetition extends Activity implements Serializable {
 
     private static final int ACTIVITY_TYPE = 3;
     private static final double MET_VALUE = 8.0;
+    private static final int REPETITION_FACTOR = 4; //TODO change this value
 
     private int repetition;
 
@@ -81,16 +82,18 @@ public class Repetition extends Activity implements Serializable {
 
     @Override
     public int caloriesBurned(User u) {
-        double weight = u.getWeight();
-        int duration = this.getDuration();
-        int intensity = this.getIntensity();
-        int nutritionMultiplier = u.getType().getNutritionMultiplier();
 
+        int repetitions = this.getRepetition();
+        int intensity = this.getIntensity();
+        int weight = u.getWeight();
+        int height = u.getHeight();
+        int nutritionMultiplier = u.getType().getNutritionMultiplier();
         double met = MET_VALUE;
 
-        double caloriesBurned = met * weight * (duration / 60.0);
-        caloriesBurned *= ((intensity/100) * (nutritionMultiplier/100));
-        return (int) caloriesBurned;
+        return (int)
+            (weight * (height / 100.0) * (nutritionMultiplier / 100.0) *
+            met * (intensity / 100.0) *
+            repetitions);
     }
 
     @Override
@@ -109,12 +112,14 @@ public class Repetition extends Activity implements Serializable {
                 repetitions = sc.nextInt();
             } catch (Exception e) {
                 System.out.println("Repetitions must be an integer.");
+                sc.nextLine();
                 continue;
             }
 
             // check if repetitions is between 1 and 1000
             if (repetitions < 1 || repetitions > 1000) {
                 System.out.println("Repetitions must be between 1 and 1000.");
+                sc.nextLine();
                 continue;
             }
             break;
