@@ -4,18 +4,15 @@ import src.exceptions.UserNotFoundException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-/**
- * User
- * TODO: Dúvida em agregação é necessário clone de String's?
- */
 public class User implements Serializable {
-
-    // private static final long serialVersionUID = 1L; // TODO: check if necessary
 
     public enum Type implements Serializable {
         OCCASIONAL(40),
@@ -96,8 +93,14 @@ public class User implements Serializable {
         this.weight = weight;
         this.height = height;
         this.type = type;
-        this.activities = activities; // TODO clone
-        this.registers = registers; // TODO clone
+        this.activities = new ArrayList<>();
+        for (Activity activity : activities) {
+            this.activities.add(activity.clone());
+        }
+        this.registers = new HashMap<>();
+        for (Entry<LocalDateTime, Activity> entry : registers.entrySet()) {
+            this.registers.put(entry.getKey(), entry.getValue().clone());
+        }
         this.plan = plan.clone();
     }
 
@@ -146,11 +149,12 @@ public class User implements Serializable {
     }
 
     public Type getType() {
-        return this.type;
+        return this.type; // immutable
     }
 
     public ArrayList<Activity> getActivities() {
-        ArrayList<Activity> activities = new ArrayList<Activity>(this.activities.size());
+        ArrayList<Activity> activities = new ArrayList<Activity>();
+
         for (Activity activity : this.activities) {
             activities.add(activity.clone());
         }
@@ -159,7 +163,7 @@ public class User implements Serializable {
 
     public HashMap<LocalDateTime, Activity> getRegisters() {
         HashMap<LocalDateTime, Activity> registers =
-            new HashMap<LocalDateTime, Activity>(this.registers.size());
+            new HashMap<LocalDateTime, Activity>();
 
         for (LocalDateTime date : this.registers.keySet()) {
             registers.put(date, this.registers.get(date).clone());
@@ -208,14 +212,16 @@ public class User implements Serializable {
     }
 
     public void setActivities(ArrayList<Activity> activities) {
-        // TODO clone
-        this.activities = activities;
+        this.activities = new ArrayList<Activity>();
+
+        for (Activity activity : activities) {
+            this.activities.add(activity.clone());
+        }
     }
 
     public void setRegisters(HashMap<LocalDateTime, Activity> registers) {
-        // TODO check this clone
         HashMap<LocalDateTime, Activity> tmpRegisters =
-            new HashMap<LocalDateTime, Activity>(registers.size());
+            new HashMap<LocalDateTime, Activity>();
 
         for (LocalDateTime date : registers.keySet()) {
             tmpRegisters.put(date, registers.get(date).clone());
@@ -245,19 +251,27 @@ public class User implements Serializable {
         sb.append("  type: " + this.type + ",\n");
 
         sb.append("  activities: [");
-        for (int i = 0; i < this.activities.size() - 1; i++) {
-            sb.append("\n    " + this.activities.get(i).getName() + ",");
+        for (Activity a : this.activities) {
+            sb.append("\n    " + a.getName() + ",");
         }
-        if (this.activities.size() > 0) {
-            sb.append("\n    " + this.activities.get(this.activities.size() - 1).getName() + "\n  ");
+        if (!this.activities.isEmpty()) {
+            sb.setLength(sb.length() - 1); // Remove the trailing comma
+            sb.append("\n  "); // Add indentation for the closing bracket
         }
         sb.append("],\n");
 
+        // Display registers sorted by date
+        List<LocalDateTime> sortedDates = new ArrayList<>(this.registers.keySet());
+        Collections.sort(sortedDates);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
         sb.append("  registers: [");
-        // TODO sort registers by date
-        for (LocalDateTime date : this.registers.keySet()) {
+        for (LocalDateTime date : sortedDates) {
             sb.append("\n    " + date.format(formatter) + " - " + this.registers.get(date).getName() + ",");
+        }
+        if (!sortedDates.isEmpty()) {
+            sb.setLength(sb.length() - 1); // Remove the trailing comma
+            sb.append("\n  "); // Add indentation for the closing bracket
         }
         sb.append("],\n");
 
@@ -288,7 +302,7 @@ public class User implements Serializable {
             user.getHeight() == this.height &&
             user.getType() == this.type &&
             user.getActivities().equals(this.activities) &&
-            user.getRegisters().equals(this.registers) && // TODO check this
+            user.getRegisters().equals(this.registers) &&
             user.getPlan().equals(this.plan)
         );
     }
@@ -438,7 +452,7 @@ public class User implements Serializable {
 
         sc.nextLine(); // clear buffer
 
-        return new User(id, name, email, address, heartRate, weight, height, type); // TODO clone isn't necessary here?
+        return new User(id, name, email, address, heartRate, weight, height, type);
     }
 
     public static User search(Scanner sc, HashMap<Integer, User> users) throws UserNotFoundException {

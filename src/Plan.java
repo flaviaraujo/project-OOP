@@ -44,7 +44,10 @@ public class Plan implements Serializable {
     }
 
     public void setEvents(ArrayList<Event> events) {
-        this.events = new ArrayList<Event>(events); //TODO clone
+        this.events = new ArrayList<Event>(events.size());
+        for (Event event : events) {
+            this.events.add(event.clone());
+        }
     }
 
     public String toString() {
@@ -52,7 +55,7 @@ public class Plan implements Serializable {
         sb.append("Plan: " + this.name + "\n");
         sb.append("Events: \n");
         for (Event event : this.events) {
-            sb.append(event.toString()).append("\n");
+            sb.append(event + "\n");
         }
         return sb.toString();
     }

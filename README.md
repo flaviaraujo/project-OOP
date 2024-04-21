@@ -41,7 +41,7 @@
 - [ ] searchActivity function exception handling + rename this method
 - [ ] When calling User.deleteActivity() check in the registers if the activity is being used and if so throw exception.
 - [ ] Add option to create activity when registering a register, if this one is unique (cpm registers) add it to the user activities
-- [ ] Sort events in a plan by date time
+- [x] Sort events in a plan by date time
 - [x] Add hard notion to activities
 - [ ] Add create plan based on user objectives
 - [ ] MVC in Main
