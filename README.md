@@ -38,7 +38,7 @@
 - [ ] When calling User.deleteActivity() check in the registers if the activity is being used and if so throw exception.
 - [ ] Add option to create activity when registering a register
 - [ ] Sort events in a plan by date time
-- [ ] Add hard notion to activities
+- [x] Add hard notion to activities
 - [ ] Add create plan based on user objectives
 - [ ] MVC in Main
 
