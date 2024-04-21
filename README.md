@@ -27,18 +27,20 @@
 
 ## TODO list
 
-- [ ] Remove class Register
+- [x] Remove class Register (Notes - 1)
 - [x] Activity name problem with spaces when searching
-- [x] Change the users from ArrayList to a HashMap (Notes - 1)
+- [x] Change the users from ArrayList to a HashMap (Notes - 2)
 - [x] Change user to include weight, height and age
+- [ ] fix activity name input in create plan interactively
 - [ ] review functions to get calories burned
 - [ ] Command line arguments
 - [ ] Add user perspective
+- [ ] Encapsulate app; add clone's
 - [ ] Add more exception handling - nextInt, next and nextLine
 - [ ] Add throw to functions that can return null (search, get, etc)
 - [ ] searchActivity function exception handling + rename this method
 - [ ] When calling User.deleteActivity() check in the registers if the activity is being used and if so throw exception.
-- [ ] Add option to create activity when registering a register
+- [ ] Add option to create activity when registering a register, if this one is unique (cpm registers) add it to the user activities
 - [ ] Sort events in a plan by date time
 - [x] Add hard notion to activities
 - [ ] Add create plan based on user objectives
@@ -47,6 +49,26 @@
 ## Notes
 
 ### 1.
+
+What will change when replacing the Register with activities?
+
+```java
+private HashMap<LocalDateTime, Register> registers;
+// to
+private HashMap<LocalDateTime, Activity> registers;
+```
+
+Classes that will be affected:
+- [x] User
+- [x] Activity
+- [x] Main (Menu 3)
+- [x] Stats
+- [x] Simulation (Simulation.run())
+
+Activity rename caloriesBurned method to calculateCaloriesBurned
+Find out if you should put the calories burned at 0 when creating the activity.
+
+### 2.
 
 ```java
 HashMap<Integer, User> users;
