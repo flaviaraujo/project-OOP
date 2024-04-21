@@ -33,23 +33,218 @@ public class Main {
         String stateFilepath = m.defaultStateFilepath;
         Scanner sc = new Scanner(System.in);
 
+        // User to use in the user perspective menu (if any)
+        User user = null;
+
         // Parse command line arguments
-        if (args.length > 0) {
-            // TODO --help option
-            // TODO --user <--id|--email> <id|email> [state] option
-            stateFilepath = args[0];
-            loadState(stateFilepath, m, sc);
+        for (int i = 0; i < args.length; i++) {
+            if (args[i].equals("--help") || args[i].equals("-h")) {
+                System.out.println("Usage: java src.Main [--load <file>] [--user <--id|--email> <id|email>]");
+                System.out.println("Options:");
+                System.out.println("  -h --help: show this help message");
+                System.out.println("  -l --load: load a program state from file");
+                System.out.println("  -u --user: " +
+                    "select an user by id or email to load his perspective");
+                System.out.println("  -e --email: select an user by email (use with --user option after --load option)");
+                System.out.println("  -i --id: select an user by ID (use with --user option after --load option)");
+                System.exit(0);
+            }
+            else if (args[i].equals("--load") || args[i].equals("-l")) {
+                stateFilepath = args[++i];
+                loadState(stateFilepath, m, sc);
+            }
+            else if (args[i].equals("--user") || args[i].equals("-u")) {
+                if (args.length < i + 2 + 1) {
+                    System.out.println("Invalid number of arguments for option: " + args[i]);
+                    System.exit(1);
+                }
+                String option = args[++i];
+                String value = args[++i];
+                if (option.equals("--id") || option.equals("-i")) {
+                    try {
+                        int id = Integer.parseInt(value);
+                        if (m.users.containsKey(id)) {
+                            user = m.users.get(id);
+                        }
+                        else {
+                            System.out.println("User with id " + id + " not found.");
+                            System.out.println("Note that you must load the state file first.");
+                            System.exit(2);
+                        }
+                    }
+                    catch (NumberFormatException e) {
+                        System.out.println("Invalid ID: " + value);
+                        System.exit(1);
+                    }
+                }
+                else if (option.equals("--email") || option.equals("-e")) {
+                    for (User u : m.users.values()) {
+                        if (u.getEmail().equals(value)) {
+                            user = u;
+                            break;
+                        }
+                    }
+                    System.out.println("User with email " + value + " not found.");
+                    System.out.println("Note that you must load the state file first.");
+                    System.exit(2);
+                }
+                else {
+                    System.out.println("Invalid user selector option: " + option);
+                    System.exit(1);
+                }
+            }
+            else {
+                System.out.println("Invalid option: " + args[i]);
+                System.exit(1);
+            }
         }
 
-        System.out.println("Welcome to the Activity Planner!");
-
-        // Main loop
-        while (true) {
-            mainMenu(sc, stateFilepath, m);
+        if (user != null) {
+            System.out.println("Welcome to Activity Planner, " + user.getName() + "!");
+            // User perspective menu
+            while (true) {
+                userMenu(sc, stateFilepath, m, user);
+            }
+        }
+        else {
+            System.out.println("Welcome to the Activity Planner!");
+            // Main menu
+            while (true) {
+                mainMenu(sc, stateFilepath, m);
+            }
         }
     }
 
-    // TODO user perspective
+    // TODO user perspective menu
+    private static void userMenu(Scanner sc, String stateFilepath, Main m, User user) {
+        System.out.println();
+        System.out.println("[User menu] Please select an option:");
+        System.out.println("( 1) Create an activity");
+        System.out.println("( 2) Delete an activity");
+        System.out.println("( 3) View an activity");
+        System.out.println("( 4) View all activities");
+        System.out.println("( 5) Register activity");
+        System.out.println("( 6) View registered activities");
+        System.out.println("( 7) Create your plan");
+        System.out.println("( 8) Create plan based on your goals");
+        System.out.println("( 9) Delete your plan");
+        System.out.println("(10) View your plan");
+        System.out.println("(11) Statistics menu");
+        System.out.println("(12) Save program state");
+        System.out.println("(13) Load program state");
+        System.out.println("(14) Exit");
+        System.out.print("Option: ");
+
+        int option = 0;
+        try {
+            option = sc.nextInt();
+        }
+        catch (Exception e) { // TODO catch specific exceptions
+            sc.nextLine(); // clear buffer
+            // e.printStackTrace(); // removed to avoid clutter
+        }
+
+        ArrayList<Activity> userActivities;
+
+        switch (option) {
+            case 1:
+                // TODO Create an activity
+                userActivities = user.getActivities();
+                break;
+            case 2:
+                // TODO Delete an activity
+                userActivities = user.getActivities();
+                break;
+            case 3:
+                // TODO View an activity
+                userActivities = user.getActivities();
+                break;
+            case 4:
+                // TODO View all activities
+                userActivities = user.getActivities();
+                break;
+            case 5:
+                // TODO Register activity
+                userActivities = user.getActivities();
+                break;
+            case 6:
+                // TODO View registered activities
+                break;
+            case 7:
+                // Create your plan
+                userActivities = user.getActivities();
+                // delete plan if it already exists
+                Plan old = user.getPlan();
+                if (old != null) {
+                    System.out.print("Do you want to delete your urrent plan? [y/n]: ");
+                    String delete = sc.next();
+                    if (delete.equals("y")) {
+                        user.setPlan(null);
+                        System.out.println("Plan deleted successfully.");
+                    }
+                    else {
+                        System.out.println("Plan wasn't deleted.");
+                        break;
+                    }
+                }
+                Plan p = new Plan();
+                p = p.create(sc, userActivities);
+                user.setPlan(p);
+                if (old == null && p == null) {
+                    System.out.println("Plan not created.");
+                    break;
+                }
+                System.out.println("Plan created successfully.");
+                try {
+                    m.updateUser(user);
+                }
+                catch (UserNotFoundException e) {
+                    System.out.println(e.getMessage());
+                    break;
+                }
+                m.setUpdatedState(true);
+                break;
+            case 9:
+                // Delete your plan
+                user.setPlan(null);
+                System.out.println("Plan deleted successfully.");
+                try {
+                    m.updateUser(user);
+                }
+                catch (UserNotFoundException e) {
+                    System.out.println(e.getMessage());
+                    break;
+                }
+                m.setUpdatedState(true);
+                break;
+            case 10:
+                // View your plan
+                if (user.getPlan() == null) {
+                    System.out.println("The selected user has no plan.");
+                    break;
+                }
+                System.out.print(user.getPlan());
+                break;
+                break;
+            case 11:
+                // Statistics menu
+                Stats stats = new Stats();
+                stats.statsMenu(sc, m.users);
+                break;
+            case 12:
+                // Save program state
+                saveState(stateFilepath, m);
+                break;
+            case 13:
+                // Load program state
+                loadState(stateFilepath, m, sc);
+                break;
+            case 14:
+                // Exit
+                exit(stateFilepath, m, sc);
+                break;
+        }
+    }
 
     private static void mainMenu(Scanner sc, String stateFilepath, Main m) {
         System.out.println();
@@ -335,7 +530,7 @@ public class Main {
                             // Create a new register
                             Activity register = a.clone();
 
-                            a.setCalories(a.calculateCalories(user));
+                            register.setCalories(register.calculateCalories(user));
 
                             // Register an activity in the user
                             user.registerActivity(datetime, register);
@@ -487,17 +682,9 @@ public class Main {
                 loadState(stateFilepath, m, sc);
                 break;
             case 9:
-                // state: to save or not to save
-                if (m.updatedState) {
-                    System.out.print("Do you want to save the current state before exiting? [y/n]: ");
-                    String save = sc.next();
-                    if (save.equals("y")) {
-                        saveState(stateFilepath, m);
-                    }
-                }
-                System.out.println("Exiting...");
-                sc.close();
-                System.exit(0);
+                // Exit
+                exit(stateFilepath, m, sc);
+                break;
             default:
                 System.out.println("Invalid option");
                 break;
@@ -549,6 +736,19 @@ public class Main {
         } else {
             throw new UserNotFoundException("User with ID " + user.getId() + " does not exist.");
         }
+    }
+
+    private static void exit(String stateFilepath, Main m, Scanner sc) {
+        if (m.updatedState) {
+            System.out.print("Do you want to save the current state before exiting? [y/n]: ");
+            String save = sc.next();
+            if (save.equals("y")) {
+                saveState(stateFilepath, m);
+            }
+        }
+        System.out.println("Exiting...");
+        sc.close();
+        System.exit(0);
     }
 
     private static void saveState(String stateFilepath, Main m) {
