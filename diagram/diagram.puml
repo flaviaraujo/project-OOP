@@ -79,33 +79,13 @@ enum User.Type {
     +getNutritionMultiplier() : int
 }
 
-class Register {
-    .. Attributes ..
-    -activity : Activity
-    -caloriesBurned : int
-    --
-    .. Constructors ..
-    +Register()
-    +Register(Activity activity, User user)
-    +Register(Activity activity, int caloriesBurned)
-    +Register(Register register)
-    .. Methods - Getters ..
-    +getActivity() : Activity
-    +getCaloriesBurned() : int
-    .. Methods - Setters ..
-    +setActivity(Activity activity) : void
-    +setCaloriesBurned(int caloriesBurned) : void
-    .. Methods - Others ..
-    +toString() : String
-    +equals(Object o) : boolean
-    +clone() : Register
-}
-
 abstract class Activity {
     .. Attributes ..
     #name : String
     #duration : int
     #intensity : int
+    #hard : boolean
+    #calories : int
     --
     .. Constructors ..
     +Activity()
@@ -345,14 +325,13 @@ class Main {
 
 User <|- User.Type
 User "1" *-- "N" Activity
-User "1" *-- "N" Register
 User "1" *-- "1" Plan
-Plan "1" *-- "N" Event
+Plan "1" *-right- "N" Event
+Event "1" *-right- "1" Activity
 Main "1" *-- "N" User
 Main --> Activity : uses
 Main --> Plan : uses
 Main --> Stats : uses
-Event "1" *- "1" Activity
-Register "1" *-left- "1" Activity
+Main --> Simulation : uses
 
 @enduml
