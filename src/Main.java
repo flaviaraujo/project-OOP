@@ -595,12 +595,13 @@ public class Main {
             FileInputStream fileIn = new FileInputStream(stateFilepath);
             ObjectInputStream in = new ObjectInputStream(fileIn);
 
-            HashMap<Integer, User> tmpUsers = (HashMap<Integer, User>) in.readObject(); //TODO cast exception
+            HashMap<?, ?> tmpUsers = (HashMap<?, ?>) in.readObject();
 
-            m.users = new HashMap<>(tmpUsers.size());
+            m.users = new HashMap<Integer, User>(tmpUsers.size());
             for (Object obj : tmpUsers.values()) {
                 if (obj instanceof User) {
-                    m.users.put(((User) obj).getId(), ((User) obj));
+                    User u = (User) obj;
+                    m.users.put(u.getId(), u);
                 }
             }
 
