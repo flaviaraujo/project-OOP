@@ -28,6 +28,8 @@
 ## TODO list
 
 - [ ] Remove class Register
+- [ ] Activity name problem with spaces when searching
+- [ ] Searchactivity function exception handling + rename method
 - [x] Change the users from ArrayList to a HashMap (Notes - 1)
 - [x] Change user to include weight, height and age
 - [x] functions to get calories burned **need review**
