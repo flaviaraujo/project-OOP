@@ -149,7 +149,6 @@
 \section{Classe \textit{User}}
 \section{Classe \textit{Activity}}
 \section{Classe \textit{Plan}}
-\section{Classe \textit{Register}}
 \section{Classe \textit{Event}}
 \section{Classe \textit{Stats}}
 \section{Classe \textit{Simulation}}
@@ -183,7 +182,7 @@ Para a implementação desta funcionalidade foram definidos dois métodos na cla
     \item \textit{loadState} - Método que carrega o estado da aplicação a partir de um ficheiro binário, passado como argumento.
 \end{itemize}
 
-Como os objetos da classe \textit{User} contêm referências para todos os objetos relevantes de serem guardados/carregados - lista de Atividades, conjunto de Registos de atividades, Plano de treino semanal com os respetivos Eventos - foi necessário garantir que estes e a própria classe referente ao Utilizador implementassem a interface \textit{Serializable}, de forma a que fossem possíveis de ser guardados, e futuramente carregados, num ficheiro binário.
+Como os objetos da classe \textit{User} contêm referências para todos os objetos relevantes de serem guardados/carregados - lista de Atividades, conjunto de registos de atividades, Plano de treino semanal com os respetivos Eventos - foi necessário garantir que estes e a própria classe referente ao Utilizador implementassem a interface \textit{Serializable}, de forma a que fossem possíveis de ser guardados, e futuramente carregados, num ficheiro binário.
 
 A aplicação também dispõe de uma capacidade inteligente de detetar mudanças no seu estado, através do atributo booleano \textit{updatedState} na classe \textit{Main}, o que permitiu a implementação das seguintes funcionalidades:
 
