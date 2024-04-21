@@ -206,8 +206,7 @@ public class Main {
                                 System.out.println("The selected user has no activities.");
                                 break;
                             }
-                            System.out.println("User activities:");
-                            for (Activity t : userActivities) System.out.println("  -> " + t.getName());
+
                             // Delete an activity
                             a = Activity.searchActivity(sc, userActivities);
                             if (a == null) {
@@ -232,8 +231,7 @@ public class Main {
                                 System.out.println("The selected user has no activities.");
                                 break;
                             }
-                            System.out.println("User activities:");
-                            for (Activity t : userActivities) System.out.println("  -> " + t.getName());
+
                             // View an activity
                             a = Activity.searchActivity(sc, userActivities);
                             if (a == null) {
