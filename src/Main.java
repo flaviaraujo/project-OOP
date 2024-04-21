@@ -530,7 +530,8 @@ public class Main {
                             // Create a new register
                             Activity register = a.clone();
 
-                            register.setCalories(register.calculateCalories(user));
+                            int calories = register.calculateCalories(user);
+                            register.setCalories(calories);
 
                             // Register an activity in the user
                             user.registerActivity(datetime, register);
