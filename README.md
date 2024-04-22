@@ -32,7 +32,7 @@
 - [x] Change the users from ArrayList to a HashMap (Notes - 2)
 - [x] Change user to include weight, height and age
 - [ ] Encapsulation in Main class
-- [ ] Add max/min values to user attributes
+- [x] Add max/min values to user attributes
 - [x] fix activity name input in create plan interactively
 - [ ] review functions to get calories burned
 - [x] Command line arguments

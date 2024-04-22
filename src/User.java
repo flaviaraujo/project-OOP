@@ -14,6 +14,24 @@ import java.time.format.DateTimeFormatter;
 
 public class User implements Serializable {
 
+    private static final int MIN_NAME_LENGTH = 3;
+    private static final int MAX_NAME_LENGTH = 256;
+
+    private static final int MAX_EMAIL_LENGTH = 320;
+
+    private static final int MIN_ADDRESS_LENGTH = 5;
+    private static final int MAX_ADDRESS_LENGTH = 1024;
+
+    private static final int MIN_HEART_RATE = 20;
+    private static final int MAX_HEART_RATE = 200;
+
+    private static final int MIN_WEIGHT = 20;
+    private static final int MAX_WEIGHT = 200;
+
+    private static final int MIN_HEIGHT = 100;
+    private static final int MAX_HEIGHT = 220;
+
+
     public enum Type implements Serializable {
         OCCASIONAL(40),
         AMATEUR(60),
@@ -320,7 +338,7 @@ public class User implements Serializable {
             System.out.print("Enter user full name: ");
             name = io.readString(sc);
             // check if name is between 3 and 256 characters
-            if (name.length() < 3 || name.length() > 256) {
+            if (name.length() < MIN_NAME_LENGTH || name.length() > MAX_NAME_LENGTH) {
                 System.out.println("Name must be between 3 and 256 characters.");
                 continue;
             }
@@ -342,7 +360,7 @@ public class User implements Serializable {
                 continue;
             }
             // check if email is 320 characters or less
-            if (emailBuffer.length() > 320) {
+            if (emailBuffer.length() > MAX_EMAIL_LENGTH) {
                 System.out.println("Email must be 320 characters or less.");
                 continue;
             }
@@ -367,7 +385,7 @@ public class User implements Serializable {
             System.out.print("Enter the user address: ");
             address = io.readString(sc);
             // check if address is between 5 and 1024 characters
-            if (address.length() < 5 || address.length() > 1024) {
+            if (address.length() < MIN_ADDRESS_LENGTH || address.length() > MAX_ADDRESS_LENGTH) {
                 System.out.println("Address must be between 5 and 1024 characters.");
                 continue;
             }
@@ -385,7 +403,7 @@ public class User implements Serializable {
             heartRate = io.readInt(sc);
 
             // check if heart rate is between 20 and 200
-            if (20 > heartRate || heartRate > 200) {
+            if (MIN_HEART_RATE > heartRate || heartRate > MAX_HEART_RATE) {
                 System.out.println("Heart rate must be between 20 and 200 BPM.");
                 continue;
             }
@@ -403,7 +421,7 @@ public class User implements Serializable {
             weight = io.readInt(sc);
 
             // check if weight is between 20 and 200
-            if (20 > weight || weight > 200) {
+            if (MIN_WEIGHT > weight || weight > MAX_WEIGHT) {
                 System.out.println("Weight must be between 20 and 200 kg.");
                 continue;
             }
@@ -421,7 +439,7 @@ public class User implements Serializable {
             height = io.readInt(sc);
 
             // check if height is between 100 and 220
-            if (100 > height || height > 220) {
+            if (MIN_HEIGHT > height || height > MAX_HEIGHT) {
                 System.out.println("Height must be between 100 and 220 cm.");
                 continue;
             }
