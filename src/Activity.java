@@ -4,7 +4,6 @@ import src.activities.Distance;
 import src.activities.DistanceAltimetry;
 import src.activities.Repetition;
 import src.activities.RepetitionWeight;
-import src.exceptions.ActivityNotFoundException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -294,7 +293,7 @@ public abstract class Activity implements Serializable {
         }
     }
 
-    public static User registerActivity(Scanner sc, User u) {
+    public static User register(Scanner sc, User u) {
 
         Activity a = null;
         IO io = new IO();
@@ -373,7 +372,7 @@ public abstract class Activity implements Serializable {
         register.setCalories(calories);
 
         // Register an activity in the user
-        u.registerActivity(datetime, register);
+        u.register(datetime, register);
 
         // Print the registered activity
         System.out.println("Activity registered successfully: ");

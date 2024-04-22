@@ -64,7 +64,7 @@ class User {
     +addActivity(Activity activity) : void
     +deleteActivity(Activity activity) : void
     .. Methods - Registers ..
-    +registerActivity(LocalDateTime date, Register register) : void
+    +register(LocalDateTime date, Register register) : void
     +viewRegisters(LocalDateTime date, Register register) : void
 }
 

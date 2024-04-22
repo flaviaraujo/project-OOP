@@ -92,7 +92,7 @@ public class Simulation {
                             // register the activity
                             Activity r = a.clone();
                             r.setCalories(calories);
-                            u.registerActivity(eventDateTime, r);
+                            u.register(eventDateTime, r);
 
                             System.out.println(
                                 "User \"" + u.getName() + '"' +

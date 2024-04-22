@@ -1,6 +1,7 @@
 package src;
 
 import src.activities.Distance;
+import src.exceptions.ActivityIsRegisteredException;
 import src.exceptions.UserNotFoundException;
 
 import java.io.FileInputStream;
@@ -200,7 +201,13 @@ public class Main {
 
                 // Delete an activity
                 a = Activity.search(sc, userActivities);
-                user.deleteActivity(a);
+                try {
+                    user.deleteActivity(a);
+                }
+                catch (ActivityIsRegisteredException e) {
+                    System.out.println(e.getMessage());
+                    break;
+                }
 
                 // Update the Main instance by replacing the user
                 try {
@@ -242,7 +249,7 @@ public class Main {
             case 7:
                 // Register activity
                 a = (Activity) new Distance();
-                user = a.registerActivity(sc, user);
+                user = a.register(sc, user);
                 // Update the Main instance by replacing the user
                 try {
                     m.updateUser(user);
@@ -499,7 +506,13 @@ public class Main {
 
                             // Delete an activity
                             a = Activity.search(sc, userActivities);
-                            user.deleteActivity(a);
+                            try {
+                                user.deleteActivity(a);
+                            }
+                            catch (ActivityIsRegisteredException e) {
+                                System.out.println(e.getMessage());
+                                break;
+                            }
                             // Update the Main instance by replacing the user
                             try {
                                 m.updateUser(user);
@@ -563,7 +576,7 @@ public class Main {
                     switch (submenuOption) {
                         case 1:
                             Activity activity = (Activity) new Distance();
-                            user = activity.registerActivity(sc, user);
+                            user = activity.register(sc, user);
                             // Update the Main instance by replacing the user
                             try {
                                 m.updateUser(user);

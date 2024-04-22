@@ -1,5 +1,6 @@
 package src;
 
+import src.exceptions.ActivityIsRegisteredException;
 import src.exceptions.UserNotFoundException;
 
 import java.io.Serializable;
@@ -648,12 +649,17 @@ public class User implements Serializable {
         this.activities.add(activity.clone());
     }
 
-    public void deleteActivity(Activity activity) {
+    public void deleteActivity(Activity activity) throws ActivityIsRegisteredException {
+
+        if (this.registers.containsValue(activity)) {
+            throw new ActivityIsRegisteredException();
+        }
+
         this.activities.remove(activity);
     }
 
     // Registers methods
-    public void registerActivity(LocalDateTime date, Activity register) {
+    public void register(LocalDateTime date, Activity register) {
         this.registers.put(date, register.clone());
     }
 
