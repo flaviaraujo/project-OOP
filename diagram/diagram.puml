@@ -2,6 +2,17 @@
 
 class User {
     .. Attributes ..
+    -{static} MIN_NAME_LENGTH : final int
+    -{static} MAX_NAME_LENGTH : final int
+    -{static} MAX_EMAIL_LENGTH : final int 
+    -{static} MIN_ADDRESS_LENGTH : final int
+    -{static} MAX_ADDRESS_LENGTH : final int
+    -{static} MIN_HEART_RATE : final int
+    -{static} MAX_HEART_RATE : final int
+    -{static} MIN_WEIGHT : final int
+    -{static} MAX_WEIGHT : final int
+    -{static} MIN_HEIGHT : final int
+    -{static} MAX_HEIGHT : final int
     -id : int
     -name : String
     -email : String
@@ -9,7 +20,6 @@ class User {
     -heartRate : int
     -weight : int
     -height : int
-    -age : int
     -type : User.Type
     -activities : ArrayList<Activity>
     -registers : HashMap<LocalDateTime, Register>
@@ -19,10 +29,10 @@ class User {
     +User()
     +User(int id, String name, String email,
         String address, int heartRate, int weight,
-        int height, int age, Type type)
+        int height, Type type)
     +User(int id, String name, String email,
         String address, int heartRate, int weight, int height,
-        int age, Type type, ArrayList<Activity> activities,
+        Type type, ArrayList<Activity> activities,
         HashMap<LocalDateTime, Register> registers, Plan plan)
     +User(User user)
     .. Methods - Getters ..
@@ -33,7 +43,6 @@ class User {
     +getHeartRate() : int
     +getWeight() : int
     +getHeight() : int
-    +getAge() : int
     +getType() : User.Type
     +getActivities() : ArrayList<Activity>
     +getRegisters() : HashMap<LocalDateTime, Register>
@@ -46,7 +55,6 @@ class User {
     +setHeartRate(int heartRate) : void
     +setWeight(int weight) : void
     +setHeight(int height) : void
-    +setAge(int age) : void
     +setType(Type type) : void
     +setActivities(ArrayList<Activity> activities) : void
     +setRegisters(HashMap<LocalDateTime, Register> registers) : void
@@ -56,16 +64,23 @@ class User {
     +equals(Object o) : boolean
     +clone() : User
     .. Methods - Manage Users ..
-    +{static} create(Scanner sc, ArrayList<User> users) : User
-    +{static} search(Scanner sc, ArrayList<User> users) : User
-    +{static} view(Scanner sc, ArrayList<User> users) : void
-    +{static} delete(Scanner sc, ArrayList<User> users) : void
+    +enterName(Scanner sc) : String
+    +enterEmail(Scanner sc, HashMap<Integer, User> users) : String
+    +enterAddress(Scanner sc) : String
+    +enterHeartRate(Scanner sc) : int
+    +enterWeight(Scanner sc) : int
+    +enterHeight(Scanner sc) : int
+    +enterType(Scanner sc) : User.Type
+    +{static} create(Scanner sc, HashMap<Integer, User> users, User user) : User
+    +{static} search(Scanner sc, HashMap<Integer, User> users, User user) : User
+    +{static} view(Scanner sc, HashMap<Integer, User> users, User user) : void
+    +{static} delete(Scanner sc, HashMap<Integer, User> users, User user) : void
     .. Methods - Activities ..
     +addActivity(Activity activity) : void
     +deleteActivity(Activity activity) : void
     .. Methods - Registers ..
-    +register(LocalDateTime date, Register register) : void
-    +viewRegisters(LocalDateTime date, Register register) : void
+    +register(LocalDateTime date, Activity register) : void
+    +viewRegisters() : void
 }
 
 enum User.Type {
@@ -89,17 +104,21 @@ abstract class Activity {
     --
     .. Constructors ..
     +Activity()
-    +Activity(String name, int duration, int intensity)
+    +Activity(String name, int duration, int intensity, boolean hard, int calories)
     +Activity(Activity activity)
     .. Methods - Getters ..
     +{abstract} getACTIVITY_TYPE() : int
     +getName() : String
     +getDuration() : int
     +getIntensity() : int
+    +getHard() : boolean
+    +getCalories() : int
     .. Methods - Setters ..
     +setName(String name) : void
     +setDuration(int duration) : void
     +setIntensity(int intensity) : void
+    +setHard(boolean hard) : void
+    +setCalories(int calories) : void
     .. Methods - Others ..
     +{abstract} toString() : String
     +{abstract} equals(Object o) : boolean
@@ -110,24 +129,29 @@ abstract class Activity {
     +isDistanceAltimetry() : boolean
     +isRepetition() : boolean
     +isRepetitionWeight() : boolean
+    +getType() : int
+    +getTypeString() : String
     .. Methods - Manage Activities ..
     +{abstract} create(Scanner sc, ArrayList<Activity> userActivities) : Activity
     +{static} createAux(Scanner sc, ArrayList<Activity> userActivities, int activityType) : Activity
     +{static} createMenu(Scanner sc, ArrayList<Activity> userActivities) : Activity
-    +{static} searchActivity(Scanner sc, ArrayList<Activity> userActivities) : Activity
+    +{static} search(Scanner sc, ArrayList<Activity> userActivities) : Activity
+    +{static} register(Scanner sc, User u) : User
 }
 
 package activities {
     class Distance extends Activity {
         .. Attributes ..
-        -{static} final ACTIVITY_TYPE : int = 1
+        -{static} final ACTIVITY_TYPE : int
+        -{static} final MET_VALUE : double
         -distance : int
         --
         .. Constructors ..
         +Distance()
-        +Distance(String name, int duration, int intensity)
         +Distance(String name, int duration, int intensity,
-            int distance)
+            boolean hard, int calories)
+        +Distance(String name, int duration, int intensity,
+            boolean hard, int calories, int distance)
         +Distance(Distance distance)
         .. Methods - Getters ..
         +getACTIVITY_TYPE() : final int
@@ -138,20 +162,22 @@ package activities {
         +toString() : String
         +equals(Object o) : boolean
         +clone() : Distance
-        +caloriesBurned(User u) : int
+        +calculateCalories(User u) : int
         +create(Scanner sc, ArrayList<Activity> userActivities) : Activity
     }
 
     class DistanceAltimetry extends Activity {
         .. Attributes ..
-        -{static} final ACTIVITY_TYPE : int = 2
+        -{static} final ACTIVITY_TYPE : int
+        -{static} final MET_VALUE : double
+        -{static} final ALTIMETRY_FACTOR : int
         -distance : int
         -altimetry : int
         --
         .. Constructors ..
         +DistanceAltimetry()
-        +DistanceAltimetry(String name, int duration, int intensity)
-        +DistanceAltimetry(String name, int duration, int intensity,
+        +DistanceAltimetry(String name, int duration, int intensity, boolean hard, int calories)
+        +DistanceAltimetry(String name, int duration, int intensity, boolean hard, int calories,
             int distance, int altimetry)
         +DistanceAltimetry(DistanceAltimetry distanceAltimetry)
         .. Methods - Getters ..
@@ -165,19 +191,20 @@ package activities {
         +toString() : String
         +equals(Object o) : boolean
         +clone() : DistanceAltimetry
-        +caloriesBurned(User u) : int
+        +calculateCalories(User u) : int
         +create(Scanner sc, ArrayList<Activity> userActivities) : Activity
     }
 
     class Repetition extends Activity {
         .. Attributes ..
-        -{static} final ACTIVITY_TYPE : int = 3
+        -{static} final ACTIVITY_TYPE : int
+        -{static} final MET_VALUE : double
         -repetition : int
         --
         .. Constructors ..
         +Repetition()
-        +Repetition(String name, int duration, int intensity)
-        +Repetition(String name, int duration, int intensity,
+        +Repetition(String name, int duration, int intensity, boolean hard, int calories)
+        +Repetition(String name, int duration, int intensity, boolean hard, int calories,
             int repetition)
         +Repetition(Repetition repetition)
         .. Methods - Getters ..
@@ -189,20 +216,21 @@ package activities {
         +toString() : String
         +equals(Object o) : boolean
         +clone() : Repetition
-        +caloriesBurned(User u) : int
+        +calculateCalories(User u) : int
         +create(Scanner sc, ArrayList<Activity> userActivities) : Activity
     }
 
     class RepetitionWeight extends Activity {
         .. Attributes ..
-        -{static} final ACTIVITY_TYPE : int = 4
+        -{static} final ACTIVITY_TYPE : int
+        -{static} final MET_VALUE : double
         -repetition : int
         -weight : int
         --
         .. Constructors ..
         +RepetitionWeight()
-        +RepetitionWeight(String name, int duration, int intensity)
-        +RepetitionWeight(String name, int duration, int intensity,
+        +RepetitionWeight(String name, int duration, int intensity, boolean hard, int calories)
+        +RepetitionWeight(String name, int duration, int intensity, boolean hard, int calories,
             int repetition, int weight)
         +RepetitionWeight(RepetitionWeight repetitionWeight)
         .. Methods - Getters ..
@@ -216,7 +244,7 @@ package activities {
         +toString() : String
         +equals(Object o) : boolean
         +clone() : RepetitionWeight
-        +caloriesBurned(User u) : int
+        +calculateCalories(User u) : int
         +create(Scanner sc, ArrayList<Activity> userActivities) : Activity
     }
 }
@@ -241,15 +269,14 @@ class Plan {
     +equals(Object o) : boolean
     +clone() : Plan
     +addEvent(Event event) : void
-    +deleteEvent(Event event) : void
-    +create(Scanner sc, ArrayList<Activity> userActivities,
-        int maxRepetitions) : Plan
+    +removeEvent(Event event) : void
+    +create(Scanner sc, ArrayList<Activity> userActivities) : Plan
 }
 
 
 class Event {
     .. Attributes ..
-    -{static} final MAX_REPETITIONS : int = 3
+    -{static} final MAX_REPETITIONS : int
     -activity : Activity
     -activityRepetitions : int
     -day : int
@@ -279,48 +306,61 @@ class Event {
     +convertTimeToString(LocalTime time) : String
     +isValidDay(int day) : boolean
     +create(Scanner sc, ArrayList<Activity> userActivities,
-        int maxRepetitions) : Event
+        int maxRepetitions int day) : Event
 }
 
 class Stats {
     .. Statistics Methods ..
-    +mostCaloriesBurned(ArrayList<User> users) : User
-    +mostCaloriesBurned(ArrayList<User> users, LocalDate start, LocalDate end) : User
-    +mostActivities(ArrayList<User> users) : User
-    +mostActivities(ArrayList<User> users, LocalDate start, LocalDate end) : User
-    +mostPracticedActivityType(ArrayList<User> users) : String
+    +mostCaloriesBurned(HashMap<Integer, User> users) : User
+    +mostCaloriesBurned(HashMap<Integer, User> users, LocalDate start, LocalDate end) : User
+    +mostActivities(HashMap<Integer, User> users) : User
+    +mostActivities(HashMap<Integer, User> users, LocalDate start, LocalDate end) : User
+    +mostPracticedActivityType(HashMap<Integer, User> users) : String
     +kmTraveled(User user) : double
     +kmTraveled(User user, LocalDate start, LocalDate end) : double
     +altimetryClimbed(User user) : int
     +altimetryClimbed(User user, LocalDate start, LocalDate end) : int
-    +mostCaloriesBurnedPlan(ArrayList<User> users) : Plan
+    +mostCaloriesBurnedPlan(HashMap<Integer, User> users) : Plan
     --
     .. Statistics Menu Methods ..
     +displayStatsMenu() : void
     +displayStatsMenu2() : void
-    +insertStartDate(Scanner sc) : LocalDate
-    +insertEndDate(Scanner sc) : LocalDate
-    +statsMenu(Scanner sc, ArrayList<User> users) : void
+    +insertDate(Scanner sc, boolean start) : LocalDate
+    +statsMenu(Scanner sc, HashMap<Integer, User> users) : void
 }
 
 class Simulation {
     .. Methods ..
-    +run(Scanner sc, ArrayList<User> users) : void
+    +run(Scanner sc, HashMap<Integer, User> users) : void
     +getSimulationEndDate(Scanner sc, LocalDate startDate) : LocalDate
 }
 
 class Main {
     .. Attributes ..
     -updatedState : boolean
-    -users : ArrayList<User>
+    -users : HashMap<Integer, User>
+    -defaultStateFilepath : final String 
     --
     .. Methods ..
     +{static} main(String args[]) : void
-    -{static} mainMenu(Scanner scanner, String stateFilepath, Main m) : void
+    -{static} userMenu(Scanner sc, String stateFilepath, Main m, IO io, User user) : void
+    -{static} mainMenu(Scanner sc, String stateFilepath, Main m, IO io) : void
+    -{static} exit(String stateFilepath, Main m, Scanner sc) : void
     -{static} saveState(String stateFilepath, Main m) : void
     -{static} loadState(String stateFilepath, Main m, Scanner sc) : void
     --
-    TODO
+    .. Methods - Manage Users..
+    +addUser(User user, int id) : void
+    +removeUser(User user) : void
+    +updateUser(User user) : void
+    --
+    ..Methods - Getters..
+    +getUpdatedState() : boolean
+    +getUsers() : HashMap<Integer, User>
+    
+    ..Methods - Setters..
+    +setUpdatedState(boolean updatedState) : void
+    +setUsers(HashMap<Integer, User> users) : void
 }
 
 User <|- User.Type
