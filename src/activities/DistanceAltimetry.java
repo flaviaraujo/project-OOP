@@ -180,6 +180,6 @@ public class DistanceAltimetry extends Activity implements Serializable {
 
         activity.setDistance(distance);
         activity.setAltimetry(altimetry);
-        return activity; // TODO clone
+        return activity.clone();
     }
 }

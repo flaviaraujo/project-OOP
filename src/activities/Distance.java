@@ -145,6 +145,6 @@ public class Distance extends Activity implements Serializable {
         }
 
         activity.setDistance(distance);
-        return activity; // TODO clone
+        return activity.clone();
     }
 }

@@ -142,6 +142,6 @@ public class Repetition extends Activity implements Serializable {
         }
 
         activity.setRepetition(repetitions);
-        return activity; // TODO clone
+        return activity.clone();
     }
 }

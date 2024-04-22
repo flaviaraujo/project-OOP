@@ -187,6 +187,6 @@ public class RepetitionWeight extends Activity implements Serializable {
 
         activity.setRepetition(repetitions);
         activity.setWeight(weight);
-        return activity; // TODO clone
+        return activity.clone();
     }
 }
