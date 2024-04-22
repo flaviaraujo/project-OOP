@@ -1,6 +1,7 @@
 package src.activities;
 
 import src.Activity;
+import src.IO;
 import src.User;
 
 import java.util.ArrayList;
@@ -120,22 +121,17 @@ public class Repetition extends Activity implements Serializable {
             return null;
         }
 
+        IO io = new IO();
+
         int repetitions = 0;
 
         while (true) {
             System.out.print("Enter the number of repetitions: ");
-            try {
-                repetitions = sc.nextInt();
-            } catch (Exception e) {
-                System.out.println("Repetitions must be an integer.");
-                sc.nextLine();
-                continue;
-            }
+            repetitions = io.readInt(sc);
 
             // check if repetitions is between 1 and 1000
             if (repetitions < 1 || repetitions > 1000) {
                 System.out.println("Repetitions must be between 1 and 1000.");
-                sc.nextLine();
                 continue;
             }
             break;

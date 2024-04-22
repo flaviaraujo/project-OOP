@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 /**
  * Activity
@@ -161,12 +162,13 @@ public abstract class Activity implements Serializable {
         int intensity = 0;
         boolean hard = false;
 
-        sc.nextLine(); // clear the buffer
+        IO io = new IO();
+
         System.out.println();
 
         while (true) {
             System.out.print("Enter the name of the activity: ");
-            String nameBuffer = sc.nextLine();
+            String nameBuffer = io.readString(sc);
 
             // check if name is between 1 and 100 characters
             if (nameBuffer.length() < 1 || nameBuffer.length() > 100) {
@@ -185,12 +187,7 @@ public abstract class Activity implements Serializable {
 
         while (true) {
             System.out.print("Enter the duration of the activity in minutes: ");
-            try {
-                duration = sc.nextInt();
-            } catch (Exception e) {
-                System.out.println("Duration must be an integer.");
-                continue;
-            }
+            duration = io.readInt(sc);
 
             // check if duration is between 1 and 1440 minutes
             if (duration < 1 || duration > 1440) {
@@ -202,12 +199,7 @@ public abstract class Activity implements Serializable {
 
         while (true) {
             System.out.print("Enter the intensity of the activity (1-100): ");
-            try {
-                intensity = sc.nextInt();
-            } catch (Exception e) {
-                System.out.println("Intensity must be an integer.");
-                continue;
-            }
+            intensity = io.readInt(sc);
 
             // check if intensity is between 1 and 100
             if (intensity < 1 || intensity > 100) {
@@ -217,29 +209,9 @@ public abstract class Activity implements Serializable {
             break;
         }
 
-        sc.nextLine(); // clear the buffer
-        while (true) {
-            System.out.print("Is the activity hard? (y/n): ");
-            String hardBuffer = "";
-            try {
-                hardBuffer = sc.nextLine();
-            }
-            catch (Exception e) {
-                System.out.println("Invalid choice. Please enter 'y' or 'n'.");
-                sc.nextLine(); // clear the buffer
-                continue;
-            }
-
-            if (hardBuffer.equals("y")) {
-                hard = true;
-                break;
-            } else if (hardBuffer.equals("n")) {
-                hard = false;
-                break;
-            } else {
-                System.out.println("Invalid choice. Please enter 'y' or 'n'.");
-            }
-        }
+        System.out.print("Is the activity hard? [y/n]: ");
+        String hardBuffer = io.readYesNo(sc);
+        hard = hardBuffer.equals("y");
 
         switch (activityType) {
             case 1:
@@ -257,6 +229,8 @@ public abstract class Activity implements Serializable {
 
     public static Activity createMenu(Scanner sc, ArrayList<Activity> userActivities) {
 
+        IO io = new IO();
+
         while (true) {
             System.out.println();
             System.out.println("Enter the activity type:");
@@ -266,14 +240,7 @@ public abstract class Activity implements Serializable {
             System.out.println("(4) Repetition with weights");
             System.out.print("Choice: ");
 
-            int choice = 0;
-            try {
-                choice = sc.nextInt();
-            } catch (Exception e) {
-                System.out.println("Invalid choice. Please enter a number.");
-                sc.nextLine(); // clear the buffer
-                continue;
-            }
+            int choice = io.readInt(sc);
 
             switch (choice) {
                 case 1:
@@ -301,8 +268,7 @@ public abstract class Activity implements Serializable {
 
     public static Activity searchActivity(Scanner sc, ArrayList<Activity> userActivities) {
 
-        sc.nextLine(); // clear the buffer
-
+        IO io = new IO();
         Activity activity = null;
         while (true) {
             // Print activities names
@@ -311,7 +277,7 @@ public abstract class Activity implements Serializable {
                 System.out.println("  -> " + a.getName());
             }
             System.out.print("Enter the name of the activity: ");
-            String name = sc.nextLine();
+            String name = io.readString(sc);
 
             activity = userActivities.stream()
                 .filter(a -> a.getName().equals(name))
@@ -320,7 +286,6 @@ public abstract class Activity implements Serializable {
 
             if (activity == null) {
                 System.out.println("Activity not found.");
-                sc.nextLine(); // clear the buffer
                 continue;
             }
 
@@ -331,6 +296,7 @@ public abstract class Activity implements Serializable {
     public static User registerActivity(Scanner sc, User u) {
 
         Activity a = null;
+        IO io = new IO();
 
         while (true) {
             System.out.println("Choose an option:");
@@ -338,14 +304,7 @@ public abstract class Activity implements Serializable {
             System.out.println("(2) Register a new activity");
             System.out.print("Option: ");
 
-            int option = 0;
-            try {
-                option = sc.nextInt();
-            } catch (Exception e) {
-                System.out.println("Invalid choice. Please enter a number.");
-                sc.nextLine(); // clear the buffer
-                continue;
-            }
+            int option = io.readInt(sc);
 
             ArrayList<Activity> userActivities = u.getActivities();
             switch (option) {
@@ -380,33 +339,31 @@ public abstract class Activity implements Serializable {
         System.out.println("(2) Use current date");
         System.out.print("Option: ");
 
-        int dateOption = 0;
-        try {
-            dateOption = sc.nextInt();
-        }
-        catch (Exception e) {
-            sc.nextLine(); // clear buffer
-        }
+        int dateOption = io.readInt(sc);
 
         LocalDateTime datetime = LocalDateTime.now();
 
         if (dateOption == 1) {
             while (true) {
+                System.out.print("Enter date (yyyy-mm-dd): ");
+                String date = io.readString(sc);
+
+                System.out.print("Enter time (hh:mm): ");
+                String time = io.readString(sc);
+
                 try {
-                    System.out.print("Enter date (yyyy-mm-dd): ");
-                    String date = sc.next();
-                    System.out.print("Enter time (hh:mm): ");
-                    String time = sc.next();
                     datetime = LocalDateTime.parse(date + "T" + time);
                 }
-                catch (Exception e) {
-                    System.out.println("Invalid date or time format.");
+                catch (DateTimeParseException e) {
+                    System.out.println("Invalid datetime format.");
                     continue;
                 }
-                if (datetime.isBefore(LocalDateTime.now())) {
-                    break;
+
+                if (!datetime.isBefore(LocalDateTime.now())) {
+                    System.out.println("Date must be less than current date.");
+                    continue;
                 }
-                System.out.println("Date must be less than current date.");
+                break;
             }
         }
 

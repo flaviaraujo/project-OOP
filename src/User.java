@@ -314,10 +314,11 @@ public class User implements Serializable {
     // Manage users methods
     public String enterName(Scanner sc) {
 
+        IO io = new IO();
         String name;
         while (true) {
             System.out.print("Enter user full name: ");
-            name = sc.nextLine();
+            name = io.readString(sc);
             // check if name is between 3 and 256 characters
             if (name.length() < 3 || name.length() > 256) {
                 System.out.println("Name must be between 3 and 256 characters.");
@@ -330,10 +331,11 @@ public class User implements Serializable {
 
     public String enterEmail(Scanner sc, HashMap<Integer, User> users) {
 
+        IO io = new IO();
         String email;
         while (true) {
             System.out.print("Enter the user email: ");
-            String emailBuffer = sc.nextLine();
+            String emailBuffer = io.readString(sc);
             // check if email is valid using regex
             if (!emailBuffer.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
                 System.out.println("Email is not valid.");
@@ -359,10 +361,11 @@ public class User implements Serializable {
 
     public String enterAddress(Scanner sc) {
 
+        IO io = new IO();
         String address;
         while (true) {
             System.out.print("Enter the user address: ");
-            address = sc.nextLine();
+            address = io.readString(sc);
             // check if address is between 5 and 1024 characters
             if (address.length() < 5 || address.length() > 1024) {
                 System.out.println("Address must be between 5 and 1024 characters.");
@@ -375,17 +378,12 @@ public class User implements Serializable {
 
     public int enterHeartRate(Scanner sc) {
 
+        IO io = new IO();
         int heartRate;
         while (true) {
             System.out.print("Enter the user resting heart rate (in BPM): ");
-            try {
-                heartRate = sc.nextInt();
-            }
-            catch (Exception e) {
-                System.out.println("Invalid heart rate.");
-                sc.nextLine(); // clear buffer
-                continue;
-            }
+            heartRate = io.readInt(sc);
+
             // check if heart rate is between 20 and 200
             if (20 > heartRate || heartRate > 200) {
                 System.out.println("Heart rate must be between 20 and 200 BPM.");
@@ -398,17 +396,12 @@ public class User implements Serializable {
 
     public int enterWeight(Scanner sc) {
 
+        IO io = new IO();
         int weight;
         while (true) {
             System.out.print("Enter the user weight (in kg): ");
-            try {
-                weight = sc.nextInt();
-            }
-            catch (Exception e) {
-                System.out.println("Invalid weight.");
-                sc.nextLine(); // clear buffer
-                continue;
-            }
+            weight = io.readInt(sc);
+
             // check if weight is between 20 and 200
             if (20 > weight || weight > 200) {
                 System.out.println("Weight must be between 20 and 200 kg.");
@@ -421,17 +414,12 @@ public class User implements Serializable {
 
     public int enterHeight(Scanner sc) {
 
+        IO io = new IO();
         int height;
         while (true) {
             System.out.print("Enter the user height (in cm): ");
-            try {
-                height = sc.nextInt();
-            }
-            catch (Exception e) {
-                System.out.println("Invalid height.");
-                sc.nextLine(); // clear buffer
-                continue;
-            }
+            height = io.readInt(sc);
+
             // check if height is between 100 and 220
             if (100 > height || height > 220) {
                 System.out.println("Height must be between 100 and 220 cm.");
@@ -444,22 +432,17 @@ public class User implements Serializable {
 
     public Type enterType(Scanner sc) {
 
+        IO io = new IO();
         while (true) {
             System.out.println("Possible user types:");
             System.out.println("  1 - OCCASIONAL");
             System.out.println("  2 - AMATEUR");
             System.out.println("  3 - PROFESSIONAL");
             // System.out.println("  4 - OLYMPIC");
+
             System.out.print("Enter the user type: ");
-            int typeCode = 0;
-            try {
-                typeCode = sc.nextInt();
-            }
-            catch (Exception e) {
-                System.out.println("Invalid user type.");
-                sc.nextLine(); // clear buffer
-                continue;
-            }
+            int typeCode = io.readInt(sc);
+
             // check if user type is valid
             if (typeCode < 1 || typeCode > 3) {
                 System.out.println("Invalid user type.");
@@ -480,8 +463,6 @@ public class User implements Serializable {
     }
 
     public static User create(Scanner sc, HashMap<Integer, User> users) {
-
-        sc.nextLine();
 
         User user = new User();
 
@@ -507,8 +488,7 @@ public class User implements Serializable {
 
     public static User search(Scanner sc, HashMap<Integer, User> users) throws UserNotFoundException {
 
-        sc.nextLine(); // clear buffer
-
+        IO io = new IO();
         int option;
         while (true) {
             System.out.println();
@@ -516,15 +496,9 @@ public class User implements Serializable {
             System.out.println("(1) By ID");
             System.out.println("(2) By email");
             System.out.print("Option: ");
-            try {
-                option = sc.nextInt();
-            } catch (Exception e) {
-                sc.nextLine(); // clear buffer
-                System.out.println("Invalid option.");
-                continue;
-            }
+            option = io.readInt(sc);
+
             if (!(option == 1 || option == 2)) {
-                sc.nextLine(); // clear buffer
                 System.out.println("Invalid option.");
                 continue;
             }
@@ -537,18 +511,15 @@ public class User implements Serializable {
 
         if (option == 1) {
             System.out.print("Enter the user ID: ");
-            try {
-                id = sc.nextInt();
-            } catch (Exception e) {
-                sc.nextLine(); // clear buffer
+            id = io.readInt(sc);
+            if (id == -1) {
                 System.out.println("Invalid ID.");
-                return null;
+                throw new UserNotFoundException("User not found.");
             }
             user = users.get(id);
         } else {
             System.out.print("Enter the user email: ");
-            sc.nextLine(); // clear buffer
-            email = sc.nextLine();
+            email = io.readString(sc);
             user = users.values().stream()
                 .filter(u -> u.getEmail().equals(email))
                 .findFirst()
@@ -592,6 +563,8 @@ public class User implements Serializable {
 
     public static void edit(Scanner sc, HashMap<Integer, User> users, User user) throws UserNotFoundException {
 
+        IO io = new IO();
+
         while (true) {
             System.out.println();
             System.out.println("Chose what to edit:");
@@ -605,15 +578,7 @@ public class User implements Serializable {
             System.out.println("(8) Go back");
             System.out.print("Option: ");
 
-            int option;
-            try {
-                option = sc.nextInt();
-                sc.nextLine(); // clear buffer
-            } catch (Exception e) {
-                sc.nextLine(); // clear buffer
-                System.out.println("Invalid option.");
-                continue;
-            }
+            int option = io.readInt(sc);
 
             switch (option) {
                 case 1:

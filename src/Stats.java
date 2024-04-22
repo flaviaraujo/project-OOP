@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 
 public class Stats {
 
@@ -313,61 +314,41 @@ public class Stats {
         System.out.println("(3) Return to stats menu");
     }
 
-    public LocalDate insertStartDate(Scanner sc) {
-        LocalDate start = null;
-        while (true) {
-            System.out.print("Insert the start date (yyyy-mm-dd): ");
-            String buffer = sc.next();
-            try {
-                start = LocalDate.parse(buffer);
-                break;
-            } catch (Exception e) {
-                System.out.println("Invalid date format, try again.");
-            }
-        }
-        return start;
-    }
+    public LocalDate insertDate(Scanner sc, boolean start) {
 
-    public LocalDate insertEndDate(Scanner sc) {
-        LocalDate end = null;
+        IO io = new IO();
+
+        LocalDate date = null;
         while (true) {
-            System.out.print("Insert the end date (yyyy-mm-dd): ");
-            String buffer = sc.next();
+            System.out.print("Insert the " + (start ? "start" : "end") + " date (yyyy-mm-dd): ");
+            String buffer = io.readString(sc);
             try {
-                end = LocalDate.parse(buffer);
-                break;
-            } catch (Exception e) {
-                System.out.println("Invalid date format, try again.");
+                date = LocalDate.parse(buffer);
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid date format.");
+                continue;
             }
+            break;
         }
-        return end;
+        return date;
     }
 
     public void statsMenu(Scanner sc, HashMap<Integer, User> users) {
         User user = null;
         int option = 0, option2 = 0;
+        IO io = new IO();
         while (true) {
             displayStatsMenu();
             System.out.print("Option: ");
-            try {
-                option = sc.nextInt();
-            } catch (Exception e) {
-                System.out.println("Invalid option, try again.");
-                sc.next();
-                continue;
-            }
+
+            option = io.readInt(sc);
+
             switch (option) {
                 case 1:
                     // 1. The user with most calories burned
                     displayStatsMenu2();
                     System.out.print("Option: ");
-                    try {
-                        option2 = sc.nextInt();
-                    } catch (Exception e) {
-                        System.out.println("Invalid option, try again.");
-                        sc.next();
-                        continue;
-                    }
+                    option2 = io.readInt(sc);
 
                     switch (option2) {
                         case 1:
@@ -379,8 +360,8 @@ public class Stats {
                             System.out.println("The user with most calories burned is: " + user.getName());
                             break;
                         case 2:
-                            LocalDate start = insertStartDate(sc);
-                            LocalDate end = insertEndDate(sc);
+                            LocalDate start = insertDate(sc, true);
+                            LocalDate end = insertDate(sc, false);
                             user = mostCaloriesBurned(users, start, end);
                             if (user != null) {
                                 System.out.println("The user with most calories burned between "
@@ -399,13 +380,7 @@ public class Stats {
                     // 2. The user with the most activities (registered/completed)
                     displayStatsMenu2();
                     System.out.print("Option: ");
-                    try {
-                        option2 = sc.nextInt();
-                    } catch (Exception e) {
-                        System.out.println("Invalid option, try again.");
-                        sc.next();
-                        continue;
-                    }
+                    option2 = io.readInt(sc);
 
                     switch (option2) {
                         case 1:
@@ -418,8 +393,8 @@ public class Stats {
                             }
                             break;
                         case 2:
-                            LocalDate start = insertStartDate(sc);
-                            LocalDate end = insertEndDate(sc);
+                            LocalDate start = insertDate(sc, true);
+                            LocalDate end = insertDate(sc, false);
                             user = mostActivities(users, start, end);
                             if (user != null) {
                                 System.out.println("The user with most activities between "
@@ -454,13 +429,7 @@ public class Stats {
 
                     displayStatsMenu2();
                     System.out.print("Option: ");
-                    try {
-                        option2 = sc.nextInt();
-                    } catch (Exception e) {
-                        System.out.println("Invalid option, try again.");
-                        sc.next();
-                        continue;
-                    }
+                    option2 = io.readInt(sc);
 
                     switch (option2) {
                         case 1:
@@ -468,8 +437,8 @@ public class Stats {
                             System.out.println("The user " + user.getName() + " has traveled " + km + " km.");
                             break;
                         case 2:
-                            LocalDate start = insertStartDate(sc);
-                            LocalDate end = insertEndDate(sc);
+                            LocalDate start = insertDate(sc, true);
+                            LocalDate end = insertDate(sc, false);
                             km = kmTraveled(user, start, end);
                             System.out.println("The user " + user.getName() + " has traveled " + km + " km between "
                                 + start + " and " + end + ".");
@@ -494,13 +463,7 @@ public class Stats {
 
                     displayStatsMenu2();
                     System.out.print("Option: ");
-                    try {
-                        option2 = sc.nextInt();
-                    } catch (Exception e) {
-                        System.out.println("Invalid option, try again.");
-                        sc.next();
-                        continue;
-                    }
+                    option2 = io.readInt(sc);
 
                     switch (option2) {
                         case 1:
@@ -509,8 +472,8 @@ public class Stats {
                                     + altimetry + " meters.");
                             break;
                         case 2:
-                            LocalDate start = insertStartDate(sc);
-                            LocalDate end = insertEndDate(sc);
+                            LocalDate start = insertDate(sc, true);
+                            LocalDate end = insertDate(sc, false);
                             altimetry = altimetryClimbed(user, start, end);
                             System.out.println("The user " + user.getName() + " has climbed "
                                 + altimetry + " meters between "

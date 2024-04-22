@@ -1,6 +1,7 @@
 package src.activities;
 
 import src.Activity;
+import src.IO;
 import src.User;
 
 import java.util.ArrayList;
@@ -146,17 +147,14 @@ public class RepetitionWeight extends Activity implements Serializable {
             return null;
         }
 
+        IO io = new IO();
+
         int repetitions = 0;
         int weight = 0;
 
         while (true) {
             System.out.print("Enter the number of repetitions: ");
-            try {
-                repetitions = sc.nextInt();
-            } catch (Exception e) {
-                System.out.println("Repetitions must be an integer.");
-                continue;
-            }
+            repetitions = io.readInt(sc);
 
             // check if repetitions is between 1 and 1000
             if (repetitions < 1 || repetitions > 1000) {
@@ -168,18 +166,11 @@ public class RepetitionWeight extends Activity implements Serializable {
 
         while (true) {
             System.out.print("Enter the weight of the activity in kg: ");
-            try {
-                weight = sc.nextInt();
-            } catch (Exception e) {
-                System.out.println("Weight must be an integer.");
-                sc.nextLine();
-                continue;
-            }
+            weight = io.readInt(sc);
 
             // check if weight is between 1 and 300 kg
             if (weight < 1 || weight > 300) {
                 System.out.println("Weight must be between 1 and 300 kg.");
-                sc.nextLine();
                 continue;
             }
             break;

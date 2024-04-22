@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.DayOfWeek;
 
 public class Simulation {
@@ -116,18 +117,22 @@ public class Simulation {
 
     public LocalDate getSimulationEndDate(Scanner sc, LocalDate startDate) {
 
-        sc.nextLine(); // clear the buffer
+        IO io = new IO();
 
         LocalDate endDate = null;
         while (true) {
+
+            System.out.print("Enter the end date of the simulation (yyyy-mm-dd): ");
+
+            String endDateBuffer = io.readString(sc);
             try {
-                System.out.print("Enter the end date of the simulation (yyyy-mm-dd): ");
-                String endDateBuffer = sc.nextLine();
                 endDate = LocalDate.parse(endDateBuffer);
-            } catch (Exception e) {
+            }
+            catch (DateTimeParseException e) {
                 System.out.println("Invalid date format.");
                 continue;
             }
+
             if (endDate.isBefore(startDate)) {
                 System.out.println("The end date must be after the start date.");
                 continue;

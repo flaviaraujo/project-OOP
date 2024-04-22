@@ -5,6 +5,7 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class Event implements Serializable {
 
@@ -143,7 +144,6 @@ public class Event implements Serializable {
 
         Activity activity;
         while (true) {
-            sc.nextLine(); // clear the buffer
             activity = Activity.searchActivity(sc, userActivities);
             if (activity == null) {
                 System.out.println("Activity not found.");
@@ -152,20 +152,15 @@ public class Event implements Serializable {
             break;
         }
 
+        IO io = new IO();
+
         int activityRepetitions = 1;
         if (maxRepetitions != 1) {
             while (true) {
                 System.out.print("Enter the number of times you want to repeat " +
                     "the activity (1-" + maxRepetitions + "): ");
-                activityRepetitions = 0;
-                try {
-                    activityRepetitions = sc.nextInt();
-                }
-                catch (Exception e) {
-                    System.out.println("Invalid input.");
-                    sc.nextLine();
-                    continue;
-                }
+                activityRepetitions = io.readInt(sc);
+
                 if (activityRepetitions < 1 || activityRepetitions > maxRepetitions) {
                     System.out.println("Invalid number of repetitions. Please enter a number " +
                         "between 1 and " + maxRepetitions + ".");
@@ -178,12 +173,12 @@ public class Event implements Serializable {
         LocalTime time;
         while (true) {
             System.out.print("Enter the time of the event (HH:mm): ");
-            String timeBuffer = sc.next();
+            String timeBuffer = io.readString(sc);
             try {
                 time = LocalTime.parse(timeBuffer);
             }
-            catch (Exception e) {
-                System.out.println("Invalid time.");
+            catch (DateTimeParseException e) {
+                System.out.println("Invalid time format.");
                 continue;
             }
             break;

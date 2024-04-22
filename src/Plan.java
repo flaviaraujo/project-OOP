@@ -105,17 +105,17 @@ public class Plan implements Serializable {
             return null;
         }
 
-        sc.nextLine(); // clear the buffer
-
         Event e = new Event();
         int maxActivities = e.getMAX_REPETITIONS();
 
         // Plan
         Plan plan = new Plan();
 
+        IO io = new IO();
+
         // Get name of the plan
         System.out.print("Enter the name of the plan: ");
-        String name = sc.nextLine();
+        String name = io.readString(sc);
         plan.setName(name);
 
         // start on sunday and ask how many activities wants to add on that day, and so on
@@ -126,14 +126,8 @@ public class Plan implements Serializable {
                 System.out.print("How many activities do you want on " +
                     e.convertDayToString(i) + "? (0-" + maxActivities + "): ");
 
-                try {
-                    activities = sc.nextInt();
-                }
-                catch (Exception ex) {
-                    System.out.println("Invalid input. Please enter a number.");
-                    sc.nextLine();
-                    continue;
-                }
+                activities = io.readInt(sc);
+
                 if (activities < 0 || activities > maxActivities) {
                     System.out.println("Invalid number of activities. " +
                         "Please enter a number between 0 and " + maxActivities + ".");

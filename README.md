@@ -33,16 +33,16 @@
 - [x] Change user to include weight, height and age
 - [ ] Encapsulation in Main class
 - [ ] Add max/min values to user attributes
-- [ ] fix activity name input in create plan interactively
+- [x] fix activity name input in create plan interactively
 - [ ] review functions to get calories burned
 - [x] Command line arguments
 - [x] Add user perspective
 - [ ] Encapsulate app; add clone's
-- [ ] Add more exception handling - nextInt, next and nextLine
+- [x] Add more exception handling - nextInt, next and nextLine
 - [ ] Add throw to functions that can return null (search, get, etc)
 - [ ] searchActivity function exception handling + rename this method
 - [ ] When calling User.deleteActivity() check in the registers if the activity is being used and if so throw exception.
-- [ ] Add option to create activity when registering a register, if this one is unique (cpm registers) add it to the user activities
+- [ ] Add option to create activity when registering a register, **if this one is unique (cpm registers) add it to the user activities**
 - [x] In simulation if an activity is repeated at the end of the day, add it to the next day
 - [x] Sort events in a plan by date time
 - [x] Add hard notion to activities

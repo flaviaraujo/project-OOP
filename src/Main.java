@@ -7,14 +7,17 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InvalidClassException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
+import java.io.OptionalDataException;
+import java.io.StreamCorruptedException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 import java.util.Map.Entry;
 import java.util.Scanner;
 
@@ -98,24 +101,27 @@ public class Main {
             }
         }
 
+        IO io = new IO();
+
         if (user != null) {
             System.out.println("Welcome to Activity Planner, " + user.getName() + "!");
             // User perspective menu
             while (true) {
-                userMenu(sc, stateFilepath, m, user);
+                userMenu(sc, stateFilepath, m, io, user);
             }
         }
         else {
             System.out.println("Welcome to the Activity Planner!");
             // Main menu
             while (true) {
-                mainMenu(sc, stateFilepath, m);
+                mainMenu(sc, stateFilepath, m, io);
             }
         }
     }
 
     // User perspective menu
-    private static void userMenu(Scanner sc, String stateFilepath, Main m, User user) {
+    private static void userMenu(Scanner sc, String stateFilepath, Main m, IO io, User user) {
+
         System.out.println();
         System.out.println("[User menu] Please select an option:");
         System.out.println("( 1) View your profile");
@@ -136,14 +142,7 @@ public class Main {
         System.out.println("(16) Exit");
         System.out.print("Option: ");
 
-        int option = 0;
-        try {
-            option = sc.nextInt();
-        }
-        catch (Exception e) { // TODO catch specific exceptions
-            sc.nextLine(); // clear buffer
-            // e.printStackTrace(); // removed to avoid clutter
-        }
+        int option = io.readInt(sc);
 
         Activity a = null;
         ArrayList<Activity> userActivities;
@@ -276,7 +275,7 @@ public class Main {
                 Plan old = user.getPlan();
                 if (old != null) {
                     System.out.print("Do you want to delete your urrent plan? [y/n]: ");
-                    String delete = sc.next();
+                    String delete = io.readYesNo(sc);
                     if (delete.equals("y")) {
                         user.setPlan(null);
                         System.out.println("Plan deleted successfully.");
@@ -355,7 +354,7 @@ public class Main {
         }
     }
 
-    private static void mainMenu(Scanner sc, String stateFilepath, Main m) {
+    private static void mainMenu(Scanner sc, String stateFilepath, Main m, IO io) {
         System.out.println();
         System.out.println("[Main menu] Please select an option:");
         System.out.println("(1) Manage users (create, delete, edit, view)");
@@ -369,14 +368,7 @@ public class Main {
         System.out.println("(9) Exit");
         System.out.print("Option: ");
 
-        int option = 0;
-        try {
-            option = sc.nextInt();
-        }
-        catch (Exception e) { // TODO catch specific exceptions
-            sc.nextLine(); // clear buffer
-            // e.printStackTrace(); // removed to avoid clutter
-        }
+        int option = io.readInt(sc);
 
         User user = new User();
         int submenuOption;
@@ -397,13 +389,7 @@ public class Main {
                     System.out.println("(6) Back to main menu");
                     System.out.print("Option: ");
 
-                    submenuOption = 0;
-                    try {
-                        submenuOption = sc.nextInt();
-                    }
-                    catch (Exception e) {
-                        sc.nextLine(); // clear buffer
-                    }
+                    submenuOption = io.readInt(sc);
 
                     switch (submenuOption) {
                         case 1:
@@ -486,13 +472,7 @@ public class Main {
                     System.out.println("(5) Back to main menu");
                     System.out.print("Option: ");
 
-                    submenuOption = 0;
-                    try {
-                        submenuOption = sc.nextInt();
-                    }
-                    catch (Exception e) {
-                        sc.nextLine(); // clear buffer
-                    }
+                    submenuOption = io.readInt(sc);
 
                     ArrayList<Activity> userActivities = user.getActivities();
                     Activity a;
@@ -594,13 +574,7 @@ public class Main {
                     System.out.println("(3) Back to main menu");
                     System.out.print("Option: ");
 
-                    submenuOption = 0;
-                    try {
-                        submenuOption = sc.nextInt();
-                    }
-                    catch (Exception e) {
-                        sc.nextLine(); // clear buffer
-                    }
+                    submenuOption = io.readInt(sc);
 
                     switch (submenuOption) {
                         case 1:
@@ -652,13 +626,7 @@ public class Main {
                     System.out.println("(5) Back to main menu");
                     System.out.print("Option: ");
 
-                    submenuOption = 0;
-                    try {
-                        submenuOption = sc.nextInt();
-                    }
-                    catch (Exception e) {
-                        sc.nextLine(); // clear buffer
-                    }
+                    submenuOption = io.readInt(sc);
 
                     ArrayList<Activity> userActivities = user.getActivities();
 
@@ -670,7 +638,7 @@ public class Main {
                             if (old != null) {
                                 System.out.println("A plan already exists for the selected user.");
                                 System.out.print("Do you want to delete the current plan? [y/n]: ");
-                                String delete = sc.next();
+                                String delete = io.readYesNo(sc);
                                 if (delete.equals("y")) {
                                     user.setPlan(null);
                                     System.out.println("Plan deleted successfully.");
@@ -808,9 +776,12 @@ public class Main {
     }
 
     private static void exit(String stateFilepath, Main m, Scanner sc) {
+
+        IO io = new IO();
+
         if (m.updatedState) {
             System.out.print("Do you want to save the current state before exiting? [y/n]: ");
-            String save = sc.next();
+            String save = io.readYesNo(sc);
             if (save.equals("y")) {
                 saveState(stateFilepath, m);
             }
@@ -855,10 +826,13 @@ public class Main {
     }
 
     private static void loadState(String stateFilepath, Main m, Scanner sc) {
+
+        IO io = new IO();
+
         if (m.updatedState) {
             System.out.print("Warning: current state will be lost. Do you want to continue? [y/n]: ");
-            String cont = sc.next();
-            if (!cont.equals("y")) {
+            String cont = io.readYesNo(sc);
+            if (cont.equals("n")) {
                 return;
             }
         }
@@ -883,20 +857,29 @@ public class Main {
             m.updatedState = false;
 
         }
-        catch (NotSerializableException e) {
-            System.out.println("Object not serializable: " + e.getMessage());
-        }
         catch (FileNotFoundException e) {
             System.out.println("File not found: \"" + stateFilepath + "\"");
-        }
-        catch (IOException e) {
-            System.out.println("IOException. Error: " + e.getMessage());
         }
         catch (ClassNotFoundException e) {
             System.out.println("Couldn't find class: " + e.getMessage());
         }
+        catch (InvalidClassException e) {
+            System.out.println("Invalid class: " + e.getMessage());
+        }
+        catch (StreamCorruptedException e) {
+            System.out.println("Stream corrupted: " + e.getMessage());
+        }
+        catch (OptionalDataException e) {
+            System.out.println("Optional data found: " + e.getMessage());
+        }
         catch (ClassCastException e) {
             System.out.println("Couldn't cast object: " + e.getMessage());
+        }
+        catch (NotSerializableException e) {
+            System.out.println("Object not serializable: " + e.getMessage());
+        }
+        catch (IOException e) {
+            System.out.println("IOException: " + e.getMessage());
         }
         catch (Exception e) {
             System.out.println("Error loading state: " + e.getMessage());

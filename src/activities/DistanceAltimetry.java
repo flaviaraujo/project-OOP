@@ -1,6 +1,7 @@
 package src.activities;
 
 import src.Activity;
+import src.IO;
 import src.User;
 
 import java.util.ArrayList;
@@ -139,17 +140,14 @@ public class DistanceAltimetry extends Activity implements Serializable {
             return null;
         }
 
+        IO io = new IO();
+
         int distance = 0;
         int altimetry = 0;
 
         while (true) {
             System.out.print("Enter the distance of the activity in meters: ");
-            try {
-                distance = sc.nextInt();
-            } catch (Exception e) {
-                System.out.println("Distance must be an integer.");
-                continue;
-            }
+            distance = io.readInt(sc);
 
             // check if distance is between 1 and 50000 meters
             if (distance < 1 || distance > 50000) {
@@ -161,18 +159,11 @@ public class DistanceAltimetry extends Activity implements Serializable {
 
         while (true) {
             System.out.print("Enter the altimetry of the activity in meters: ");
-            try {
-                altimetry = sc.nextInt();
-            } catch (Exception e) {
-                System.out.println("Altimetry must be an integer.");
-                sc.nextLine();
-                continue;
-            }
+            altimetry = io.readInt(sc);
 
             // check if altimetry is between 1 and 10000 meters
             if (altimetry < 1 || altimetry > 10000) {
                 System.out.println("Altimetry must be between 1 and 10000 meters.");
-                sc.nextLine();
                 continue;
             }
             break;
