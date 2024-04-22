@@ -31,20 +31,19 @@
 - [x] Activity name problem with spaces when searching
 - [x] Change the users from ArrayList to a HashMap (Notes - 2)
 - [x] Change user to include weight, height and age
-- [ ] Encapsulation in Main class
-- [ ] Encapsulate app; add clone's
 - [x] Add max/min values to user attributes
 - [x] fix activity name input in create plan interactively
-- [ ] review functions to get calories burned
 - [x] Command line arguments
 - [x] Add user perspective
 - [x] Add more exception handling - nextInt, next and nextLine
-- [ ] Add throw to functions that can return null (search, get, etc)
 - [x] When calling User.deleteActivity() check in the registers if the activity is being used and if so throw exception.
 - [x] Add option to create activity when registering a register, and its unique in user activities array
 - [x] In simulation if an activity is repeated at the end of the day, add it to the next day
 - [x] Sort events in a plan by date time
 - [x] Add hard notion to activities
+- [ ] Encapsulation in Main class
+- [ ] Encapsulate app; add clone's
+- [ ] review functions to get calories burned
 - [ ] Add create plan based on user objectives
 - [ ] MVC in Main
 
