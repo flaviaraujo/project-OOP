@@ -40,7 +40,6 @@
 - [x] Add user perspective
 - [x] Add more exception handling - nextInt, next and nextLine
 - [ ] Add throw to functions that can return null (search, get, etc)
-- [ ] searchActivity function exception handling + rename this method
 - [ ] When calling User.deleteActivity() check in the registers if the activity is being used and if so throw exception.
 - [ ] Add option to create activity when registering a register, **if this one is unique (cpm registers) add it to the user activities**
 - [x] In simulation if an activity is repeated at the end of the day, add it to the next day
