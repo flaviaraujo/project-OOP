@@ -116,28 +116,26 @@ public class RepetitionWeight extends Activity implements Serializable {
         int weight = u.getWeight();
         int height = u.getHeight();
         int nutritionMultiplier = u.getType().getNutritionMultiplier();
+        double restingBPM = u.getHeartRate();
         double met = MET_VALUE;
 
-        // Calculate weight factor (adjusted based on user's weight)
-        double weightFactor = Math.min(weight / 200.0, 1.0); // Max weight factor set to 1.0
-        weightFactor = Math.max(weightFactor, 0.5); // Minimum weight factor set to 0.5
+        double weightFactor = Math.min(weight / 200.0, 2);
+        weightFactor = Math.max(weightFactor, 1);
 
-        // Calculate the ratio of repetition weight to user's weight
-        double repWeightRatio = Math.min(1 + ((double) repetitionWeight / (double) weight), 2);
+       double repWeightRatio = Math.min(1 + ((double) repetitionWeight / (double) weight), 2);
 
-        // Calculate calories burned per minute using MET value and other factors
-        double caloriesPerMinute = (met * 3.5 * weight) / 200; // Assuming MET_VALUE is the metabolic equivalent of task
+        // return (int)
+        //     (weightFactor * (height / 100.0) * (nutritionMultiplier / 100.0) *
+        //     met * (intensity / 100.0) * duration *
+        //     repetitions * repWeightRatio);
 
-        // Adjust intensity (scale to a range of 0 to 1)
-        double intensityFactor = intensity / 100.0;
+        met += (restingBPM - 60) / 10.0 * 0.1;
 
-        // Calculate total calories burned for the entire duration of the activity
-        double totalCalories = caloriesPerMinute * duration * repetitions * repWeightRatio * intensityFactor * (nutritionMultiplier / 100.0);
+        return (int)
+        (met * weight * (((repetitions / 10.0) * (repetitionWeight/10.0))/repWeightRatio) *
+        (intensity / 100.0) * (nutritionMultiplier / 100.0));
 
-        // Return the total calories burned as an integer
-        return (int) totalCalories;
     }
-
 
 
     @Override

@@ -97,16 +97,14 @@ public class Repetition extends Activity implements Serializable {
         int repetitions = this.getRepetition();
         int intensity = this.getIntensity();
         int weight = u.getWeight();
-        int height = u.getHeight();
         int nutritionMultiplier = u.getType().getNutritionMultiplier();
+        double restingBPM = u.getHeartRate();
         double met = MET_VALUE;
 
         double weightFactor = Math.min(weight / 200.0, 2);
         weightFactor = Math.max(weightFactor, 1);
 
-        //     (weightFactor * (height / 100.0) * (nutritionMultiplier / 100.0) *
-        //     met * (intensity / 100.0) * duration *
-        //     repetitions);
+        met += (restingBPM - 60) / 10.0 * 0.1;
 
         return (int)
             (met * weight * (repetitions / 10.0) *
