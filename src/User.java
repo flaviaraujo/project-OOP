@@ -312,16 +312,9 @@ public class User implements Serializable {
     }
 
     // Manage users methods
-    public static User create(Scanner sc, HashMap<Integer, User> users) {
-        sc.nextLine();
+    public String enterName(Scanner sc) {
 
-        String name, email, address;
-        int heartRate, weight, height;
-        Type type;
-
-        // increment the biggest id by 1 and set it as the new user id
-        int id = users.size() == 0 ? 1 : users.keySet().stream().max(Integer::compare).get() + 1;
-
+        String name;
         while (true) {
             System.out.print("Enter user full name: ");
             name = sc.nextLine();
@@ -332,7 +325,12 @@ public class User implements Serializable {
             }
             break;
         }
+        return name;
+    }
 
+    public String enterEmail(Scanner sc, HashMap<Integer, User> users) {
+
+        String email;
         while (true) {
             System.out.print("Enter the user email: ");
             String emailBuffer = sc.nextLine();
@@ -356,7 +354,12 @@ public class User implements Serializable {
             email = emailBuffer;
             break;
         }
+        return email;
+    }
 
+    public String enterAddress(Scanner sc) {
+
+        String address;
         while (true) {
             System.out.print("Enter the user address: ");
             address = sc.nextLine();
@@ -367,7 +370,12 @@ public class User implements Serializable {
             }
             break;
         }
+        return address;
+    }
 
+    public int enterHeartRate(Scanner sc) {
+
+        int heartRate;
         while (true) {
             System.out.print("Enter the user resting heart rate (in BPM): ");
             try {
@@ -385,7 +393,12 @@ public class User implements Serializable {
             }
             break;
         }
+        return heartRate;
+    }
 
+    public int enterWeight(Scanner sc) {
+
+        int weight;
         while (true) {
             System.out.print("Enter the user weight (in kg): ");
             try {
@@ -403,7 +416,12 @@ public class User implements Serializable {
             }
             break;
         }
+        return weight;
+    }
 
+    public int enterHeight(Scanner sc) {
+
+        int height;
         while (true) {
             System.out.print("Enter the user height (in cm): ");
             try {
@@ -421,6 +439,10 @@ public class User implements Serializable {
             }
             break;
         }
+        return height;
+    }
+
+    public Type enterType(Scanner sc) {
 
         while (true) {
             System.out.println("Possible user types:");
@@ -443,14 +465,42 @@ public class User implements Serializable {
                 System.out.println("Invalid user type.");
                 continue;
             }
-            type =
-                typeCode == 1 ? Type.OCCASIONAL :
-                typeCode == 2 ? Type.AMATEUR :
-                Type.PROFESSIONAL;
+
+            switch (typeCode) {
+                case 1:
+                    return Type.OCCASIONAL;
+                case 2:
+                    return Type.AMATEUR;
+                case 3:
+                    return Type.PROFESSIONAL;
+            }
             break;
         }
+        return null;
+    }
 
-        sc.nextLine(); // clear buffer
+    public static User create(Scanner sc, HashMap<Integer, User> users) {
+
+        sc.nextLine();
+
+        User user = new User();
+
+        // increment the biggest id by 1 and set it as the new user id
+        int id = users.size() == 0 ? 1 : users.keySet().stream().max(Integer::compare).get() + 1;
+
+        String name = user.enterName(sc);
+
+        String email = user.enterEmail(sc, users);
+
+        String address = user.enterAddress(sc);
+
+        int heartRate = user.enterHeartRate(sc);
+
+        int weight = user.enterWeight(sc);
+
+        int height = user.enterHeight(sc);
+
+        Type type = user.enterType(sc);
 
         return new User(id, name, email, address, heartRate, weight, height, type);
     }
@@ -538,6 +588,77 @@ public class User implements Serializable {
 
         users.remove(user.getId());
         System.out.println("User deleted successfully.");
+    }
+
+    public static void edit(Scanner sc, HashMap<Integer, User> users, User user) throws UserNotFoundException {
+
+        while (true) {
+            System.out.println();
+            System.out.println("Chose what to edit:");
+            System.out.println("(1) Name");
+            System.out.println("(2) Email");
+            System.out.println("(3) Address");
+            System.out.println("(4) Heart rate");
+            System.out.println("(5) Weight");
+            System.out.println("(6) Height");
+            System.out.println("(7) Type");
+            System.out.println("(8) Go back");
+            System.out.print("Option: ");
+
+            int option;
+            try {
+                option = sc.nextInt();
+                sc.nextLine(); // clear buffer
+            } catch (Exception e) {
+                sc.nextLine(); // clear buffer
+                System.out.println("Invalid option.");
+                continue;
+            }
+
+            switch (option) {
+                case 1:
+                    String name = user.enterName(sc);
+                    user.setName(name);
+                    System.out.println("Name updated successfully.");
+                    break;
+
+                case 2:
+                    String email = user.enterEmail(sc, users);
+                    user.setEmail(email);
+                    System.out.println("Email updated successfully.");
+                    break;
+
+                case 3:
+                    String address = user.enterAddress(sc);
+                    user.setAddress(address);
+                    System.out.println("Address updated successfully.");
+                    break;
+
+                case 4:
+                    int heartRate = user.enterHeartRate(sc);
+                    user.setHeartRate(heartRate);
+                    System.out.println("Heart rate updated successfully.");
+                    break;
+                case 5:
+                    int weight = user.enterWeight(sc);
+                    user.setWeight(weight);
+                    System.out.println("Weight updated successfully.");
+                    break;
+                case 6:
+                    int height = user.enterHeight(sc);
+                    user.setHeight(height);
+                    System.out.println("Height updated successfully.");
+                    break;
+                case 7:
+                    Type type = user.enterType(sc);
+                    user.setType(type);
+                    System.out.println("Type updated successfully.");
+                    break;
+                case 8:
+                    // Go back
+                    return;
+            }
+        }
     }
 
     // Activities methods

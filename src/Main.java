@@ -118,20 +118,22 @@ public class Main {
     private static void userMenu(Scanner sc, String stateFilepath, Main m, User user) {
         System.out.println();
         System.out.println("[User menu] Please select an option:");
-        System.out.println("( 1) Create an activity");
-        System.out.println("( 2) Delete an activity");
-        System.out.println("( 3) View an activity");
-        System.out.println("( 4) View all activities");
-        System.out.println("( 5) Register activity");
-        System.out.println("( 6) View registered activities");
-        System.out.println("( 7) Create your plan");
-        System.out.println("( 8) Create plan based on your goals");
-        System.out.println("( 9) Delete your plan");
-        System.out.println("(10) View your plan");
-        System.out.println("(11) Statistics menu");
-        System.out.println("(12) Save program state");
-        System.out.println("(13) Load program state");
-        System.out.println("(14) Exit");
+        System.out.println("( 1) View your profile");
+        System.out.println("( 2) Edit your profile");
+        System.out.println("( 3) Create an activity");
+        System.out.println("( 4) Delete an activity");
+        System.out.println("( 5) View an activity");
+        System.out.println("( 6) View all activities");
+        System.out.println("( 7) Register activity");
+        System.out.println("( 8) View registered activities");
+        System.out.println("( 9) Create your plan");
+        System.out.println("(10) Create plan based on your goals");
+        System.out.println("(11) Delete your plan");
+        System.out.println("(12) View your plan");
+        System.out.println("(13) Statistics menu");
+        System.out.println("(14) Save program state");
+        System.out.println("(15) Load program state");
+        System.out.println("(16) Exit");
         System.out.print("Option: ");
 
         int option = 0;
@@ -148,6 +150,23 @@ public class Main {
 
         switch (option) {
             case 1:
+                // View your profile
+                System.out.println(user);
+                break;
+            case 2:
+                // Edit your profile
+                try {
+                    user.edit(sc, m.users, user);
+                    m.updateUser(user);
+                }
+                catch (UserNotFoundException e) {
+                    System.out.println(e.getMessage());
+                    break;
+                }
+                m.setUpdatedState(true);
+                System.out.println("User edited successfully.");
+                break;
+            case 3:
                 // Create an activity
                 userActivities = user.getActivities();
 
@@ -172,7 +191,7 @@ public class Main {
                 m.setUpdatedState(true);
                 System.out.println("Activity created successfully.");
                 break;
-            case 2:
+            case 4:
                 // Delete an activity
                 userActivities = user.getActivities();
                 if (userActivities.size() == 0) {
@@ -201,7 +220,7 @@ public class Main {
                 m.setUpdatedState(true);
                 System.out.println("Activity deleted successfully.");
                 break;
-            case 3:
+            case 5:
                 // View an activity
                 userActivities = user.getActivities();
 
@@ -219,7 +238,7 @@ public class Main {
                 System.out.println(a);
 
                 break;
-            case 4:
+            case 6:
                 // View all activities
                 userActivities = user.getActivities();
                 if (userActivities.size() == 0) {
@@ -229,7 +248,7 @@ public class Main {
                 for (Activity t : userActivities)
                     System.out.println(t);
                 break;
-            case 5:
+            case 7:
                 // Register activity
                 a = (Activity) new Distance();
                 user = a.registerActivity(sc, user);
@@ -246,11 +265,11 @@ public class Main {
                 m.setUpdatedState(true);
 
                 break;
-            case 6:
+            case 8:
                 // View registered activities
                 user.viewRegisters();
                 break;
-            case 7:
+            case 9:
                 // Create your plan
                 userActivities = user.getActivities();
                 // delete plan if it already exists
@@ -284,7 +303,10 @@ public class Main {
                 }
                 m.setUpdatedState(true);
                 break;
-            case 9:
+            case 10:
+                // TODO Create plan based on your goals
+                break;
+            case 11:
                 // Delete your plan
                 if (user.getPlan() == null) {
                     System.out.println("You have no plan.");
@@ -302,7 +324,7 @@ public class Main {
                 }
                 m.setUpdatedState(true);
                 break;
-            case 10:
+            case 12:
                 // View your plan
                 if (user.getPlan() == null) {
                     System.out.println("The selected user has no plan.");
@@ -310,22 +332,23 @@ public class Main {
                 }
                 System.out.print(user.getPlan());
                 break;
-            case 11:
+            case 13:
                 // Statistics menu
                 Stats stats = new Stats();
                 stats.statsMenu(sc, m.users);
                 break;
-            case 12:
+            case 14:
                 // Save program state
                 saveState(stateFilepath, m);
                 break;
-            case 13:
+            case 15:
                 // Load program state
                 loadState(stateFilepath, m, sc);
                 break;
-            case 14:
+            case 16:
                 // Exit
                 exit(stateFilepath, m, sc);
+                break;
             default:
                 System.out.println("Invalid option");
                 break;
@@ -335,7 +358,7 @@ public class Main {
     private static void mainMenu(Scanner sc, String stateFilepath, Main m) {
         System.out.println();
         System.out.println("[Main menu] Please select an option:");
-        System.out.println("(1) Manage users (create, delete, view)");
+        System.out.println("(1) Manage users (create, delete, edit, view)");
         System.out.println("(2) Manage user activities (create, delete, view)");
         System.out.println("(3) Manage user registered activities (register, view)");
         System.out.println("(4) Manage user plan (create, delete, view)");
@@ -355,7 +378,7 @@ public class Main {
             // e.printStackTrace(); // removed to avoid clutter
         }
 
-        User user;
+        User user = new User();
         int submenuOption;
 
         switch (option) {
@@ -370,7 +393,8 @@ public class Main {
                     System.out.println("(2) Delete an user");
                     System.out.println("(3) View an user");
                     System.out.println("(4) View all users");
-                    System.out.println("(5) Back to main menu");
+                    System.out.println("(5) Edit an user");
+                    System.out.println("(6) Back to main menu");
                     System.out.print("Option: ");
 
                     submenuOption = 0;
@@ -420,6 +444,18 @@ public class Main {
                             }
                             break;
                         case 5:
+                            // Edit an user
+                            try {
+                                user = user.search(sc, m.users);
+                                user.edit(sc, m.users, user);
+                                // m.updateUser(user);
+                                m.setUpdatedState(true);
+                                System.out.println("User edited successfully.");
+                            }
+                            catch (UserNotFoundException e) {
+                                System.out.println(e.getMessage());
+                            }
+                        case 6:
                             // Back to main menu
                             return;
                         default:
