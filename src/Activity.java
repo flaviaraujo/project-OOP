@@ -4,6 +4,7 @@ import src.activities.Distance;
 import src.activities.DistanceAltimetry;
 import src.activities.Repetition;
 import src.activities.RepetitionWeight;
+import src.exceptions.ActivityNotFoundException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -266,7 +267,7 @@ public abstract class Activity implements Serializable {
         }
     }
 
-    public static Activity searchActivity(Scanner sc, ArrayList<Activity> userActivities) {
+    public static Activity search(Scanner sc, ArrayList<Activity> userActivities) {
 
         IO io = new IO();
         Activity activity = null;
@@ -314,11 +315,7 @@ public abstract class Activity implements Serializable {
                         System.out.println("Please register a new activity.");
                         continue;
                     }
-                    a = searchActivity(sc, userActivities);
-                    if (a == null) {
-                        System.out.println("Activity not found.");
-                        continue;
-                    }
+                    a = search(sc, userActivities);
                     u.addActivity(a);
                     break;
                 case 2:

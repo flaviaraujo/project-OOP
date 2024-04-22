@@ -144,11 +144,7 @@ public class Event implements Serializable {
 
         Activity activity;
         while (true) {
-            activity = Activity.searchActivity(sc, userActivities);
-            if (activity == null) {
-                System.out.println("Activity not found.");
-                continue;
-            }
+            activity = Activity.search(sc, userActivities);
             break;
         }
 

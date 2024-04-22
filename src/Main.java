@@ -199,11 +199,7 @@ public class Main {
                 }
 
                 // Delete an activity
-                a = Activity.searchActivity(sc, userActivities);
-                if (a == null) {
-                    System.out.println("Activity not found.");
-                    break;
-                }
+                a = Activity.search(sc, userActivities);
                 user.deleteActivity(a);
 
                 // Update the Main instance by replacing the user
@@ -229,11 +225,7 @@ public class Main {
                 }
 
                 // View an activity
-                a = Activity.searchActivity(sc, userActivities);
-                if (a == null) {
-                    System.out.println("Activity not found.");
-                    break;
-                }
+                a = Activity.search(sc, userActivities);
                 System.out.println(a);
 
                 break;
@@ -506,11 +498,7 @@ public class Main {
                             }
 
                             // Delete an activity
-                            a = Activity.searchActivity(sc, userActivities);
-                            if (a == null) {
-                                System.out.println("Activity not found.");
-                                break;
-                            }
+                            a = Activity.search(sc, userActivities);
                             user.deleteActivity(a);
                             // Update the Main instance by replacing the user
                             try {
@@ -531,11 +519,7 @@ public class Main {
                             }
 
                             // View an activity
-                            a = Activity.searchActivity(sc, userActivities);
-                            if (a == null) {
-                                System.out.println("Activity not found.");
-                                break;
-                            }
+                            a = Activity.search(sc, userActivities);
                             System.out.println(a);
                             break;
                         case 4:
