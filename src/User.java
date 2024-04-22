@@ -555,9 +555,15 @@ public class User implements Serializable {
     }
 
     public void viewRegisters() {
+        // Display registers sorted by date
+        List<LocalDateTime> sortedDates = new ArrayList<>(this.registers.keySet());
+        Collections.sort(sortedDates);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        for (LocalDateTime date : this.registers.keySet()) {
-            System.out.println(date.format(formatter) + " - " + this.registers.get(date));
+
+        for (LocalDateTime date : sortedDates) {
+            System.out.println(date.format(formatter) + ": {");
+            System.out.println(this.registers.get(date));
+            System.out.println("}");
         }
     }
 }

@@ -286,6 +286,11 @@ public class Main {
                 break;
             case 9:
                 // Delete your plan
+                if (user.getPlan() == null) {
+                    System.out.println("You have no plan.");
+                    break;
+                }
+
                 user.setPlan(null);
                 System.out.println("Plan deleted successfully.");
                 try {
@@ -661,6 +666,10 @@ public class Main {
                             break;
                         case 3:
                             // Delete plan
+                            if (user.getPlan() == null) {
+                                System.out.println("The selected user has no plan.");
+                                break;
+                            }
                             user.setPlan(null);
                             System.out.println("Plan deleted successfully.");
                             try {

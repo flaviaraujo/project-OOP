@@ -189,8 +189,8 @@ public class Event implements Serializable {
             break;
         }
 
-        Event event = new Event(activity, activityRepetitions, day, time); // TODO is clone needed here?
+        Event event = new Event(activity, activityRepetitions, day, time);
         System.out.println("Event scheduled successfully.");
-        return event;
+        return event.clone();
     }
 }

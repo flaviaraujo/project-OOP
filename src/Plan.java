@@ -2,6 +2,8 @@ package src;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Scanner;
 
 /**
@@ -51,6 +53,12 @@ public class Plan implements Serializable {
     }
 
     public String toString() {
+        Comparator<Event> eventComparator = Comparator
+            .comparingInt(Event::getDay) // sort by the week day
+            .thenComparing(Event::getTime); // then by time
+
+        Collections.sort(events, eventComparator);
+
         StringBuilder sb = new StringBuilder();
         sb.append("Plan: " + this.name + "\n");
         sb.append("Events: \n");
@@ -83,7 +91,7 @@ public class Plan implements Serializable {
     }
 
     public void removeEvent(Event event) {
-        this.events.remove(event); //TODO dúvida é preciso fazer clone?
+        this.events.remove(event);
     }
 
     //TODO create plan based on user goals
@@ -99,7 +107,6 @@ public class Plan implements Serializable {
 
         sc.nextLine(); // clear the buffer
 
-        // TODO use one Event only
         Event e = new Event();
         int maxActivities = e.getMAX_REPETITIONS();
 
@@ -145,9 +152,9 @@ public class Plan implements Serializable {
 
                 System.out.println("Event number " + (++eventCount));
 
-                Event event = e.create(sc, userActivities, activities - j, i);
-                plan.addEvent(event);
-                j += event.getActivityRepetitions();
+                e = e.create(sc, userActivities, activities - j, i);
+                plan.addEvent(e);
+                j += e.getActivityRepetitions();
             }
         }
 
@@ -157,6 +164,6 @@ public class Plan implements Serializable {
             return null;
         }
 
-        return plan;
+        return plan.clone();
     }
 }

@@ -1,10 +1,6 @@
 package src;
 
 import java.util.Scanner;
-
-import src.Activity;
-import src.User;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -87,8 +83,10 @@ public class Simulation {
                             registeredActivities++;
                             totalCalories += calories;
 
-                            LocalTime eventTime = e.getTime().plusMinutes(a.getDuration() * repetition);
+                            LocalTime eventTime = e.getTime();
                             LocalDateTime eventDateTime = LocalDateTime.of(eventDate, eventTime);
+                            // Shift the day if the event time is after midnight
+                            eventDateTime = eventDateTime.plusMinutes(a.getDuration() * repetition);
 
                             // register the activity
                             Activity r = a.clone();
@@ -98,7 +96,7 @@ public class Simulation {
                             System.out.println(
                                 "User \"" + u.getName() + '"' +
                                 " completed activity \"" + a.getName() + '"' +
-                                " at " + eventTime.format(timeFormatter) +
+                                " at " + eventDateTime.format(timeFormatter) +
                                 " and burned " + calories + " calories."
                             );
                         }
