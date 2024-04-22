@@ -138,7 +138,7 @@ public abstract class Activity implements Serializable {
         }
     }
 
-    public String getType(int type) {
+    public String getTypeString(int type) {
         switch (type) {
             case 1:
                 return "Distance";
