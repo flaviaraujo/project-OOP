@@ -1,7 +1,7 @@
 package src.exceptions;
 
 public class UserNotFoundException extends Exception {
-    // Constructors
+
     public UserNotFoundException() {
         super("User not found.");
     }
