@@ -32,12 +32,12 @@
 - [x] Change the users from ArrayList to a HashMap (Notes - 2)
 - [x] Change user to include weight, height and age
 - [ ] Encapsulation in Main class
+- [ ] Encapsulate app; add clone's
 - [x] Add max/min values to user attributes
 - [x] fix activity name input in create plan interactively
 - [ ] review functions to get calories burned
 - [x] Command line arguments
 - [x] Add user perspective
-- [ ] Encapsulate app; add clone's
 - [x] Add more exception handling - nextInt, next and nextLine
 - [ ] Add throw to functions that can return null (search, get, etc)
 - [ ] searchActivity function exception handling + rename this method
