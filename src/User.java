@@ -31,7 +31,6 @@ public class User implements Serializable {
     private static final int MIN_HEIGHT = 100;
     private static final int MAX_HEIGHT = 220;
 
-
     public enum Type implements Serializable {
         OCCASIONAL(40),
         AMATEUR(60),
@@ -339,7 +338,7 @@ public class User implements Serializable {
             name = io.readString(sc);
             // check if name is between 3 and 256 characters
             if (name.length() < MIN_NAME_LENGTH || name.length() > MAX_NAME_LENGTH) {
-                System.out.println("Name must be between 3 and 256 characters.");
+                System.out.println("Name must be between " + MIN_NAME_LENGTH + " and " + MAX_NAME_LENGTH + " characters.");
                 continue;
             }
             break;
@@ -361,7 +360,7 @@ public class User implements Serializable {
             }
             // check if email is 320 characters or less
             if (emailBuffer.length() > MAX_EMAIL_LENGTH) {
-                System.out.println("Email must be 320 characters or less.");
+                System.out.println("Email must be " + MAX_EMAIL_LENGTH + " characters or less.");
                 continue;
             }
             // check if email is unique
@@ -386,7 +385,7 @@ public class User implements Serializable {
             address = io.readString(sc);
             // check if address is between 5 and 1024 characters
             if (address.length() < MIN_ADDRESS_LENGTH || address.length() > MAX_ADDRESS_LENGTH) {
-                System.out.println("Address must be between 5 and 1024 characters.");
+                System.out.println("Address must be between " + MIN_ADDRESS_LENGTH + " and " + MAX_ADDRESS_LENGTH + " characters.");
                 continue;
             }
             break;
@@ -404,7 +403,7 @@ public class User implements Serializable {
 
             // check if heart rate is between 20 and 200
             if (MIN_HEART_RATE > heartRate || heartRate > MAX_HEART_RATE) {
-                System.out.println("Heart rate must be between 20 and 200 BPM.");
+                System.out.println("Heart rate must be between " + MIN_HEART_RATE + " and " + MAX_HEART_RATE + " BPM.");
                 continue;
             }
             break;
@@ -422,7 +421,7 @@ public class User implements Serializable {
 
             // check if weight is between 20 and 200
             if (MIN_WEIGHT > weight || weight > MAX_WEIGHT) {
-                System.out.println("Weight must be between 20 and 200 kg.");
+                System.out.println("Weight must be between " + MIN_WEIGHT + " and " + MAX_WEIGHT + " kg.");
                 continue;
             }
             break;
@@ -440,7 +439,7 @@ public class User implements Serializable {
 
             // check if height is between 100 and 220
             if (MIN_HEIGHT > height || height > MAX_HEIGHT) {
-                System.out.println("Height must be between 100 and 220 cm.");
+                System.out.println("Height must be between " + MIN_HEIGHT + " and " + MAX_HEIGHT + " cm.");
                 continue;
             }
             break;
