@@ -2,7 +2,6 @@ package src;
 
 import src.exceptions.UserNotFoundException;
 
-import src.Activity;
 import src.activities.Distance;
 import src.activities.DistanceAltimetry;
 
@@ -157,7 +156,7 @@ public class Stats {
         for (Entry<Integer, Integer> entry : map.entrySet()) {
             if (entry.getValue() > max) {
                 max = entry.getValue();
-                result = a.getType((int) entry.getKey());
+                result = a.getTypeString((int) entry.getKey());
             }
         }
 
