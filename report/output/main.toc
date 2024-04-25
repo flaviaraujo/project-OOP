@@ -7,8 +7,8 @@
 \contentsline {section}{\numberline {1.5}Classe \textit {Event}}{4}{section.1.5}%
 \contentsline {section}{\numberline {1.6}Classe \textit {Plan}}{5}{section.1.6}%
 \contentsline {section}{\numberline {1.7}Classe \textit {Stats}}{5}{section.1.7}%
-\contentsline {section}{\numberline {1.8}Classe \textit {Simulation}}{5}{section.1.8}%
-\contentsline {section}{\numberline {1.9}Classe \textit {IO}}{5}{section.1.9}%
+\contentsline {section}{\numberline {1.8}Classe \textit {Simulation}}{6}{section.1.8}%
+\contentsline {section}{\numberline {1.9}Classe \textit {IO}}{6}{section.1.9}%
 \contentsline {chapter}{\numberline {2}Descrição de Funcionalidades da Aplicação}{7}{chapter.2}%
 \contentsline {section}{\numberline {2.1}Gestão de Utilizadores}{8}{section.2.1}%
 \contentsline {subsection}{\numberline {2.1.1}Adicionar Utilizador}{8}{subsection.2.1.1}%
