@@ -44,7 +44,7 @@
 - [ ] Encapsulation in Main class
 - [ ] Encapsulate app; add clone's
 - [ ] review functions to get calories burned
-- [ ] Add create plan based on user objectives
+- [x] Add create plan based on user objectives
 - [ ] MVC in Main
 
 ## Notes

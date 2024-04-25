@@ -269,11 +269,10 @@ public class Main {
                 break;
             case 9:
                 // Create your plan
-                userActivities = user.getActivities();
                 // delete plan if it already exists
                 Plan old = user.getPlan();
                 if (old != null) {
-                    System.out.print("Do you want to delete your urrent plan? [y/n]: ");
+                    System.out.print("Do you want to overwrite your current plan? [y/n]: ");
                     String delete = io.readYesNo(sc);
                     if (delete.equals("y")) {
                         user.setPlan(null);
@@ -284,6 +283,7 @@ public class Main {
                         break;
                     }
                 }
+                userActivities = user.getActivities();
                 Plan p = new Plan();
                 p = p.create(sc, userActivities);
                 user.setPlan(p);
@@ -302,7 +302,28 @@ public class Main {
                 m.setUpdatedState(true);
                 break;
             case 10:
-                // TODO Create plan based on your goals
+                // Create plan based on your goals
+                Plan oldPlan = user.getPlan();
+                if (oldPlan != null) {
+                    System.out.print("Do you want to overwrite your current plan? [y/n]: ");
+                    String delete = io.readYesNo(sc);
+                    if (delete.equals("y")) {
+                        user.setPlan(null);
+                        System.out.println("Plan deleted successfully.");
+                    }
+                    else {
+                        System.out.println("Plan wasn't deleted.");
+                        break;
+                    }
+                }
+
+                Plan plan = new Plan();
+                plan = plan.createBasedOnGoals(sc, user);
+                if (plan == null) {
+                    System.out.println("Plan not created.");
+                    break;
+                }
+                user.setPlan(plan);
                 break;
             case 11:
                 // Delete your plan
@@ -634,7 +655,7 @@ public class Main {
                             Plan old = user.getPlan();
                             if (old != null) {
                                 System.out.println("A plan already exists for the selected user.");
-                                System.out.print("Do you want to delete the current plan? [y/n]: ");
+                                System.out.print("Do you want to overwrite the current plan? [y/n]: ");
                                 String delete = io.readYesNo(sc);
                                 if (delete.equals("y")) {
                                     user.setPlan(null);
@@ -663,7 +684,28 @@ public class Main {
                             m.setUpdatedState(true);
                             break;
                         case 2:
-                            // TODO: create plan based on user goals
+                            // Create plan based on user goals
+                            Plan oldPlan = user.getPlan();
+                            if (oldPlan != null) {
+                                System.out.print("Do you want to overwrite the user current plan? [y/n]: ");
+                                String delete = io.readYesNo(sc);
+                                if (delete.equals("y")) {
+                                    user.setPlan(null);
+                                    System.out.println("Plan deleted successfully.");
+                                }
+                                else {
+                                    System.out.println("Plan wasn't deleted.");
+                                    break;
+                                }
+                            }
+
+                            Plan plan = new Plan();
+                            plan = plan.createBasedOnGoals(sc, user);
+                            if (plan == null) {
+                                System.out.println("Plan not created.");
+                                break;
+                            }
+                            user.setPlan(plan);
                             break;
                         case 3:
                             // Delete plan
