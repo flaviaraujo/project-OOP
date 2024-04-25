@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2024.4.14)  25 APR 2024 21:37
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2024.3.14)  25 APR 2024 22:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1147,35 +1147,35 @@ LaTeX Font Info:    Font shape `TU/lmss/bx/it' in size <17.28> not available
 (Font)              Font shape `TU/lmss/bx/sl' tried instead on input line 153.
 
 LaTeX Font Info:    Font shape `TU/lmss/bx/it' in size <10.95> not available
-(Font)              Font shape `TU/lmss/bx/sl' tried instead on input line 160.
+(Font)              Font shape `TU/lmss/bx/sl' tried instead on input line 159.
 
  [3
 
-] [4]
+] [4] [5] [6]
 chapter 2.
-[5
+[7
 
 ]
 Overfull \vbox (160.11293pt too high) has occurred while \output is active []
 
 
-[6] [7
+[8] [9
 
-] [8]
+] [10]
 chapter 3.
-(output/main.nls) [9
+(output/main.nls) [11
 
 ] (output/main.aux (output/cover.aux))
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 27370 strings out of 478174
- 572787 string characters out of 5854282
+ 27373 strings out of 478174
+ 572858 string characters out of 5854282
  1045852 words of memory out of 5000000
- 47506 multiletter control sequences out of 15000+600000
+ 47509 multiletter control sequences out of 15000+600000
  473261 words of font info for 70 fonts, out of 8000000 for 9000
  16 hyphenation exceptions out of 8191
  108i,13n,106p,10620b,1160s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on output/main.pdf (13 pages).
+Output written on output/main.pdf (15 pages).
