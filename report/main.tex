@@ -151,8 +151,30 @@
 \loadgeometry{default}
 
 \section{Classe \textit{Main}}
+
 \section{Classe \textit{User}}
+    A classe \textit{User} representa um utilizador da aplicação, sendo constituída pelos seguintes atributos:
+
+    \begin{itemize}
+        \item \textit{\textbf{id : int}} - Identificador único do utilizador;
+        \item \textit{\textbf{name : String}} - Nome completo do utilizador;
+        \item \textit{\textbf{email : String}} - Endereço de correio eletrónico do utilizador, sendo este único na aplicação;
+        \item \textit{\textbf{address : String}} - Morada do utilizador;
+        \item \textit{\textbf{heartRate : int}} - Frequência cardíaca em repouso do utilizador, em batimentos por minuto;
+        \item \textit{\textbf{weight : int}} - Peso do utilizador, em kilogramas;
+        \item \textit{\textbf{height : int}} - Altura do utilizador, em centímetros;
+        \item \textit{\textbf{type : Type}} - Tipo de utilizador, podendo ser ocasional, amador ou professional.
+        \item \textit{\textbf{activities : ArrayList<Activity>}} - Conjunto de atividades de interesse de um utilizador, utlizada para a simplificação de um registo da atividade praticada ou da criação de um plano de treino;
+        \item \textit{\textbf{registers : HashMap<LocalDateTime, Activity>}} - Conjunto de actividades praticadas por um utilizador, com a respetiva data e hora de prática, atividade praticada e consumo calórico;
+        \item \textit{\textbf{plan : Plan}} - Plano de treino semanal de um utilizador.
+    \end{itemize}
+
+    Para além dos vários construtores, dos métodos tradicionais de acesso e modificação dos atributos (\textit{getters} e \textit{setters}), métodos para a cópia profunda dos objetos desta classe, conversão para \textit{String} e igualdade entre objetos desta classe, foram implementados métodos para a gestão de utilizadores (criação, vizualização, edição e remoção), bem como métodos para a adição/remoção de uma atividade de interesse e métodos para o registo de uma atividade e vizualição destes registos de um utlizador.
+
+    As funcionalidades proporcionadas por esta classe serão detalhadas nos subcapítulos \textit{\nameref{sec:gestao-utlizadores}} e \textit{\nameref{sec:registo-atividades}}.
+
 \section{Classe \textit{Activity}}
+
 \section{Classe \textit{Event}}
     A classe \textit{Event} representa um evento correspondente a um plano de treino, sendo constituída pelos seguintes atributos:
 
@@ -175,7 +197,7 @@
     Para além dos vários construtores, dos métodos tradicionais de acesso e modificação dos atributos (\textit{getters} e \textit{setters}), métodos para a cópia profunda dos objetos desta classe, conversão para \textit{String} e
     igualdade entre objetos desta classe, foram implementados métodos para a adição de um evento a um plano de treino, para a criação interativa de um plano e para a criação de um plano baseado nos objetivos de um utlizador.
 
-    As funcionalidades proporcionadas por esta classe serão detalhadas no capítulo \textit{\nameref{sec:gestao-planos-treino}}.
+    As funcionalidades proporcionadas por esta classe serão detalhadas no subcapítulo \textit{\nameref{sec:gestao-planos-treino}}.
 
 \section{Classe \textit{Stats}}
 
@@ -203,17 +225,20 @@
 \chapter{Descrição de Funcionalidades da Aplicação}
 
 \section{Gestão de Utilizadores}
+    \label{sec:gestao-utlizadores}
     \subsection{Adicionar Utilizador}
     \subsection{Editar Utilizador}
     \subsection{Remover Utilizador}
     \subsection{Visualizar Utilizadores}
 
 \section{Gestão de Atividades}
+    \label{sec:gestao-atividades}
     \subsection{Adicionar Atividade}
     \subsection{Remover Atividade}
     \subsection{Visualizar Atividades}
 
 \section{Registo e Visualização de Atividades Completas}
+    \label{sec:registo-atividades}
     \subsection{Registar Atividade}
     \subsection{Visualizar Registos de Atividades}
 
