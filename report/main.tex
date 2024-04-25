@@ -151,6 +151,12 @@
 \section{Classe \textit{Activity}}
 \section{Classe \textit{Plan}}
 \section{Classe \textit{Event}}
+    Na classe \textit\textbf{{Event}} são guardadas as informações relativas a um evento de um plano de treino - como a atividade a realizar, a quantidade de repetições,
+a data e hora do evento, e o estado do evento (completo ou não). Esta classe implementa a interface \textit{Serializable} de forma a que seja possível guardar e carregar o estado da aplicação.
+\par
+A aplicação permite ao utilizador criar um evento da seguinte maneira: O utilizador escolhe uma atividade da lista de atividades que este introduziu previamente na sua conta, e o número de repetições
+que fará (ou fez) desta, e escolhe o dia da semana (de domingo a sábado), bem como a hora a que pretende realizar a atividade (ou quando a realizou). O evento é então criado e adicionado ao seu registo de atividades.
+
 \section{Classe \textit{Stats}}
 \section{Classe \textit{Simulation}}
 
