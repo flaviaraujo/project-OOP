@@ -43,6 +43,7 @@
 - [x] Add hard notion to activities
 - [ ] Encapsulation in Main class
 - [ ] Encapsulate app; add clone's
+- [ ] Fix statistic n7 itter the user registers instead
 - [ ] review functions to get calories burned
 - [x] Add create plan based on user objectives
 - [ ] MVC in Main
