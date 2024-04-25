@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2024.4.14)  22 APR 2024 21:01
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2024.4.14)  25 APR 2024 21:37
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1112,15 +1112,15 @@ chapter 1.
 * layout: <same size as paper>
 * layoutoffset:(h,v)=(0.0pt,0.0pt)
 * modes: 
-* h-part:(L,W,R)=(0.0pt, 597.50787pt, 0.0pt)
-* v-part:(T,H,B)=(85.35826pt, 645.87756pt, 113.81102pt)
+* h-part:(L,W,R)=(5.69046pt, 586.12695pt, 5.69046pt)
+* v-part:(T,H,B)=(42.67912pt, 702.78308pt, 99.58464pt)
 * \paperwidth=597.50787pt
 * \paperheight=845.04684pt
-* \textwidth=597.50787pt
-* \textheight=645.87756pt
-* \oddsidemargin=-72.26999pt
-* \evensidemargin=-72.26999pt
-* \topmargin=-26.78673pt
+* \textwidth=586.12695pt
+* \textheight=702.78308pt
+* \oddsidemargin=-66.57953pt
+* \evensidemargin=-66.57953pt
+* \topmargin=-69.46587pt
 * \headheight=18.125pt
 * \headsep=21.75pt
 * \topskip=12.0pt
@@ -1143,19 +1143,15 @@ File: images/diagram.png Graphic file (type bmp)
  [2
 
 ]
-Overfull \vbox (32.15393pt too high) has occurred while \output is active []
-
-
-[3]
 LaTeX Font Info:    Font shape `TU/lmss/bx/it' in size <17.28> not available
-(Font)              Font shape `TU/lmss/bx/sl' tried instead on input line 149.
+(Font)              Font shape `TU/lmss/bx/sl' tried instead on input line 153.
 
 LaTeX Font Info:    Font shape `TU/lmss/bx/it' in size <10.95> not available
-(Font)              Font shape `TU/lmss/bx/sl' tried instead on input line 154.
+(Font)              Font shape `TU/lmss/bx/sl' tried instead on input line 160.
 
- [4
+ [3
 
-]
+] [4]
 chapter 2.
 [5
 
@@ -1174,10 +1170,10 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 27368 strings out of 478174
- 572755 string characters out of 5854282
+ 27370 strings out of 478174
+ 572787 string characters out of 5854282
  1045852 words of memory out of 5000000
- 47504 multiletter control sequences out of 15000+600000
+ 47506 multiletter control sequences out of 15000+600000
  473261 words of font info for 70 fonts, out of 8000000 for 9000
  16 hyphenation exceptions out of 8191
  108i,13n,106p,10620b,1160s stack positions out of 5000i,500n,10000p,200000b,80000s

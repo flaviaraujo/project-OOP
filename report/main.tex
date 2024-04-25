@@ -140,7 +140,11 @@
 
 \chapter{Arquitetura de Classes}
 \section{Diagrama de Classes}
-\newgeometry{top=3cm,left=0cm,right=0cm,bottom=4cm}
+\textcolor{red}{
+    Descrever o diagrama de classes da aplicação, apresentando as classes e as suas relações.
+}
+
+\newgeometry{top=1.5cm,left=0.2cm,right=0.2cm,bottom=3.5cm}
 \begin{center}
     \includegraphics[scale=0.25]{images/diagram.png}
 \end{center}
@@ -149,16 +153,44 @@
 \section{Classe \textit{Main}}
 \section{Classe \textit{User}}
 \section{Classe \textit{Activity}}
-\section{Classe \textit{Plan}}
 \section{Classe \textit{Event}}
-    Na classe \textit\textbf{{Event}} são guardadas as informações relativas a um evento de um plano de treino - como a atividade a realizar, a quantidade de repetições,
-a data e hora do evento, e o estado do evento (completo ou não). Esta classe implementa a interface \textit{Serializable} de forma a que seja possível guardar e carregar o estado da aplicação.
-\par
-A aplicação permite ao utilizador criar um evento da seguinte maneira: O utilizador escolhe uma atividade da lista de atividades que este introduziu previamente na sua conta, e o número de repetições
-que fará (ou fez) desta, e escolhe o dia da semana (de domingo a sábado), bem como a hora a que pretende realizar a atividade (ou quando a realizou). O evento é então criado e adicionado ao seu registo de atividades.
+    A classe \textit{Event} representa um evento correspondente a um plano de treino, sendo constituída pelos seguintes atributos:
+
+    \begin{itemize}
+        \item \textit{\textbf{activity : Activity}} - Atividade praticada no evento;
+        \item \textit{\textbf{activityRepetitions : int}} - Número de vezes que a atividade será praticada;
+        \item \textit{\textbf{day : int}} - Dia da semana do evento, onde 1 corresponde a domingo e 7 a sábado;
+        \item \textit{\textbf{time : LocalTime}} - Hora do evento.
+    \end{itemize}
+
+\section{Classe \textit{Plan}}
+    A classe \textit{Plan} representa um plano de treino, por definição, semanal, que um utilizador pode criar, vizualizar e remover.
+
+    Esta é composta pelos seguintes atributos:
+    \begin{itemize}
+        \item \textit{\textbf{name : String}} - Nome do plano de treino;
+        \item \textit{\textbf{events : ArrayList<Event>}} - Lista de eventos que compõem o plano de treino.
+    \end{itemize}
+
+    Para além dos vários construtores, dos métodos tradicionais de acesso e modificação dos atributos (\textit{getters} e \textit{setters}), métodos para a cópia profunda dos objetos desta classe, conversão para \textit{String} e
+    igualdade entre objetos desta classe, foram implementados métodos para a adição de um evento a um plano de treino, para a criação interativa de um plano e para a criação de um plano baseado nos objetivos de um utlizador.
+
+    As funcionalidades proporcionadas por esta classe serão detalhadas no capítulo \textit{\nameref{sec:gestao-planos-treino}}.
 
 \section{Classe \textit{Stats}}
+
 \section{Classe \textit{Simulation}}
+
+\section{Classe \textit{IO}}
+    No âmbito de agilizar a coleta de \textit{input's} por parte de um utilizador, foi criada a classe \textit{IO}, com os seguintes métodos:
+
+    \begin{itemize}
+        \item \textit{\textbf{readString(sc : Scanner) : String}} - Método que lê uma \textit{String} introduzida pelo utilizador;
+        \item \textit{\textbf{readInt(sc : Scanner) : Int}} - Método que lê um inteiro introduzido pelo utilizador;
+        \item \textit{\textbf{readYesNo(sc : Scanner) : String}} - Método que lê um caracter introduzido pelo utilizador, que deverá ser `y` ou `n`, independentemente deste ser maiúsculo ou minúsculo.
+    \end{itemize}
+
+    Nestes métodos, é feita a validação do \textit{input} através da verificação das exceções lançadas pela classe \textit{Scanner}.
 
 %==========================================================================
 % END ARQUITETURA DE CLASSES
@@ -186,6 +218,7 @@ que fará (ou fez) desta, e escolhe o dia da semana (de domingo a sábado), bem 
     \subsection{Visualizar Registos de Atividades}
 
 \section{Gestão de Planos de Treino}
+    \label{sec:gestao-planos-treino}
     \subsection{Adicionar Plano de Treino Interativamente}
     \subsection{Adicionar Plano de Treino Baseado em Objetivos}
     \subsection{Remover Plano de Treino}
