@@ -172,7 +172,7 @@ public class Plan implements Serializable {
         }
 
         public ActivityRepetition(Activity activity, int repetitionsLeft) {
-            this.activity = activity;
+            this.activity = activity.clone();
             this.repetitionsLeft = repetitionsLeft;
         }
 
@@ -358,7 +358,6 @@ public class Plan implements Serializable {
         ArrayList<Event> events = new ArrayList<Event>();
 
         // TODO if sunday is hard activity dat then saturday can't be hard activity day
-        // TODO add event times
 
         for (int day = 1; day <= 7; day++) {
 
