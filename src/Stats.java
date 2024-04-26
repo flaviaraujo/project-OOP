@@ -294,6 +294,22 @@ public class Stats {
         return result;
     }
 
+    // 7. List the practiced activities of a user
+    public void listActivities(User user) {
+        ArrayList<Activity> registers = new ArrayList<Activity>(user.getRegisters().values());
+        ArrayList<Activity> result = new ArrayList<Activity>();
+
+        // List unique activities of the user
+        for (int i = 0; i < registers.size(); i++) {
+
+            // check if the activity is already in the result list
+            if (!result.contains(registers.get(i))) {
+                result.add(registers.get(i));
+                System.out.println(registers.get(i));
+            }
+        }
+    }
+
     public void displayStatsMenu() {
         System.out.println("[Stats Menu] Choose an option:");
         System.out.println("(1) The user with most calories burned");
@@ -499,12 +515,7 @@ public class Stats {
                         break;
                     }
 
-                    ArrayList<Activity> activities = user.getActivities();
-                    if (activities.size() == 0) {
-                        System.out.println("The selected user has no activities.");
-                        break;
-                    }
-                    for (Activity t : activities) System.out.println(t);
+                    listActivities(user);
                     break;
                 case 8:
                     return;
