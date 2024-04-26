@@ -156,6 +156,27 @@
 \loadgeometry{default}
 
 \section{Classe \textit{Main}}
+    A classe \textit{Main} é a classe principal da aplicação, sendo responsável pela execução desta - faz o \textit{parsing} dos argumentos da linha de comandos, carrega o estado da aplicação, caso este tenha sido guardado anteriormente, e executa a aplicação. 
+    Por conseguinte, a \textit{Main} é constituída pelos seguintes atributos:
+
+    \begin{itemize}
+        \item \textit{\textbf{updatedState : boolean}} - Indica se o estado da aplicação foi alterado desde a última vez que foi guardado;
+        \item \textit{\textbf{users : HashMap<Integer, User>}} - Lista de utilizadores carregados;
+        \item \textit{\textbf{defaultStateFilepath : String}} - Caminho para o ficheiro binário que contém o estado da aplicação, caso este tenha sido omitido na linha de comandos.
+    \end{itemize}
+
+    Para além de alguns métodos tradicionais de acesso e modificação dos atributos (\textit{getters} e \textit{setters}) a nível da atualização do estado da aplicação, esta classe contém diversos métodos para a execução desta, nomeadamente:
+    \begin{itemize}
+        \item Menu para o utilizador, caso ele tenha entrado com a sua conta;
+        \item Menu principal da aplicação;
+        \item Adicionar e remover utilizadores;
+        \item Guardar e carregar o estado da aplicação;
+        \item Sair da aplicação.
+    \end{itemize}
+    
+    Para além destes métodos, a classe \textit{Main} contém o método \textit{main}, que é o ponto de entrada da aplicação.
+    As funcionalidades proporcionadas por esta classe serão detalhadas no subcapítulo \textit{\nameref{sec:salvaguarda-estado}}.
+
 
 \section{Classe \textit{User}}
     A classe \textit{User} representa um utilizador da aplicação, sendo constituída pelos seguintes atributos:
@@ -305,6 +326,7 @@
 
 \clearpage
 \section{Salvaguarda do Estado da Aplicação}
+    \label{sec:salvaguarda-estado}
 Para garantir que o estado da aplicação é preservado entre execuções, esta
 permite guardar e carregar o estado atual através de um ficheiro binário.
 As opcões de guardar e carregar o estado do programa estão disponíveis no menu principal da aplicação. Adicionalmente o ficheiro binário pode ser carregado diretamente no início da execução do programa através da passagem da localização deste na linha de comandos.
