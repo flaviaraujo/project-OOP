@@ -41,7 +41,7 @@
 - [x] In simulation if an activity is repeated at the end of the day, add it to the next day
 - [x] Sort events in a plan by date time
 - [x] Add hard notion to activities
-- [ ] Encapsulation in Main class
+- [x] Encapsulation in Main class
 - [ ] Encapsulate app; add clone's
 - [x] Fix statistic n7 itter the user registers instead
 - [ ] review functions to get calories burned
