@@ -179,6 +179,7 @@
 
 
 \section{Classe \textit{User}}
+    [TODO - Adicionar um tipo de Uilizador e descrever User.Type]
     A classe \textit{User} representa um utilizador da aplicação, sendo constituída pelos seguintes atributos:
 
     \begin{itemize}
@@ -219,6 +220,9 @@
     \end{itemize}
 
     As funcionalidades proporcionadas por esta classe serão detalhadas no subcapítulo \textit{\nameref{sec:gestao-atividades}}.
+
+    A classe \textit{Activity} foi desenvolvida como uma classe abstrata de forma a permitir a extensão desta, através da implementação de novos tipos de atividades. Assim, foi definida uma hierarquia de classes, onde a classe \textit{Activity} é a superclasse e as suas subclasses são \textit{Distance}, \textit{DistanceAltimetry}, \textit{Repetition} e \textit{RepetitionWeight}.
+    Se fosse necessário adicionar um novo tipo de atividade, seria criada uma nova subclasse de \textit{Activity} e pequenas alterações teriam de ser feitas na classe \textit{Activity}, tais como, nos métodos \textit{getType}, \textit{getTypeString} e, na criação de uma nova atividade, adicionar este novo tipo criado, garantindo, deste modo, a modularidade, manutenção e extensabilidade da superclasse \textit{Activity} e das suas subclasses.
 
 \section{Classe \textit{Event}}
     A classe \textit{Event} representa um evento correspondente a um plano de treino, sendo constituída pelos seguintes atributos:
