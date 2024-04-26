@@ -335,6 +335,15 @@ class Simulation {
     +getSimulationEndDate(Scanner sc, LocalDate startDate) : LocalDate
 }
 
+class IO {
+    .. Methods ..
+    readString(sc : Scanner) : String
+    readInt(sc : Scanner) : int
+    readYesNo(sc : Scanner) : String
+}
+
+Note right of IO: This class is used to\nread input from the user.\nIt's used throughout the program.
+
 class Main {
     .. Attributes ..
     -updatedState : boolean
@@ -357,7 +366,6 @@ class Main {
     ..Methods - Getters..
     +getUpdatedState() : boolean
     +getUsers() : HashMap<Integer, User>
-    
     ..Methods - Setters..
     +setUpdatedState(boolean updatedState) : void
     +setUsers(HashMap<Integer, User> users) : void
