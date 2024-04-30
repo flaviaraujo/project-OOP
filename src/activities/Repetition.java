@@ -1,8 +1,10 @@
 package src.activities;
 
 import src.Activity;
-import src.IO;
 import src.User;
+
+// TODO remove this
+import src.Controller;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -121,13 +123,14 @@ public class Repetition extends Activity implements Serializable {
             return null;
         }
 
-        IO io = new IO();
+        // TODO remove this
+        Controller c = new Controller();
 
         int repetitions = 0;
 
         while (true) {
             System.out.print("Enter the number of repetitions: ");
-            repetitions = io.readInt(sc);
+            repetitions = c.readInt(sc);
 
             // check if repetitions is between 1 and 1000
             if (repetitions < 1 || repetitions > 1000) {

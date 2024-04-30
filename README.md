@@ -46,7 +46,9 @@
 - [x] Fix statistic n7 itter the user registers instead
 - [ ] review functions to get calories burned
 - [x] Add create plan based on user objectives
-- [ ] MVC in Main
+- [ ] MVC
+- - [ ] Review Model and Controller
+- - [ ] Dúvida create users input in controller, implica menos modularidade.
 
 ## Notes
 

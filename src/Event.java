@@ -148,14 +148,15 @@ public class Event implements Serializable {
             break;
         }
 
-        IO io = new IO();
+        // TODO remove this
+        Controller c = new Controller();
 
         int activityRepetitions = 1;
         if (maxRepetitions != 1) {
             while (true) {
                 System.out.print("Enter the number of times you want to repeat " +
                     "the activity (1-" + maxRepetitions + "): ");
-                activityRepetitions = io.readInt(sc);
+                activityRepetitions = c.readInt(sc);
 
                 if (activityRepetitions < 1 || activityRepetitions > maxRepetitions) {
                     System.out.println("Invalid number of repetitions. Please enter a number " +
@@ -169,7 +170,7 @@ public class Event implements Serializable {
         LocalTime time;
         while (true) {
             System.out.print("Enter the time of the event (HH:mm): ");
-            String timeBuffer = io.readString(sc);
+            String timeBuffer = c.readString(sc);
             try {
                 time = LocalTime.parse(timeBuffer);
             }

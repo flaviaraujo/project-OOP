@@ -1,8 +1,10 @@
 package src.activities;
 
 import src.Activity;
-import src.IO;
 import src.User;
+
+// TODO remove this
+import src.Controller;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -124,13 +126,14 @@ public class Distance extends Activity implements Serializable {
             return null;
         }
 
-        IO io = new IO();
+        // TODO remove this
+        Controller c = new Controller();
 
         int distance = 0;
 
         while (true) {
             System.out.print("Enter the distance of the activity in meters: ");
-            distance = io.readInt(sc);
+            distance = c.readInt(sc);
 
             // check if distance is between 1 and 50000 meters
             if (distance < 1 || distance > 50000) {

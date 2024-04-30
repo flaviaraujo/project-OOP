@@ -162,13 +162,14 @@ public abstract class Activity implements Serializable {
         int intensity = 0;
         boolean hard = false;
 
-        IO io = new IO();
+        // TODO remove this
+        Controller c = new Controller();
 
         System.out.println();
 
         while (true) {
             System.out.print("Enter the name of the activity: ");
-            String nameBuffer = io.readString(sc);
+            String nameBuffer = c.readString(sc);
 
             // check if name is between 1 and 100 characters
             if (nameBuffer.length() < 1 || nameBuffer.length() > 100) {
@@ -187,7 +188,7 @@ public abstract class Activity implements Serializable {
 
         while (true) {
             System.out.print("Enter the duration of the activity in minutes: ");
-            duration = io.readInt(sc);
+            duration = c.readInt(sc);
 
             // check if duration is between 1 and 1440 minutes
             if (duration < 1 || duration > 1440) {
@@ -199,7 +200,7 @@ public abstract class Activity implements Serializable {
 
         while (true) {
             System.out.print("Enter the intensity of the activity (1-100): ");
-            intensity = io.readInt(sc);
+            intensity = c.readInt(sc);
 
             // check if intensity is between 1 and 100
             if (intensity < 1 || intensity > 100) {
@@ -210,7 +211,7 @@ public abstract class Activity implements Serializable {
         }
 
         System.out.print("Is the activity hard? [y/n]: ");
-        String hardBuffer = io.readYesNo(sc);
+        String hardBuffer = c.readYesNo(sc);
         hard = hardBuffer.equals("y");
 
         switch (activityType) {
@@ -229,7 +230,8 @@ public abstract class Activity implements Serializable {
 
     public static Activity createMenu(Scanner sc, ArrayList<Activity> userActivities) {
 
-        IO io = new IO();
+        // TODO remove this
+        Controller c = new Controller();
 
         while (true) {
             System.out.println();
@@ -240,7 +242,7 @@ public abstract class Activity implements Serializable {
             System.out.println("(4) Repetition with weights");
             System.out.print("Choice: ");
 
-            int choice = io.readInt(sc);
+            int choice = c.readInt(sc);
 
             switch (choice) {
                 case 1:
@@ -268,7 +270,9 @@ public abstract class Activity implements Serializable {
 
     public static Activity search(Scanner sc, ArrayList<Activity> userActivities) {
 
-        IO io = new IO();
+        // TODO remove this
+        Controller c = new Controller();
+
         Activity activity = null;
         while (true) {
             // Print activities names
@@ -277,7 +281,7 @@ public abstract class Activity implements Serializable {
                 System.out.println("  -> " + a.getName());
             }
             System.out.print("Enter the name of the activity: ");
-            String name = io.readString(sc);
+            String name = c.readString(sc);
 
             activity = userActivities.stream()
                 .filter(a -> a.getName().equals(name))
@@ -296,7 +300,9 @@ public abstract class Activity implements Serializable {
     public static User register(Scanner sc, User u) {
 
         Activity a = null;
-        IO io = new IO();
+
+        // TODO remove this
+        Controller c = new Controller();
 
         while (true) {
             System.out.println("Choose an option:");
@@ -304,7 +310,7 @@ public abstract class Activity implements Serializable {
             System.out.println("(2) Register a new activity");
             System.out.print("Option: ");
 
-            int option = io.readInt(sc);
+            int option = c.readInt(sc);
 
             ArrayList<Activity> userActivities = u.getActivities();
             switch (option) {
@@ -335,17 +341,17 @@ public abstract class Activity implements Serializable {
         System.out.println("(2) Use current date");
         System.out.print("Option: ");
 
-        int dateOption = io.readInt(sc);
+        int dateOption = c.readInt(sc);
 
         LocalDateTime datetime = LocalDateTime.now();
 
         if (dateOption == 1) {
             while (true) {
                 System.out.print("Enter date (yyyy-mm-dd): ");
-                String date = io.readString(sc);
+                String date = c.readString(sc);
 
                 System.out.print("Enter time (hh:mm): ");
-                String time = io.readString(sc);
+                String time = c.readString(sc);
 
                 try {
                     datetime = LocalDateTime.parse(date + "T" + time);

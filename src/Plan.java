@@ -112,11 +112,12 @@ public class Plan implements Serializable {
         // Plan
         Plan plan = new Plan();
 
-        IO io = new IO();
+        // TODO remove this
+        Controller c = new Controller();
 
         // Get name of the plan
         System.out.print("Enter the name of the plan: ");
-        String name = io.readString(sc);
+        String name = c.readString(sc);
         plan.setName(name);
 
         // start on sunday and ask how many activities wants to add on that day, and so on
@@ -127,7 +128,7 @@ public class Plan implements Serializable {
                 System.out.print("How many activities do you want on " +
                     e.convertDayToString(i) + "? (0-" + maxActivities + "): ");
 
-                activities = io.readInt(sc);
+                activities = c.readInt(sc);
 
                 if (activities < 0 || activities > maxActivities) {
                     System.out.println("Invalid number of activities. " +
@@ -252,11 +253,12 @@ public class Plan implements Serializable {
         int nActivityRepetitionPerWeek;
         ArrayList<Activity> selectedActivities = new ArrayList<Activity>();
 
-        IO io = new IO();
+        // TODO remove this
+        Controller c = new Controller();
 
         while (true) {
             System.out.print("Enter caloric goal per week: ");
-            caloriesGoal = io.readInt(sc);
+            caloriesGoal = c.readInt(sc);
             if (caloriesGoal < 0) {
                 System.out.println("Invalid caloric goal. Please enter a positive number.");
                 continue;
@@ -266,7 +268,7 @@ public class Plan implements Serializable {
 
         while (true) {
             System.out.print("Enter max activities per day: ");
-            maxActivitiesPerDay = io.readInt(sc);
+            maxActivitiesPerDay = c.readInt(sc);
             if (maxActivitiesPerDay < 1 || maxActivitiesPerDay > 3) {
                 System.out.println("Invalid number of activities. Please enter a number between 1 and 3.");
                 continue;
@@ -276,7 +278,7 @@ public class Plan implements Serializable {
 
         while (true) {
             System.out.print("Enter max distinct activities per day: ");
-            maxDisitinctActivitiesPerDay = io.readInt(sc);
+            maxDisitinctActivitiesPerDay = c.readInt(sc);
             if (maxDisitinctActivitiesPerDay < 1 || maxDisitinctActivitiesPerDay > 3) {
                 System.out.println("Invalid number of activities. Please enter a number between 1 and 3.");
                 continue;
@@ -286,7 +288,7 @@ public class Plan implements Serializable {
 
         while (true) {
             System.out.print("Enter number of repetitions of activities per week: ");
-            nActivityRepetitionPerWeek = io.readInt(sc);
+            nActivityRepetitionPerWeek = c.readInt(sc);
             if (nActivityRepetitionPerWeek < 1) {
                 System.out.println("Invalid number of repetitions. Please enter a number greater than 0.");
                 continue;
@@ -296,7 +298,7 @@ public class Plan implements Serializable {
 
         while (true) {
             System.out.print("Enter number of your activities to select: ");
-            int nActivities = io.readInt(sc);
+            int nActivities = c.readInt(sc);
             ArrayList<Activity> userActivities = user.getActivities();
             if (nActivities < 1 || nActivities > userActivities.size()) {
                 System.out.println("Invalid number of activities. Please enter a number between 1 and " +

@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2024.4.14)  26 APR 2024 17:19
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2024.3.14)  26 APR 2024 17:21
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1142,7 +1142,7 @@ File: images/diagram.png Graphic file (type bmp)
 <images/diagram.png>
 
 
-LaTeX Warning: Float too large for page by 4.09845pt on input line 154.
+LaTeX Warning: Float too large for page by 0.83624pt on input line 154.
 
 [2]
 LaTeX Font Info:    Font shape `TU/lmss/bx/it' in size <17.28> not available
