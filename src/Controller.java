@@ -1,13 +1,9 @@
 package src;
 
-import src.Activity;
-import src.ActivityPlanner;
 import src.activities.Distance;
 
 import java.util.Scanner;
-import java.time.LocalDateTime;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.time.format.DateTimeParseException;

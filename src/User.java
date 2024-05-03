@@ -1,12 +1,10 @@
 package src;
 
 import src.exceptions.ActivityIsRegisteredException;
-import src.exceptions.UserNotFoundException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Scanner;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
