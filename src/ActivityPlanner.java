@@ -35,7 +35,7 @@ public class ActivityPlanner {
     /* Attributes */
     private HashMap<Integer, User> users; // currently loaded users
     private boolean updatedState; // flag to check if state has been updated
-    private String stateFilepath; // default state filepath
+    private String stateFilepath; // state filepath
 
     /* Constructors */
     public ActivityPlanner() {
