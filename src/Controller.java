@@ -19,16 +19,18 @@ import src.exceptions.StateNotLoadedException;
 
 public class Controller {
 
-    public static void main(String[] args) {
+    private ActivityPlanner m;
+    private Scanner sc;
 
-        // Initialize the ActivityPlanner Model
-        ActivityPlanner m = new ActivityPlanner();
+    public Controller() {
+        this.m = new ActivityPlanner();
+        this.sc = new Scanner(System.in);
+    }
+
+    public static void main(String[] args) {
 
         // Initialize the Controller
         Controller c = new Controller();
-
-        // Scanner to read user input
-        Scanner sc = new Scanner(System.in);
 
         // User to use in the user perspective menu (if any is passed as argument)
         User user = null;
@@ -48,8 +50,8 @@ public class Controller {
                 System.exit(0);
             }
             else if (args[i].equals("--load") || args[i].equals("-l")) {
-                m.setStateFilepath(args[++i]);
-                c.loadStateIO(m, sc);
+                c.m.setStateFilepath(args[++i]);
+                c.loadStateIO(c.m, c.sc);
             }
             else if (args[i].equals("--user") || args[i].equals("-u")) {
                 if (args.length < i + 2 + 1) {
@@ -61,7 +63,7 @@ public class Controller {
                 if (option.equals("--id") || option.equals("-i")) {
                     try {
                         int id = Integer.parseInt(value);
-                        user = m.getUserById(id);
+                        user = c.m.getUserById(id);
                     }
                     catch (NumberFormatException e) {
                         System.out.println("Invalid user ID: " + value);
@@ -75,7 +77,7 @@ public class Controller {
                 }
                 else if (option.equals("--email") || option.equals("-e")) {
                     try {
-                        user = m.getUserByEmail(value);
+                        user = c.m.getUserByEmail(value);
                     }
                     catch (UserNotFoundException e) {
                         System.out.println(e.getMessage());
@@ -98,14 +100,14 @@ public class Controller {
             System.out.println("Welcome to Activity Planner, " + user.getName() + "!");
             // User perspective menu
             while (true) {
-                c.userMenu(m, sc, user);
+                c.userMenu(c.m, c.sc, user);
             }
         }
         else {
             System.out.println("Welcome to Activity Planner!");
             // Main menu
             while (true) {
-                c.mainMenu(m, sc);
+                c.mainMenu(c.m, c.sc);
             }
         }
     }
