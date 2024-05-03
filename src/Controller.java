@@ -538,12 +538,12 @@ public class Controller {
                                 break;
                             }
                             user = m.mostCaloriesBurned(start, end);
-                            if (user != null) { // TODO change != null to == null
-                                System.out.println("The user with most calories burned between "
-                                    + start + " and " + end + " is: " + user.getName());
-                            } else {
+                            if (user == null) {
                                 System.out.println("No users found.");
+                                break;
                             }
+                            System.out.println("The user with most calories burned between "
+                                + start + " and " + end + " is: " + user.getName());
                             break;
                         case 3:
                             break;
@@ -560,12 +560,12 @@ public class Controller {
                     switch (option2) {
                         case 1:
                             user = m.mostActivities();
-                            if (user != null) {
-                                System.out.println("The user with most activities is: "
-                                    + user.getName() + " with " + user.getRegisters().size() + " activities.");
-                            } else {
+                            if (user == null) {
                                 System.out.println("No users found.");
+                                break;
                             }
+                            System.out.println("The user with most activities is: "
+                                + user.getName() + " with " + user.getRegisters().size() + " activities.");
                             break;
                         case 2:
                             LocalDate start = insertStatisticsDate(sc, true);
@@ -576,13 +576,13 @@ public class Controller {
                             }
 
                             user = m.mostActivities(start, end);
-                            if (user != null) {
-                                System.out.println("The user with most activities between "
-                                    + start + " and " + end + " is: " + user.getName() + " with "
-                                    + user.getRegisters().size() + " activities.");
-                            } else {
+                            if (user == null) {
                                 System.out.println("No users found.");
+                                break;
                             }
+                            System.out.println("The user with most activities between "
+                                + start + " and " + end + " is: " + user.getName() + " with "
+                                + user.getRegisters().size() + " activities.");
                             break;
                         case 3:
                             break;
