@@ -1,4 +1,4 @@
-package src.activities;
+package src.activityTypes;
 
 import src.Activity;
 import src.User;
@@ -10,9 +10,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.Serializable;
 
-public class RepetitionWeight extends Activity implements Serializable {
+public abstract class RepetitionWeight extends Activity implements Serializable {
 
-    private static final int ACTIVITY_TYPE = 4;
     private static final double MET_VALUE = 5.0;
 
     private int repetition;
@@ -20,8 +19,8 @@ public class RepetitionWeight extends Activity implements Serializable {
 
     public RepetitionWeight() {
         super();
-        this.repetition = 0;
-        this.weight = 0;
+        this.setRepetition(0);
+        this.setWeight(0);
     }
 
     public RepetitionWeight(
@@ -29,8 +28,8 @@ public class RepetitionWeight extends Activity implements Serializable {
         boolean hard, int calories
     ) {
         super(name, duration, intensity, hard, calories);
-        this.repetition = 0;
-        this.weight = 0;
+        this.setRepetition(0);
+        this.setWeight(0);
     }
 
     public RepetitionWeight(
@@ -38,19 +37,14 @@ public class RepetitionWeight extends Activity implements Serializable {
         boolean hard, int calories, int repetition, int weight
     ) {
         super(name, duration, intensity, hard, calories);
-        this.repetition = repetition;
-        this.weight = weight;
+        this.setRepetition(repetition);
+        this.setWeight(weight);
     }
 
     public RepetitionWeight(RepetitionWeight repetitionWeight) {
         super(repetitionWeight);
-        this.repetition = repetitionWeight.getRepetition();
-        this.weight = repetitionWeight.getWeight();
-    }
-
-    @Override
-    public final int getACTIVITY_TYPE() {
-        return ACTIVITY_TYPE;
+        this.setRepetition(repetitionWeight.getRepetition());
+        this.setWeight(repetitionWeight.getWeight());
     }
 
     public int getRepetition() {
@@ -73,14 +67,14 @@ public class RepetitionWeight extends Activity implements Serializable {
     public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append("Activity {\n");
-        sb.append("  Name: " + this.name + ",\n");
-        sb.append("  Duration: " + this.duration + " minutes,\n");
-        sb.append("  Intensity: " + this.intensity + ",\n");
-        sb.append("  Repetition: " + this.repetition + " times,\n");
-        sb.append("  Weight: " + this.weight + " kg\n");
-        sb.append("  Hard: " + this.hard + ",\n");
-        if (this.calories != 0) {
-            sb.append("  Calories: " + this.calories + ",\n");
+        sb.append("  Name: " + this.getName() + ",\n");
+        sb.append("  Duration: " + this.getDuration() + " minutes,\n");
+        sb.append("  Intensity: " + this.getIntensity() + ",\n");
+        sb.append("  Repetition: " + this.getRepetition() + " times,\n");
+        sb.append("  Weight: " + this.getWeight() + " kg\n");
+        sb.append("  Hard: " + this.getHard() + ",\n");
+        if (this.getCalories() != 0) {
+            sb.append("  Calories: " + this.getCalories() + ",\n");
         }
         sb.append("}");
         return sb.toString();
@@ -94,13 +88,14 @@ public class RepetitionWeight extends Activity implements Serializable {
 
         RepetitionWeight repetitionWeight = (RepetitionWeight) o;
         return (
-            this.name.equals(repetitionWeight.getName()) &&
-            this.duration == repetitionWeight.getDuration() &&
-            this.intensity == repetitionWeight.getIntensity() &&
-            this.repetition == repetitionWeight.getRepetition() &&
-            this.weight == repetitionWeight.getWeight() &&
-            this.hard == repetitionWeight.getHard()
-            // this.calories == repetitionWeight.getCalories()
+            this.getName().equals(repetitionWeight.getName()) &&
+            this.getDuration() == repetitionWeight.getDuration() &&
+            this.getIntensity() == repetitionWeight.getIntensity() &&
+            this.getRepetition() == repetitionWeight.getRepetition() &&
+            this.getWeight() == repetitionWeight.getWeight() &&
+            this.getHard() == repetitionWeight.getHard()
+            // The calories field is not considered in the equals method
+            // since it varies depending on the user parameters
         );
     }
 
@@ -118,7 +113,7 @@ public class RepetitionWeight extends Activity implements Serializable {
         int duration = this.getDuration();
         int weight = u.getWeight();
         int height = u.getHeight();
-        int nutritionMultiplier = u.getType().getNutritionMultiplier();
+        int nutritionMultiplier = u.getCaloriesMultiplier();
         double restingBPM = u.getHeartRate();
         double met = MET_VALUE;
 

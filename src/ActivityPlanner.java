@@ -1,9 +1,9 @@
 package src;
 
-import src.activities.Distance;
-import src.activities.DistanceAltimetry;
+import src.activityTypes.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Map.Entry;
 import java.time.LocalDate;
@@ -125,6 +125,39 @@ public class ActivityPlanner {
             .filter(u -> u.getEmail().equals(email))
             .findFirst()
             .orElse(null);
+    }
+
+    public ArrayList<String> getUserTypes() {
+        ArrayList<String> types = new ArrayList<String>();
+
+        // List the classes that are in the users package
+        for (Class<?> c : getClasses("src.users")) {
+            types.add(c.getSimpleName());
+        }
+
+        return types;
+    }
+
+    private List<Class<?>> getClasses(String packageName) {
+        List<Class<?>> classes = new ArrayList<>();
+        try {
+            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+            String path = packageName.replace('.', '/');
+            java.net.URL resource = classLoader.getResource(path);
+            java.io.File directory = new java.io.File(resource.toURI());
+            for (java.io.File file : directory.listFiles()) {
+                if (file.isDirectory()) {
+                    // skip subpackages
+                    // classes.addAll(getClasses(packageName + "." + file.getName()));
+                } else if (file.getName().endsWith(".class")) {
+                    String className = file.getName().substring(0, file.getName().length() - 6);
+                    classes.add(Class.forName(packageName + "." + className));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return classes;
     }
 
     /* simulation method */

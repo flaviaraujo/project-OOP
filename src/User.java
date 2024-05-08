@@ -11,7 +11,7 @@ import java.util.Map.Entry;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class User implements Serializable {
+public abstract class User implements Serializable {
 
     public static final int MIN_NAME_LENGTH = 3;
     public static final int MAX_NAME_LENGTH = 256;
@@ -30,23 +30,6 @@ public class User implements Serializable {
     public static final int MIN_HEIGHT = 100;
     public static final int MAX_HEIGHT = 220;
 
-    public enum Type implements Serializable {
-        OCCASIONAL(40),
-        AMATEUR(60),
-        PROFESSIONAL(90);
-        // OLYMPIC(98);
-
-        private int nutritionMultiplier;
-
-        Type(int nutritionMultiplier) {
-            this.nutritionMultiplier = nutritionMultiplier;
-        }
-
-        public int getNutritionMultiplier() {
-            return nutritionMultiplier;
-        }
-    }
-
     private int id;
     private String name;
     private String email;
@@ -54,7 +37,6 @@ public class User implements Serializable {
     private int heartRate; // BPM
     private int weight; // kg
     private int height; // cm
-    private Type type;
     private ArrayList<Activity> activities;
     private HashMap<LocalDateTime, Activity> registers; // alternative LinkedHashMap
     private Plan plan;
@@ -68,7 +50,6 @@ public class User implements Serializable {
         this.heartRate = 0;
         this.weight = 0;
         this.height = 0;
-        this.type = Type.OCCASIONAL;
         this.activities = new ArrayList<Activity>();
         this.registers = new HashMap<LocalDateTime, Activity>();
         this.plan = new Plan();
@@ -78,7 +59,7 @@ public class User implements Serializable {
     public User(
         int id, String name, String email,
         String address, int heartRate, int weight,
-        int height, Type type
+        int height
     ) {
         this.id = id;
         this.name = name;
@@ -87,7 +68,6 @@ public class User implements Serializable {
         this.heartRate = heartRate;
         this.weight = weight;
         this.height = height;
-        this.type = type;
         this.activities = new ArrayList<Activity>();
         this.registers = new HashMap<LocalDateTime, Activity>();
         this.plan = null;
@@ -96,7 +76,7 @@ public class User implements Serializable {
     public User(
         int id, String name, String email,
         String address, int heartRate, int weight,
-        int height, Type type,
+        int height,
         ArrayList<Activity> activities,
         HashMap<LocalDateTime, Activity> registers,
         Plan plan
@@ -108,7 +88,6 @@ public class User implements Serializable {
         this.heartRate = heartRate;
         this.weight = weight;
         this.height = height;
-        this.type = type;
         this.activities = new ArrayList<>();
         for (Activity activity : activities) {
             this.activities.add(activity.clone());
@@ -129,7 +108,6 @@ public class User implements Serializable {
         this.heartRate = user.getHeartRate();
         this.weight = user.getWeight();
         this.height = user.getHeight();
-        this.type = user.getType();
         this.activities = user.getActivities();
         this.registers = user.getRegisters();
         this.plan = user.getPlan();
@@ -164,9 +142,7 @@ public class User implements Serializable {
         return this.height;
     }
 
-    public Type getType() {
-        return this.type; // immutable
-    }
+    public abstract int getCaloriesMultiplier();
 
     public ArrayList<Activity> getActivities() {
         ArrayList<Activity> activities = new ArrayList<Activity>();
@@ -223,10 +199,6 @@ public class User implements Serializable {
         this.height = height;
     }
 
-    public void setType(Type type) {
-        this.type = type;
-    }
-
     public void setActivities(ArrayList<Activity> activities) {
         this.activities = new ArrayList<Activity>();
 
@@ -264,7 +236,8 @@ public class User implements Serializable {
         sb.append("  heartRate: " + this.heartRate + " BPM,\n");
         sb.append("  weight: " + this.weight + " kg,\n");
         sb.append("  height: " + this.height + " cm,\n");
-        sb.append("  type: " + this.type + ",\n");
+        sb.append("  type: " + this.getClass().getSimpleName() + ",\n");
+        sb.append("  caloriesMultiplier: " + this.getCaloriesMultiplier() + ",\n");
 
         sb.append("  activities: [");
         for (Activity a : this.activities) {
@@ -316,16 +289,14 @@ public class User implements Serializable {
             user.getHeartRate() == this.heartRate &&
             user.getWeight() == this.weight &&
             user.getHeight() == this.height &&
-            user.getType() == this.type &&
+            user.getCaloriesMultiplier() == this.getCaloriesMultiplier() &&
             user.getActivities().equals(this.activities) &&
             user.getRegisters().equals(this.registers) &&
             user.getPlan().equals(this.plan)
         );
     }
 
-    public User clone() {
-        return new User(this);
-    }
+    public abstract User clone();
 
     // Activities methods
     public void addActivity(Activity activity) {

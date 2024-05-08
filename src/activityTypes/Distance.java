@@ -1,4 +1,4 @@
-package src.activities;
+package src.activityTypes;
 
 import src.Activity;
 import src.User;
@@ -10,17 +10,13 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.Serializable;
 
-public class Distance extends Activity implements Serializable {
-
-    private static final int ACTIVITY_TYPE = 1;
-    private static final double MET_VALUE = 11.5;
-
+public abstract class Distance extends Activity implements Serializable {
 
     private int distance;
 
     public Distance() {
         super();
-        this.distance = 0;
+        this.setDistance(0);
     }
 
     public Distance(
@@ -28,7 +24,7 @@ public class Distance extends Activity implements Serializable {
         boolean hard, int calories
     ) {
         super(name, duration, intensity, hard, calories);
-        this.distance = 0;
+        this.setDistance(0);
     }
 
     public Distance(
@@ -36,17 +32,12 @@ public class Distance extends Activity implements Serializable {
         boolean hard, int calories, int distance
     ) {
         super(name, duration, intensity, hard, calories);
-        this.distance = distance;
+        this.setDistance(distance);
     }
 
     public Distance(Distance distance) {
         super(distance);
-        this.distance = distance.getDistance();
-    }
-
-    @Override
-    public final int getACTIVITY_TYPE() {
-        return ACTIVITY_TYPE;
+        this.setDistance(distance.getDistance());
     }
 
     public int getDistance() {
@@ -61,13 +52,13 @@ public class Distance extends Activity implements Serializable {
     public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append("Activity {\n");
-        sb.append("  Name: " + this.name + ",\n");
-        sb.append("  Duration: " + this.duration + " minutes,\n");
-        sb.append("  Intensity: " + this.intensity + ",\n");
-        sb.append("  Distance: " + this.distance + " meters\n");
-        sb.append("  Hard: " + this.hard + ",\n");
-        if (this.calories != 0) {
-            sb.append("  Calories: " + this.calories + ",\n");
+        sb.append("  Name: " + this.getName() + ",\n");
+        sb.append("  Duration: " + this.getDuration() + " minutes,\n");
+        sb.append("  Intensity: " + this.getIntensity() + ",\n");
+        sb.append("  Distance: " + this.getDistance() + " meters\n");
+        sb.append("  Hard: " + this.getHard() + ",\n");
+        if (this.getCalories() != 0) {
+            sb.append("  Calories: " + this.getCalories() + ",\n");
         }
         sb.append("}");
         return sb.toString();
@@ -81,12 +72,13 @@ public class Distance extends Activity implements Serializable {
 
         Distance distance = (Distance) o;
         return (
-            this.name.equals(distance.getName()) &&
-            this.duration == distance.getDuration() &&
-            this.intensity == distance.getIntensity() &&
-            this.distance == distance.getDistance() &&
-            this.hard == distance.getHard()
-            // this.calories == distance.getCalories()
+            this.getName().equals(distance.getName()) &&
+            this.getDuration() == distance.getDuration() &&
+            this.getIntensity() == distance.getIntensity() &&
+            this.getDistance() == distance.getDistance() &&
+            this.getHard() == distance.getHard()
+            // The calories field is not considered in the equals method
+            // since it varies depending on the user parameters
         );
     }
 
@@ -95,28 +87,7 @@ public class Distance extends Activity implements Serializable {
         return new Distance(this);
     }
 
-    @Override
-    public int calculateCalories(User u) {
-
-        int intensity = this.getIntensity();
-        int distance = this.getDistance();
-        int weight = u.getWeight();
-        int height = u.getHeight();
-        int nutritionMultiplier = u.getType().getNutritionMultiplier();
-        double met = MET_VALUE;
-
-        double weightFactor = Math.min(weight / 200.0, 2);
-        weightFactor = Math.max(weightFactor, 1);
-
-        // return (int)
-        //     (weightFactor * (height / 100.0) * (nutritionMultiplier / 100.0) *
-        //     met * (intensity / 100.0) * duration *
-        //     (distance / 1000.0));
-
-        return (int)
-            (weight * (nutritionMultiplier / 100.0) *
-            met * (intensity / 100.0) * (distance / 1000.0));
-    }
+    public abstract int calculateCalories(User u);
 
     @Override
     public Activity create(Scanner sc, ArrayList<Activity> userActivities) {

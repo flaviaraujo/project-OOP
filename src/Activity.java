@@ -1,9 +1,6 @@
 package src;
 
-import src.activities.Distance;
-import src.activities.DistanceAltimetry;
-import src.activities.Repetition;
-import src.activities.RepetitionWeight;
+import src.activityTypes.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,16 +9,13 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-/**
- * Activity
- */
 public abstract class Activity implements Serializable {
 
-    protected String name;
-    protected int duration; // in minutes
-    protected int intensity;
-    protected boolean hard;
-    protected int calories; // calories burned
+    private String name;
+    private int duration; // in minutes
+    private int intensity;
+    private boolean hard;
+    private int calories; // calories burned
 
     public Activity() {
         this.name = "";
@@ -49,8 +43,6 @@ public abstract class Activity implements Serializable {
         this.hard = activity.getHard();
         this.calories = activity.getCalories();
     }
-
-    public abstract int getACTIVITY_TYPE();
 
     public String getName() {
         return this.name;
@@ -100,62 +92,9 @@ public abstract class Activity implements Serializable {
 
     public abstract int calculateCalories(User u);
 
-    public boolean isDistance() {
-        return this instanceof Distance;
-    }
-
-    public boolean isDistanceAltimetry() {
-        return this instanceof DistanceAltimetry;
-    }
-
-    public boolean isRepetition() {
-        return this instanceof Repetition;
-    }
-
-    public boolean isRepetitionWeight() {
-        return this instanceof RepetitionWeight;
-    }
-
-    public int getType() {
-        if (this.isDistance()) {
-            Distance distance = (Distance) this;
-            return distance.getACTIVITY_TYPE();
-        }
-        else if (this.isDistanceAltimetry()) {
-            DistanceAltimetry distanceAltimetry = (DistanceAltimetry) this;
-            return distanceAltimetry.getACTIVITY_TYPE();
-        }
-        else if (this.isRepetition()) {
-            Repetition repetition = (Repetition) this;
-            return repetition.getACTIVITY_TYPE();
-        }
-        else if (this.isRepetitionWeight()) {
-            RepetitionWeight repetitionWeight = (RepetitionWeight) this;
-            return repetitionWeight.getACTIVITY_TYPE();
-        }
-        else {
-            return 0;
-        }
-    }
-
-    public String getTypeString(int type) {
-        switch (type) {
-            case 1:
-                return "Distance";
-            case 2:
-                return "Distance & altimetry";
-            case 3:
-                return "Repetition";
-            case 4:
-                return "Repetition with weights";
-            default:
-                return "";
-        }
-    }
-
     public abstract Activity create(Scanner sc, ArrayList<Activity> userActivities);
 
-    public static Activity createAux(Scanner sc, ArrayList<Activity> userActivities, int activityType) {
+    public Activity createAux(Scanner sc, ArrayList<Activity> userActivities, int activityType) {
 
         String name = "";
         int duration = 0;

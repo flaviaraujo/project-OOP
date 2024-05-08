@@ -1,4 +1,4 @@
-package src.activities;
+package src.activityTypes;
 
 import src.Activity;
 import src.User;
@@ -10,16 +10,15 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.Serializable;
 
-public class Repetition extends Activity implements Serializable {
+public abstract class Repetition extends Activity implements Serializable {
 
-    private static final int ACTIVITY_TYPE = 3;
     private static final double MET_VALUE = 3.0;
 
     private int repetition;
 
     public Repetition() {
         super();
-        this.repetition = 0;
+        this.setRepetition(0);
     }
 
     public Repetition(
@@ -27,7 +26,7 @@ public class Repetition extends Activity implements Serializable {
         boolean hard, int calories
     ) {
         super(name, duration, intensity, hard, calories);
-        this.repetition = 0;
+        this.setRepetition(0);
     }
 
     public Repetition(
@@ -35,17 +34,12 @@ public class Repetition extends Activity implements Serializable {
         boolean hard, int calories, int repetition
     ) {
         super(name, duration, intensity, hard, calories);
-        this.repetition = repetition;
+        this.setRepetition(repetition);
     }
 
     public Repetition(Repetition repetition) {
         super(repetition);
-        this.repetition = repetition.getRepetition();
-    }
-
-    @Override
-    public final int getACTIVITY_TYPE() {
-        return ACTIVITY_TYPE;
+        this.setRepetition(repetition.getRepetition());
     }
 
     public int getRepetition() {
@@ -60,13 +54,13 @@ public class Repetition extends Activity implements Serializable {
     public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append("Activity {\n");
-        sb.append("  Name: " + this.name + ",\n");
-        sb.append("  Duration: " + this.duration + " minutes,\n");
-        sb.append("  Intensity: " + this.intensity + ",\n");
-        sb.append("  Repetition: " + this.repetition + " times\n");
-        sb.append("  Hard: " + this.hard + ",\n");
-        if (this.calories != 0) {
-            sb.append("  Calories: " + this.calories + ",\n");
+        sb.append("  Name: " + this.getName() + ",\n");
+        sb.append("  Duration: " + this.getDuration() + " minutes,\n");
+        sb.append("  Intensity: " + this.getIntensity() + ",\n");
+        sb.append("  Repetition: " + this.getRepetition() + " times\n");
+        sb.append("  Hard: " + this.getHard() + ",\n");
+        if (this.getCalories() != 0) {
+            sb.append("  Calories: " + this.getCalories() + ",\n");
         }
         sb.append("}");
         return sb.toString();
@@ -80,12 +74,13 @@ public class Repetition extends Activity implements Serializable {
 
         Repetition repetition = (Repetition) o;
         return (
-            this.name.equals(repetition.getName()) &&
-            this.duration == repetition.getDuration() &&
-            this.intensity == repetition.getIntensity() &&
-            this.repetition == repetition.getRepetition() &&
-            this.hard == repetition.getHard()
-            // this.calories == repetition.getCalories()
+            this.getName().equals(repetition.getName()) &&
+            this.getDuration() == repetition.getDuration() &&
+            this.getIntensity() == repetition.getIntensity() &&
+            this.getRepetition() == repetition.getRepetition() &&
+            this.getHard() == repetition.getHard()
+            // The calories field is not considered in the equals method
+            // since it varies depending on the user parameters
         );
     }
 
@@ -100,7 +95,7 @@ public class Repetition extends Activity implements Serializable {
         int repetitions = this.getRepetition();
         int intensity = this.getIntensity();
         int weight = u.getWeight();
-        int nutritionMultiplier = u.getType().getNutritionMultiplier();
+        int nutritionMultiplier = u.getCaloriesMultiplier();
         double restingBPM = u.getHeartRate();
         double met = MET_VALUE;
 

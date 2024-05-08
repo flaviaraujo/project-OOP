@@ -1,8 +1,11 @@
 package src;
 
-import src.activities.Distance;
+import src.activityTypes.Distance; // TODO remove this
+import src.users.*;
 
 import java.util.Scanner;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
@@ -47,7 +50,7 @@ public class Controller {
             }
             else if (args[i].equals("--load") || args[i].equals("-l")) {
                 c.m.setStateFilepath(args[++i]);
-                c.loadStateIO(c.m, c.sc);
+                c.loadStateIO();
             }
             else if (args[i].equals("--user") || args[i].equals("-u")) {
                 if (args.length < i + 2 + 1) {
@@ -96,20 +99,20 @@ public class Controller {
             System.out.println("Welcome to Activity Planner, " + user.getName() + "!");
             // User perspective menu
             while (true) {
-                c.userMenu(c.m, c.sc, user);
+                c.userMenu(user);
             }
         }
         else {
             System.out.println("Welcome to Activity Planner!");
             // Main menu
             while (true) {
-                c.mainMenu(c.m, c.sc);
+                c.mainMenu();
             }
         }
     }
 
     /* main menu */
-    private void mainMenu(ActivityPlanner m, Scanner sc) {
+    private void mainMenu() {
         System.out.println(
                 "\n" +
                 "[Main menu] Please select an option:\n" +
@@ -124,51 +127,51 @@ public class Controller {
                 "(9) Exit");
 
         System.out.print("Option: ");
-        int option = readInt(sc);
+        int option = readInt(this.sc);
 
         switch (option) {
             case 1:
                 // Manage users
-                manageUserSubMenu(m, sc);
+                this.manageUserSubMenu();
                 break;
             case 2:
                 // Manage user activities
-                manageUserActivitiesSubMenu(m, sc);
+                this.manageUserActivitiesSubMenu();
                 break;
             case 3:
                 // Manage user registered activities
-                manageUserRegisteredActivitiesSubMenu(m, sc);
+                this.manageUserRegisteredActivitiesSubMenu();
                 break;
             case 4:
                 // Manage user plan
-                manageUserPlanSubMenu(m, sc);
+                this.manageUserPlanSubMenu();
                 break;
             case 5:
                 // Simulation
-                simulationSubMenu(m, sc);
+                this.simulationSubMenu();
                 break;
             case 6:
                 // Statistics
-                statisticsSubMenu(m, sc);
+                this.statisticsSubMenu();
                 break;
             case 7:
                 // Save program state
-                saveStateIO(m);
+                this.saveStateIO();
                 break;
             case 8:
                 // Load program state
-                loadStateIO(m, sc);
+                this.loadStateIO();
                 break;
             case 9:
                 // Exit
-                exit(m, sc);
+                this.exit();
             default:
                 System.out.println("Invalid option");
                 break;
         }
     }
     /* sub-menus */
-    private void manageUserSubMenu(ActivityPlanner m, Scanner sc) {
+    private void manageUserSubMenu() {
 
         while (true) {
             System.out.println(
@@ -182,24 +185,25 @@ public class Controller {
                     "(6) Back to main menu");
 
             System.out.print("Option: ");
-            int option = readInt(sc);
+            int option = readInt(this.sc);
 
             User user = null;
-            ArrayList<String> emails = m.getUsersEmails();
+            ArrayList<String> emails = this.m.getUsersEmails();
+            ArrayList<String> types = this.m.getUserTypes();
 
             switch (option) {
                 case 1:
                     // Create an user
-                    int id = m.getNextUserId();
-                    user = createUser(sc, emails, id);
-                    m.addUser(user);
+                    int id = this.m.getNextUserId();
+                    user = createUser(this.sc, emails, types, id);
+                    this.m.addUser(user);
                     System.out.println("User created successfully. (ID: " + user.getId() + ")");
                     break;
                 case 2:
                     // Delete an user
                     try {
-                        user = searchUserIO(m, sc);
-                        m.removeUser(user);
+                        user = this.searchUserIO();
+                        this.m.removeUser(user);
                         System.out.println("User deleted successfully.");
                     }
                     catch (UserNotFoundException e) {
@@ -209,7 +213,7 @@ public class Controller {
                 case 3:
                     // View an user
                     try {
-                        user = searchUserIO(m, sc);
+                        user = this.searchUserIO();
                         System.out.println(user);
                     }
                     catch (UserNotFoundException e) {
@@ -218,7 +222,7 @@ public class Controller {
                     break;
                 case 4:
                     // View all users
-                    ArrayList<User> users = new ArrayList<>(m.getUsers().values());
+                    ArrayList<User> users = new ArrayList<>(this.m.getUsers().values());
                     for (User u : users) {
                         System.out.println(u);
                     }
@@ -226,9 +230,9 @@ public class Controller {
                 case 5:
                     // Edit an user
                     try {
-                        user = searchUserIO(m, sc);
-                        editUser(sc, emails, user);
-                        m.updateUser(user);
+                        user = this.searchUserIO();
+                        editUser(this.sc, emails, user);
+                        this.m.updateUser(user);
                         System.out.println("User edited successfully.");
                     }
                     catch (UserNotFoundException e) {
@@ -244,12 +248,12 @@ public class Controller {
         }
     }
 
-    private void manageUserActivitiesSubMenu(ActivityPlanner m, Scanner sc) {
+    private void manageUserActivitiesSubMenu() {
 
         // Select an user to manage activities
         User user = null;
         try {
-            user = searchUserIO(m, sc);
+            user = this.searchUserIO();
         }
         catch (UserNotFoundException e) {
             System.out.println(e.getMessage());
@@ -267,7 +271,7 @@ public class Controller {
             System.out.println("(5) Back to main menu");
             System.out.print("Option: ");
 
-            int option = readInt(sc);
+            int option = readInt(this.sc);
 
             ArrayList<Activity> userActivities = user.getActivities();
             Activity a;
@@ -275,7 +279,7 @@ public class Controller {
             switch (option) {
                 case 1:
                     // Create an activity
-                    Activity activity = Activity.createMenu(sc, userActivities);
+                    Activity activity = Activity.createMenu(this.sc, userActivities);
                     if (activity == null) {
                         System.out.println("Activity not created.");
                         break;
@@ -283,7 +287,7 @@ public class Controller {
                     // Add activity to user
                     user.addActivity(activity);
                     // Update the Main instance by replacing the user
-                    m.updateUser(user);
+                    this.m.updateUser(user);
                     // The state is updated when a new activity for an user is created
                     System.out.println("Activity created successfully.");
                     break;
@@ -294,7 +298,7 @@ public class Controller {
                     }
 
                     // Delete an activity
-                    a = Activity.search(sc, userActivities);
+                    a = Activity.search(this.sc, userActivities);
                     try {
                         user.deleteActivity(a);
                     }
@@ -303,7 +307,7 @@ public class Controller {
                         break;
                     }
                     // Update the Main instance by replacing the user
-                    m.updateUser(user);
+                    this.m.updateUser(user);
                     System.out.println("Activity deleted successfully.");
                     break;
                 case 3:
@@ -313,7 +317,7 @@ public class Controller {
                     }
 
                     // View an activity
-                    a = Activity.search(sc, userActivities);
+                    a = Activity.search(this.sc, userActivities);
                     System.out.println(a);
                     break;
                 case 4:
@@ -334,12 +338,12 @@ public class Controller {
         }
     }
 
-    private void manageUserRegisteredActivitiesSubMenu(ActivityPlanner m, Scanner sc) {
+    private void manageUserRegisteredActivitiesSubMenu() {
 
         // Select an user to add a registered activity or view them
         User user = null;
         try {
-            user = searchUserIO(m, sc);
+            user = this.searchUserIO();
         }
         catch (UserNotFoundException e) {
             System.out.println(e.getMessage());
@@ -355,14 +359,14 @@ public class Controller {
             System.out.println("(3) Back to main menu");
             System.out.print("Option: ");
 
-            int option = readInt(sc);
+            int option = readInt(this.sc);
 
             switch (option) {
                 case 1:
                     Activity activity = (Activity) new Distance();
-                    user = activity.register(sc, user);
+                    user = activity.register(this.sc, user);
                     // Update the Main instance by replacing the user
-                    m.updateUser(user);
+                    this.m.updateUser(user);
                     break;
                 case 2:
                     // View registered activities
@@ -378,12 +382,12 @@ public class Controller {
         }
     }
 
-    private void manageUserPlanSubMenu(ActivityPlanner m, Scanner sc) {
+    private void manageUserPlanSubMenu() {
 
         // Select an user to manage plan
         User user = null;
         try {
-            user = searchUserIO(m, sc);
+            user = this.searchUserIO();
         }
         catch (UserNotFoundException e) {
             System.out.println(e.getMessage());
@@ -401,7 +405,7 @@ public class Controller {
             System.out.println("(5) Back to main menu");
             System.out.print("Option: ");
 
-            int option = readInt(sc);
+            int option = readInt(this.sc);
 
             ArrayList<Activity> userActivities = user.getActivities();
 
@@ -413,7 +417,7 @@ public class Controller {
                     if (old != null) {
                         System.out.println("A plan already exists for the selected user.");
                         System.out.print("Do you want to overwrite the current plan? [y/n]: ");
-                        String delete = readYesNo(sc);
+                        String delete = this.readYesNo(this.sc);
                         if (delete.equals("y")) {
                             user.setPlan(null);
                             System.out.println("Plan deleted successfully.");
@@ -424,21 +428,21 @@ public class Controller {
                         }
                     }
                     Plan p = new Plan();
-                    p = p.create(sc, userActivities);
+                    p = p.create(this.sc, userActivities);
                     user.setPlan(p);
                     if (old == null && p == null) {
                         System.out.println("Plan not created.");
                         break;
                     }
                     System.out.println("Plan created successfully.");
-                    m.updateUser(user);
+                    this.m.updateUser(user);
                     break;
                 case 2:
                     // Create plan based on user goals
                     Plan oldPlan = user.getPlan();
                     if (oldPlan != null) {
                         System.out.print("Do you want to overwrite the user current plan? [y/n]: ");
-                        String delete = readYesNo(sc);
+                        String delete = this.readYesNo(this.sc);
                         if (delete.equals("y")) {
                             user.setPlan(null);
                             System.out.println("Plan deleted successfully.");
@@ -450,12 +454,13 @@ public class Controller {
                     }
 
                     Plan plan = new Plan();
-                    plan = plan.createBasedOnGoals(sc, user);
+                    plan = plan.createBasedOnGoals(this.sc, user);
                     if (plan == null) {
                         System.out.println("Plan not created.");
                         break;
                     }
                     user.setPlan(plan);
+                    this.m.updateUser(user);
                     break;
                 case 3:
                     // Delete plan
@@ -465,7 +470,7 @@ public class Controller {
                     }
                     user.setPlan(null);
                     System.out.println("Plan deleted successfully.");
-                    m.updateUser(user);
+                    this.m.updateUser(user);
                     break;
                 case 4:
                     // View plan
@@ -485,14 +490,14 @@ public class Controller {
         }
     }
 
-    private void simulationSubMenu(ActivityPlanner m, Scanner sc) {
+    private void simulationSubMenu() {
         LocalDate startDate = LocalDate.now();
-        LocalDate endDate = getSimulationEndDate(sc, startDate);
-        System.out.println(m.runSimulation(startDate, endDate));
+        LocalDate endDate = getSimulationEndDate(this.sc, startDate);
+        System.out.println(this.m.runSimulation(startDate, endDate));
     }
 
     /* statistics menu */
-    private void statisticsSubMenu(ActivityPlanner m, Scanner sc) {
+    private void statisticsSubMenu() {
 
         User user = null;
         int option = 0, option2 = 0;
@@ -510,18 +515,18 @@ public class Controller {
                     "(8) Return to main menu");
 
             System.out.print("Option: ");
-            option = readInt(sc);
+            option = readInt(this.sc);
 
             switch (option) {
                 case 1:
                     // 1. The user with most calories burned
-                    displayStatsSubMenu();
+                    this.displayStatsSubMenu();
                     System.out.print("Option: ");
-                    option2 = readInt(sc);
+                    option2 = readInt(this.sc);
 
                     switch (option2) {
                         case 1:
-                            user = m.mostCaloriesBurned();
+                            user = this.m.mostCaloriesBurned();
                             if (user == null) {
                                 System.out.println("No users found.");
                                 break;
@@ -529,13 +534,13 @@ public class Controller {
                             System.out.println("The user with most calories burned is: " + user.getName());
                             break;
                         case 2:
-                            LocalDate start = insertStatisticsDate(sc, true);
-                            LocalDate end = insertStatisticsDate(sc, false);
+                            LocalDate start = this.insertStatisticsDate(this.sc, true);
+                            LocalDate end = this.insertStatisticsDate(this.sc, false);
                             if (start.isAfter(end)) {
                                 System.out.println("Invalid date range, start date is after end date.");
                                 break;
                             }
-                            user = m.mostCaloriesBurned(start, end);
+                            user = this.m.mostCaloriesBurned(start, end);
                             if (user == null) {
                                 System.out.println("No users found.");
                                 break;
@@ -551,13 +556,13 @@ public class Controller {
                     break;
                 case 2:
                     // 2. The user with the most activities (registered/completed)
-                    displayStatsSubMenu();
+                    this.displayStatsSubMenu();
                     System.out.print("Option: ");
-                    option2 = readInt(sc);
+                    option2 = readInt(this.sc);
 
                     switch (option2) {
                         case 1:
-                            user = m.mostActivities();
+                            user = this.m.mostActivities();
                             if (user == null) {
                                 System.out.println("No users found.");
                                 break;
@@ -566,14 +571,14 @@ public class Controller {
                                 + user.getName() + " with " + user.getRegisters().size() + " activities.");
                             break;
                         case 2:
-                            LocalDate start = insertStatisticsDate(sc, true);
-                            LocalDate end = insertStatisticsDate(sc, false);
+                            LocalDate start = this.insertStatisticsDate(this.sc, true);
+                            LocalDate end = this.insertStatisticsDate(this.sc, false);
                             if (start.isAfter(end)) {
                                 System.out.println("Invalid date range, start date is after end date.");
                                 break;
                             }
 
-                            user = m.mostActivities(start, end);
+                            user = this.m.mostActivities(start, end);
                             if (user == null) {
                                 System.out.println("No users found.");
                                 break;
@@ -591,38 +596,38 @@ public class Controller {
                     break;
                 case 3:
                     // 3. The type of activity most practiced by the users
-                    String activity = m.mostPracticedActivityType();
+                    String activity = this.m.mostPracticedActivityType();
                     System.out.println("The type of activity most practiced by the users is: " + activity);
                     break;
                 case 4:
                     // 4. How many km’s were traveled by one user
                     // Select an user to get the km traveled
                     try {
-                        user = searchUserIO(m, sc);
+                        user = this.searchUserIO();
                     }
                     catch (UserNotFoundException e) {
                         System.out.println(e.getMessage());
                         break;
                     }
 
-                    displayStatsSubMenu();
+                    this.displayStatsSubMenu();
                     System.out.print("Option: ");
-                    option2 = readInt(sc);
+                    option2 = readInt(this.sc);
 
                     switch (option2) {
                         case 1:
-                            double km = m.kmTraveled(user);
+                            double km = this.m.kmTraveled(user);
                             System.out.println("The user " + user.getName() + " has traveled " + km + " km.");
                             break;
                         case 2:
-                            LocalDate start = insertStatisticsDate(sc, true);
-                            LocalDate end = insertStatisticsDate(sc, false);
+                            LocalDate start = this.insertStatisticsDate(this.sc, true);
+                            LocalDate end = this.insertStatisticsDate(this.sc, false);
                             if (start.isAfter(end)) {
                                 System.out.println("Invalid date range, start date is after end date.");
                                 break;
                             }
 
-                            km = m.kmTraveled(user, start, end);
+                            km = this.m.kmTraveled(user, start, end);
                             System.out.println("The user " + user.getName() + " has traveled " + km + " km between "
                                 + start + " and " + end + ".");
                             break;
@@ -637,32 +642,32 @@ public class Controller {
                     // 5. How many meters of altimetry were climbed by one user
                     // Select an user to get the altimetry climbed
                     try {
-                        user = searchUserIO(m, sc);
+                        user = this.searchUserIO();
                     }
                     catch (UserNotFoundException e) {
                         System.out.println(e.getMessage());
                         break;
                     }
 
-                    displayStatsSubMenu();
+                    this.displayStatsSubMenu();
                     System.out.print("Option: ");
-                    option2 = readInt(sc);
+                    option2 = readInt(this.sc);
 
                     switch (option2) {
                         case 1:
-                            int altimetry = m.altimetryClimbed(user);
+                            int altimetry = this.m.altimetryClimbed(user);
                             System.out.println("The user " + user.getName() + " has climbed "
                                     + altimetry + " meters.");
                             break;
                         case 2:
-                            LocalDate start = insertStatisticsDate(sc, true);
-                            LocalDate end = insertStatisticsDate(sc, false);
+                            LocalDate start = this.insertStatisticsDate(this.sc, true);
+                            LocalDate end = this.insertStatisticsDate(this.sc, false);
                             if (start.isAfter(end)) {
                                 System.out.println("Invalid date range, start date is after end date.");
                                 break;
                             }
 
-                            altimetry = m.altimetryClimbed(user, start, end);
+                            altimetry = this.m.altimetryClimbed(user, start, end);
                             System.out.println("The user " + user.getName() + " has climbed "
                                 + altimetry + " meters between "
                                 + start + " and " + end + ".");
@@ -675,20 +680,20 @@ public class Controller {
                     break;
                 case 6:
                     // 6. Whats the practice plan with more calories burned
-                    System.out.println(m.mostCaloriesBurnedPlan());
+                    System.out.println(this.m.mostCaloriesBurnedPlan());
                     break;
                 case 7:
                     // 7. List the activities of a user
                     // Select an user to list the activities
                     try {
-                        user = searchUserIO(m, sc);
+                        user = this.searchUserIO();
                     }
                     catch (UserNotFoundException e) {
                         System.out.println(e.getMessage());
                         break;
                     }
 
-                    System.out.println(m.listActivities(user));
+                    System.out.println(this.m.listActivities(user));
                     break;
                 case 8:
                     return;
@@ -705,14 +710,14 @@ public class Controller {
         System.out.println("(3) Return to stats menu");
     }
 
-    private void exit(ActivityPlanner m, Scanner sc) {
+    private void exit() {
 
-        if (m.getUpdatedState()) {
+        if (this.m.getUpdatedState()) {
             System.out.print("Do you want to save the current state before exiting? [y/n]: ");
-            String save = readYesNo(sc);
+            String save = this.readYesNo(this.sc);
             if (save.equals("y")) {
                 try {
-                    m.saveState();
+                    this.m.saveState();
                 }
                 catch (StateNotSavedException e) {
                     System.out.println(e.getMessage());
@@ -720,12 +725,12 @@ public class Controller {
             }
         }
         System.out.println("Exiting...");
-        sc.close();
+        this.sc.close();
         System.exit(0);
     }
 
     /* user perspective menu TODO */
-    private void userMenu(ActivityPlanner m, Scanner sc, User user) {}
+    private void userMenu(User user) {}
 
     /* user IO methods */
     private String enterUserName(Scanner sc) {
@@ -845,54 +850,63 @@ public class Controller {
         return height;
     }
 
-    private User.Type enterUserType(Scanner sc) {
+    private String enterUserType(Scanner sc, ArrayList<String> types) {
+
+        int N = types.size();
+
+        String result = null;
 
         while (true) {
             System.out.println("Possible user types:");
-            System.out.println("  1 - OCCASIONAL");
-            System.out.println("  2 - AMATEUR");
-            System.out.println("  3 - PROFESSIONAL");
-            // System.out.println("  4 - OLYMPIC");
+
+            for (int i = 0; i < N; i++) {
+                System.out.println("  " + (i + 1) + " - " + types.get(i));
+            }
 
             System.out.print("Enter the user type: ");
             int typeCode = readInt(sc);
 
             // check if user type is valid
-            if (typeCode < 1 || typeCode > 3) {
+            if (typeCode < 1 || typeCode > N) {
                 System.out.println("Invalid user type.");
                 continue;
             }
 
-            switch (typeCode) {
-                case 1:
-                    return User.Type.OCCASIONAL;
-                case 2:
-                    return User.Type.AMATEUR;
-                case 3:
-                    return User.Type.PROFESSIONAL;
-            }
+            result = types.get(typeCode - 1);
             break;
         }
-        return null;
+        return result;
     }
 
-    private User createUser(Scanner sc, ArrayList<String> emails, int id) {
+    private User createUser(Scanner sc, ArrayList<String> emails, ArrayList<String> types, int id) {
 
         String name = enterUserName(sc);
-
         String email = enterUserEmail(sc, emails);
-
         String address = enterUserAddress(sc);
-
         int heartRate = enterUserHeartRate(sc);
-
         int weight = enterUserWeight(sc);
-
         int height = enterUserHeight(sc);
+        String type = enterUserType(sc, types);
 
-        User.Type type = enterUserType(sc);
-
-        return new User(id, name, email, address, heartRate, weight, height, type);
+        // Now instantiate the user based on the type
+        try {
+            Class<?> userClass = Class.forName("src.users." + type);
+            System.out.println(userClass);
+            Constructor<?> constructor =
+                userClass.getConstructor(int.class,
+                                         String.class,
+                                         String.class,
+                                         String.class,
+                                         int.class,
+                                         int.class,
+                                         int.class);
+            return (User) constructor.newInstance(id, name, email, address, heartRate, weight, height);
+        }
+        // TODO catch them all
+        catch (NoSuchMethodException | ClassNotFoundException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
+            System.out.println("Error creating user." + e.getMessage());
+            return null;
+        }
     }
 
     // if 1 id, if 2 email
@@ -917,24 +931,24 @@ public class Controller {
         return option;
     }
 
-    private User searchUserIO(ActivityPlanner m, Scanner sc) throws UserNotFoundException {
+    private User searchUserIO() throws UserNotFoundException {
 
         User user = null;
 
-        int option = chooseHowToSearchUser(sc);
+        int option = chooseHowToSearchUser(this.sc);
 
         if (option == 1) {
             System.out.print("Enter the user ID: ");
-            int id = readInt(sc);
+            int id = readInt(this.sc);
             if (id == -1) {
                 System.out.println("Invalid ID.");
                 throw new UserNotFoundException("User not found.");
             }
-            user = m.searchUser(id);
+            user = this.m.searchUser(id);
         } else {
             System.out.print("Enter the user email: ");
-            String email = readString(sc);
-            user = m.searchUser(email);
+            String email = readString(this.sc);
+            user = this.m.searchUser(email);
         }
 
         if (user == null) {
@@ -997,10 +1011,11 @@ public class Controller {
                     System.out.println("Height updated successfully.");
                     break;
                 case 7:
-                    User.Type type = enterUserType(sc);
-                    user.setType(type);
-                    System.out.println("Type updated successfully.");
-                    break;
+                    // TODO remove this option
+                    // User.Type type = enterUserType(sc);
+                    // user.setType(type);
+                    // System.out.println("Type updated successfully.");
+                    // break;
                 case 8:
                     // Go back
                     return;
@@ -1109,31 +1124,31 @@ public class Controller {
     }
 
     /* state management methods with IO */
-    private void saveStateIO(ActivityPlanner m) {
+    private void saveStateIO() {
         try {
-            System.out.println("Saving state to " + m.getStateFilepath());
-            m.saveState();
-            System.out.println("State saved successfully, " + m.getUsersSize() + " users saved.");
+            System.out.println("Saving state to " + this.m.getStateFilepath());
+            this.m.saveState();
+            System.out.println("State saved successfully, " + this.m.getUsersSize() + " users saved.");
         }
         catch (StateNotSavedException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    private void loadStateIO(ActivityPlanner m, Scanner sc) {
+    private void loadStateIO() {
 
-        if (m.getUpdatedState()) {
+        if (this.m.getUpdatedState()) {
             System.out.print("Warning: current state will be lost. Do you want to continue? [y/n]: ");
-            String cont = readYesNo(sc);
+            String cont = this.readYesNo(this.sc);
             if (cont.equals("n")) {
                 return;
             }
         }
 
         try {
-            System.out.println("Loading state from " + m.getStateFilepath());
-            m.loadState();
-            System.out.println("State loaded successfully, " + m.getUsersSize() + " users loaded.");
+            System.out.println("Loading state from " + this.m.getStateFilepath());
+            this.m.loadState();
+            System.out.println("State loaded successfully, " + this.m.getUsersSize() + " users loaded.");
         }
         catch (StateNotLoadedException e) {
             System.out.println(e.getMessage());

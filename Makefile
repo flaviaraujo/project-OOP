@@ -1,10 +1,15 @@
 .PHONY: build diagram report install clean
 
 build:
-	javac -Xlint:unchecked src/*.java
+	javac -Xlint:unchecked \
+		src/users/*.java \
+		src/activityTypes/*.java \
+		src/activityTypes/activities/*.java \
+		src/exceptions/*.java \
+		src/*.java
 
 run:
-	java src.Main
+	java src.Controller
 
 diagram:
 	plantuml -tpng diagram/diagram.puml
@@ -26,4 +31,9 @@ install:
 	sudo apt install -y texlive-xetex texlive-lang-portuguese texlive-latex-recommended ttf-mscorefonts-installer
 
 clean:
-	rm -rf src/activities/*.class src/exceptions/*.class src/*.class
+	rm -rf \
+		src/users/*.class \
+		src/activityTypes/*.class \
+		src/activityTypes/activities/*.class \
+		src/exceptions/*.class \
+		src/*.class
