@@ -6,20 +6,20 @@ import src.User;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class WeightPilates extends Activity implements Serializable {
+public class Pilates extends Activity implements Serializable {
 
     private static final double MET_VALUE = 3.8;
 
     private int repetition;
     private int weight;
 
-    public WeightPilates() {
+    public Pilates() {
         super();
         this.setRepetition(0);
         this.setWeight(0);
     }
 
-    public WeightPilates(
+    public Pilates(
         String name, int duration, int intensity,
         boolean hard, int calories
     ) {
@@ -28,7 +28,7 @@ public class WeightPilates extends Activity implements Serializable {
         this.setWeight(0);
     }
 
-    public WeightPilates(
+    public Pilates(
         String name, int duration, int intensity,
         boolean hard, int calories, int repetition, int weight
     ) {
@@ -37,14 +37,14 @@ public class WeightPilates extends Activity implements Serializable {
         this.setWeight(weight);
     }
 
-    public WeightPilates(
+    public Pilates(
         String name, int duration, int intensity,
         boolean hard, int calories, ArrayList<Integer> attributes
     ) {
         this(name, duration, intensity, hard, calories, attributes.get(0), attributes.get(1));
     }
 
-    public WeightPilates(WeightPilates repetition) {
+    public Pilates(Pilates repetition) {
         super(repetition);
         this.setRepetition(repetition.getRepetition());
         this.setWeight(repetition.getWeight());
@@ -89,7 +89,7 @@ public class WeightPilates extends Activity implements Serializable {
 
         if (o == null || o.getClass() != this.getClass()) return false;
 
-        WeightPilates a = (WeightPilates) o;
+        Pilates a = (Pilates) o;
         return (
             this.getName().equals(a.getName()) &&
             this.getDuration() == a.getDuration() &&
@@ -104,7 +104,7 @@ public class WeightPilates extends Activity implements Serializable {
 
     @Override
     public Activity clone() {
-        return new WeightPilates(this);
+        return new Pilates(this);
     }
 
     @Override

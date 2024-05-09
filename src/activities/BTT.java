@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class BTT extends Activity implements Serializable {
 
     private static final double MET_VALUE = 14.0;
-    private static final int ALTIMETRY_FACTOR = 4;
+    private static final int ALTIMETRY_FACTOR = 3;
 
     private int distance;
     private int altimetry;
