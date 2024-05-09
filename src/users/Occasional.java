@@ -6,9 +6,8 @@ import java.io.Serializable;
 
 public class Occasional extends User implements Serializable {
 
-    private final int caloriesMultiplier = 40;
+    private final int caloriesMultiplier = 70;
 
-    /* Contructors */
     public Occasional() {
         super();
     }
