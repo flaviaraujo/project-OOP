@@ -6,9 +6,8 @@ import java.io.Serializable;
 
 public class Amateur extends User implements Serializable {
 
-    private final int caloriesMultiplier = 60;
+    private final int caloriesMultiplier = 80;
 
-    /* Contructors */
     public Amateur() {
         super();
     }
