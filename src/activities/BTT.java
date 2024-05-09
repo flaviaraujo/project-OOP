@@ -6,21 +6,21 @@ import src.User;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class TrailRunning extends Activity implements Serializable {
+public class BTT extends Activity implements Serializable {
 
-    private static final double MET_VALUE = 10.0;
+    private static final double MET_VALUE = 14.0;
     private static final int ALTIMETRY_FACTOR = 4;
 
     private int distance;
     private int altimetry;
 
-    public TrailRunning() {
+    public BTT() {
         super();
         this.setDistance(0);
         this.setAltimetry(0);
     }
 
-    public TrailRunning(
+    public BTT(
         String name, int duration, int intensity,
         boolean hard, int calories
     ) {
@@ -29,7 +29,7 @@ public class TrailRunning extends Activity implements Serializable {
         this.setAltimetry(0);
     }
 
-    public TrailRunning(
+    public BTT(
         String name, int duration, int intensity,
         boolean hard, int calories, int distance, int altimetry
     ) {
@@ -38,14 +38,14 @@ public class TrailRunning extends Activity implements Serializable {
         this.setAltimetry(altimetry);
     }
 
-    public TrailRunning(
+    public BTT(
         String name, int duration, int intensity,
         boolean hard, int calories, ArrayList<Integer> attributes
     ) {
         this(name, duration, intensity, hard, calories, attributes.get(0), attributes.get(1));
     }
 
-    public TrailRunning(TrailRunning distanceAltimetry) {
+    public BTT(BTT distanceAltimetry) {
         super(distanceAltimetry);
         this.setDistance(distanceAltimetry.getDistance());
         this.setAltimetry(distanceAltimetry.getAltimetry());
@@ -92,7 +92,7 @@ public class TrailRunning extends Activity implements Serializable {
 
         if (o == null || o.getClass() != this.getClass()) return false;
 
-        TrailRunning a = (TrailRunning) o;
+        BTT a = (BTT) o;
         return (
             this.getName().equals(a.getName()) &&
             this.getDuration() == a.getDuration() &&
@@ -107,7 +107,7 @@ public class TrailRunning extends Activity implements Serializable {
 
     @Override
     public Activity clone() {
-        return new TrailRunning(this);
+        return new BTT(this);
     }
 
     @Override
