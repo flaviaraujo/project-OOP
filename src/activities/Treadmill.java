@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Treadmill extends Activity implements Serializable {
 
-    private static final double MET_VALUE = 11.5;
+    private static final double MET_VALUE = 8.0;
 
     private int distance;
 
@@ -106,15 +106,11 @@ public class Treadmill extends Activity implements Serializable {
         int distance = this.getDistance();
         int weight = u.getWeight();
         int height = u.getHeight();
+        int heartRate = u.getHeartRate();
         int caloriesMultiplier = u.getCaloriesMultiplier();
 
         double weightFactor = Math.min(weight / 200.0, 2);
         weightFactor = Math.max(weightFactor, 1);
-
-        // return (int)
-        //     (weightFactor * (height / 100.0) * (nutritionMultiplier / 100.0) *
-        //     met * (intensity / 100.0) * duration *
-        //     (distance / 1000.0));
 
         return (int)
             (weight * (caloriesMultiplier / 100.0) *

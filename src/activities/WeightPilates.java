@@ -6,67 +6,64 @@ import src.User;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class TrailRunning extends Activity implements Serializable {
+public class WeightPilates extends Activity implements Serializable {
 
-    private static final double MET_VALUE = 10.0;
-    private static final int ALTIMETRY_FACTOR = 4;
+    private static final double MET_VALUE = 3.8;
 
-    private int distance;
-    private int altimetry;
+    private int repetition;
+    private int weight;
 
-    public TrailRunning() {
+    public WeightPilates() {
         super();
-        this.setDistance(0);
-        this.setAltimetry(0);
+        this.setRepetition(0);
+        this.setWeight(0);
     }
 
-    public TrailRunning(
+    public WeightPilates(
         String name, int duration, int intensity,
         boolean hard, int calories
     ) {
         super(name, duration, intensity, hard, calories);
-        this.setDistance(0);
-        this.setAltimetry(0);
+        this.setRepetition(0);
+        this.setWeight(0);
     }
 
-    public TrailRunning(
+    public WeightPilates(
         String name, int duration, int intensity,
-        boolean hard, int calories, int distance, int altimetry
+        boolean hard, int calories, int repetition, int weight
     ) {
         super(name, duration, intensity, hard, calories);
-        this.setDistance(distance);
-        this.setAltimetry(altimetry);
+        this.setRepetition(repetition);
+        this.setWeight(weight);
     }
 
-    public TrailRunning(
+    public WeightPilates(
         String name, int duration, int intensity,
         boolean hard, int calories, ArrayList<Integer> attributes
     ) {
         this(name, duration, intensity, hard, calories, attributes.get(0), attributes.get(1));
     }
 
-    public TrailRunning(TrailRunning distanceAltimetry) {
-        super(distanceAltimetry);
-        this.setDistance(distanceAltimetry.getDistance());
-        this.setAltimetry(distanceAltimetry.getAltimetry());
+    public WeightPilates(WeightPilates repetition) {
+        super(repetition);
+        this.setRepetition(repetition.getRepetition());
+        this.setWeight(repetition.getWeight());
     }
 
-    @Override
-    public int getDistance() {
-        return this.distance;
+    public int getRepetition() {
+        return this.repetition;
     }
 
-    @Override
-    public int getAltimetry() {
-        return this.altimetry;
+    public int getWeight() {
+        return this.weight;
     }
 
-    public void setDistance(int distance) {
-        this.distance = distance;
+    public void setRepetition(int repetition) {
+        this.repetition = repetition;
     }
 
-    public void setAltimetry(int altimetry) {
-        this.altimetry = altimetry;
+    public void setWeight(int weight) {
+        this.weight = weight;
     }
 
     @Override
@@ -76,8 +73,8 @@ public class TrailRunning extends Activity implements Serializable {
         sb.append("  Name: " + this.getName() + ",\n");
         sb.append("  Duration: " + this.getDuration() + " minutes,\n");
         sb.append("  Intensity: " + this.getIntensity() + ",\n");
-        sb.append("  Distance: " + this.getDistance() + " meters,\n");
-        sb.append("  Altimetry: " + this.getAltimetry() + " meters\n");
+        sb.append("  Repetition: " + this.getRepetition() + " times\n");
+        sb.append("  Weight: " + this.getWeight() + " kg\n");
         sb.append("  Hard: " + this.getHard() + ",\n");
         if (this.getCalories() != 0) {
             sb.append("  Calories: " + this.getCalories() + ",\n");
@@ -92,13 +89,13 @@ public class TrailRunning extends Activity implements Serializable {
 
         if (o == null || o.getClass() != this.getClass()) return false;
 
-        TrailRunning a = (TrailRunning) o;
+        WeightPilates a = (WeightPilates) o;
         return (
             this.getName().equals(a.getName()) &&
             this.getDuration() == a.getDuration() &&
             this.getIntensity() == a.getIntensity() &&
-            this.getDistance() == a.getDistance() &&
-            this.getAltimetry() == a.getAltimetry() &&
+            this.getRepetition() == a.getRepetition() &&
+            this.getWeight() == a.getWeight() &&
             this.getHard() == a.getHard()
             // The calories field is not considered in the equals method
             // since it varies depending on the user parameters
@@ -107,53 +104,71 @@ public class TrailRunning extends Activity implements Serializable {
 
     @Override
     public Activity clone() {
-        return new TrailRunning(this);
+        return new WeightPilates(this);
     }
 
     @Override
     public int calculateCalories(User u) {
 
-        int altimetry = this.getAltimetry();
+        int repetitions = this.getRepetition();
+        int repetitionWeight = this.getWeight();
         int intensity = this.getIntensity();
-        int distance = this.getDistance();
+        int duration = this.getDuration();
         int weight = u.getWeight();
         int height = u.getHeight();
         int nutritionMultiplier = u.getCaloriesMultiplier();
+        double restingBPM = u.getHeartRate();
+        double met = MET_VALUE;
 
         double weightFactor = Math.min(weight / 200.0, 2);
         weightFactor = Math.max(weightFactor, 1);
 
+       double repWeightRatio = Math.min(1 + ((double) repetitionWeight / (double) weight), 2);
+
         // return (int)
         //     (weightFactor * (height / 100.0) * (nutritionMultiplier / 100.0) *
         //     met * (intensity / 100.0) * duration *
-        //     ((distance + altimetry * ALTIMETRY_FACTOR) / 1000.0));
+        //     repetitions * repWeightRatio);
+
+        met += (restingBPM - 60) / 10.0 * 0.1;
 
         return (int)
-            (weight * (nutritionMultiplier / 100.0) *
-            MET_VALUE * (intensity / 100.0) * ((distance + (altimetry * ALTIMETRY_FACTOR)) / 1000.0));
+        (met * weight * (((repetitions / 10.0) * (repetitionWeight/10.0))/repWeightRatio) *
+        (intensity / 100.0) * (nutritionMultiplier / 100.0));
+    }
+
+    @Override
+    public int getDistance() {
+        return 0;
+    }
+
+    @Override
+    public int getAltimetry() {
+        return 0;
     }
 
     @Override
     public boolean isDistanceBased() {
-        return true;
+        return false;
     }
 
     @Override
     public boolean isAltimetryBased() {
-        return true;
+        return false;
     }
 
     @Override
     public ArrayList<String> getAttributes() {
         ArrayList<String> attributes = new ArrayList<String>();
-        attributes.add("distance");
-        attributes.add("altimetry");
+        attributes.add("repetition");
+        attributes.add("weight");
         return attributes;
     }
 
     @Override
     public void setAttributes(ArrayList<Integer> attributes) {
-        this.setDistance(attributes.get(0));
-        this.setAltimetry(attributes.get(1));
+        this.setRepetition(attributes.get(0));
+        this.setWeight(attributes.get(1));
     }
 }
+

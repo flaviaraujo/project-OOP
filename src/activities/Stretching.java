@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Stretching extends Activity implements Serializable {
 
-    private static final double MET_VALUE = 3.0;
+    private static final double MET_VALUE = 2.0;
 
     private int repetition;
 
