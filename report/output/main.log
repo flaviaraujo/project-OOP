@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2024.3.14)  26 APR 2024 17:21
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2024.3.14)  9 MAY 2024 20:49
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1141,15 +1141,19 @@ chapter 1.
 File: images/diagram.png Graphic file (type bmp)
 <images/diagram.png>
 
+Overfull \hbox (229.66885pt too wide) in paragraph at lines 154--155
+ [][] 
+ []
 
-LaTeX Warning: Float too large for page by 0.83624pt on input line 154.
+
+LaTeX Warning: Float too large for page by 13.634pt on input line 157.
 
 [2]
 LaTeX Font Info:    Font shape `TU/lmss/bx/it' in size <17.28> not available
-(Font)              Font shape `TU/lmss/bx/sl' tried instead on input line 158.
+(Font)              Font shape `TU/lmss/bx/sl' tried instead on input line 161.
 
 LaTeX Font Info:    Font shape `TU/lmss/bx/it' in size <10.95> not available
-(Font)              Font shape `TU/lmss/bx/sl' tried instead on input line 163.
+(Font)              Font shape `TU/lmss/bx/sl' tried instead on input line 167.
 
  [3
 
