@@ -151,23 +151,247 @@ abstract class Activity {
 
 package activities {
     class Swimming extends Activity {
+        ..Attributes..
+        -{static} MET_VALUE : final double
+        -distance : int
+        .. Constructors ..
+        +Swimming()
+        +Swimming(name : String, duration : int, intensity : int,
+            hard : boolean, calories : int)
+        +Swimming(name : String, duration : int, intensity : int,
+        hard : boolean, calories : int, distance : int)
+        +Swimming(name : String, duration : int, intensity : int,
+            hard : boolean, calories : int, attributes : ArrayList<Integer>)
+        +Swimming(distance : Swimming)
+        .. Getters ..
+        +getDistance() : int
+        +getAltimetry() : int
+        .. Setters ..
+        +setDistance(distance : int) : void
+        .. Others methods ..
+        +toString() : String
+        +equals(o : Object) : boolean
+        +clone() : Activity
+        +calculateCalories(u : User) : int
+        +isDistanceBased() : boolean
+        +isAltimetryBased() : boolean
+        +getAttributes() : ArrayList<String>
+        +setAttributes(attributes : ArrayList<Integer>) : void        
     }
     class Treadmill extends Activity {
+        ..Attributes..
+        -{static} MET_VALUE : final double
+        -distance : int
+        .. Constructors ..
+        +Treadmill()
+        +Treadmill(name : String, duration : int, intensity : int,
+            hard : boolean, calories : int)
+        +Treadmill(name : String, duration : int, intensity : int,
+        hard : boolean, calories : int, distance : int)
+        +Treadmill(name : String, duration : int, intensity : int,
+            hard : boolean, calories : int, attributes : ArrayList<Integer>)
+        +Treadmill(distance : Treadmill)
+        .. Getters ..
+        +getDistance() : int
+        +getAltimetry() : int
+        .. Setters ..
+        +setDistance(distance : int) : void
+        .. Others methods ..
+        +toString() : String
+        +equals(o : Object) : boolean
+        +clone() : Activity
+        +calculateCalories(u : User) : int
+        +isDistanceBased() : boolean
+        +isAltimetryBased() : boolean
+        +getAttributes() : ArrayList<String>
+        +setAttributes(attributes : ArrayList<Integer>) : void 
     }
 
     class TrailRunning extends Activity {
+        ..Attributes..
+        -{static} MET_VALUE : final double
+        -{static} ALTIMETRY_FACTOR : final int
+        -distance : int
+        -altimetry : int
+        .. Constructors ..
+        +TrailRunning()
+        +TrailRunning(name : String, duration : int, intensity : int,
+            hard : boolean, calories : int)
+        +TrailRunning(name : String, duration : int, intensity : int,
+        hard : boolean, calories : int, distance : int, altimetry : int)
+        +TrailRunning(name : String, duration : int, intensity : int,
+            hard : boolean, calories : int, attributes : ArrayList<Integer>)
+        +TrailRunning(distanceAltimetry : TrailRunning)
+        .. Getters ..
+        +getDistance() : int
+        +getAltimetry() : int
+        .. Setters ..
+        +setDistance(distance : int) : void
+        +setAltimetry(altimetry : int) : void
+        .. Others methods ..
+        +toString() : String
+        +equals(o : Object) : boolean
+        +clone() : Activity
+        +calculateCalories(u : User) : int
+        +isDistanceBased() : boolean
+        +isAltimetryBased() : boolean
+        +getAttributes() : ArrayList<String>
+        +setAttributes(attributes : ArrayList<Integer>) : void 
     }
     class BTT extends Activity {
+        ..Attributes..
+        -{static} MET_VALUE : final double
+        -{static} ALTIMETRY_FACTOR : final int
+        -distance : int
+        -altimetry : int
+        .. Constructors ..
+        +BTT()
+        +BTT(name : String, duration : int, intensity : int,
+            hard : boolean, calories : int)
+        +BTT(name : String, duration : int, intensity : int,
+        hard : boolean, calories : int, distance : int, altimetry : int)
+        +BTT(name : String, duration : int, intensity : int,
+            hard : boolean, calories : int, attributes : ArrayList<Integer>)
+        +BTT(distanceAltimetry : BTT)
+        .. Getters ..
+        +getDistance() : int
+        +getAltimetry() : int
+        .. Setters ..
+        +setDistance(distance : int) : void
+        +setAltimetry(altimetry : int) : void
+        .. Others methods ..
+        +toString() : String
+        +equals(o : Object) : boolean
+        +clone() : Activity
+        +calculateCalories(u : User) : int
+        +isDistanceBased() : boolean
+        +isAltimetryBased() : boolean
+        +getAttributes() : ArrayList<String>
+        +setAttributes(attributes : ArrayList<Integer>) : void 
     }
 
     class RopeJumping extends Activity {
+        ..Attributes..
+        -{static} MET_VALUE : final double
+        -repetition : int
+        .. Constructors ..
+        +RopeJumping()
+        +RopeJumping(name : String, duration : int, intensity : int,
+            hard : boolean, calories : int)
+        +RopeJumping(name : String, duration : int, intensity : int,
+        hard : boolean, calories : int, repetition : int)
+        +RopeJumping(name : String, duration : int, intensity : int,
+            hard : boolean, calories : int, attributes : ArrayList<Integer>)
+        +RopeJumping(repetition : RopeJumping)
+        .. Getters ..
+        +getRepetition() : int
+        .. Setters ..
+        +setRepetition(repetition : int) : void
+        .. Others methods ..
+        +toString() : String
+        +equals(o : Object) : boolean
+        +clone() : Activity
+        +calculateCalories(u : User) : int
+        +getDistance() : int
+        +getAltimetry() : int
+        +isDistanceBased() : boolean
+        +isAltimetryBased() : boolean
+        +getAttributes() : ArrayList<String>
+        +setAttributes(attributes : ArrayList<Integer>) : void 
     }
     class Stretching extends Activity {
+        ..Attributes..
+        -{static} MET_VALUE : final double
+        -repetition : int
+        .. Constructors ..
+        +Stretching()
+        +Stretching(name : String, duration : int, intensity : int,
+            hard : boolean, calories : int)
+        +Stretching(name : String, duration : int, intensity : int,
+        hard : boolean, calories : int, repetition : int)
+        +Stretching(name : String, duration : int, intensity : int,
+            hard : boolean, calories : int, attributes : ArrayList<Integer>)
+        +Stretching(repetition : Stretching)
+        .. Getters ..
+        +getRepetition() : int
+        .. Setters ..
+        +setRepetition(repetition : int) : void
+        .. Others methods ..
+        +toString() : String
+        +equals(o : Object) : boolean
+        +clone() : Activity
+        +calculateCalories(u : User) : int
+        +getDistance() : int
+        +getAltimetry() : int
+        +isDistanceBased() : boolean
+        +isAltimetryBased() : boolean
+        +getAttributes() : ArrayList<String>
+        +setAttributes(attributes : ArrayList<Integer>) : void
     }
 
     class Weightlifiting extends Activity {
+        ..Attributes..
+        -{static} MET_VALUE : final double
+        -repetition : int
+        -weight : int
+        .. Constructors ..
+        +Weightlifiting()
+        +Weightlifiting(name : String, duration : int, intensity : int,
+            hard : boolean, calories : int)
+        +Weightlifiting(name : String, duration : int, intensity : int,
+        hard : boolean, calories : int, repetition : int, weight : int)
+        +Weightlifiting(name : String, duration : int, intensity : int,
+            hard : boolean, calories : int, attributes : ArrayList<Integer>)
+        +Weightlifiting(repetitionWeight : Weightlifiting)
+        .. Getters ..
+        +getRepetition() : int
+        +getWeight() : int
+        .. Setters ..
+        +setRepetition(repetition : int) : void
+        +setWeight(weight : int) : void
+        .. Others methods ..
+        +toString() : String
+        +equals(o : Object) : boolean
+        +clone() : Activity
+        +calculateCalories(u : User) : int
+        +getDistance() : int
+        +getAltimetry() : int
+        +isDistanceBased() : boolean
+        +isAltimetryBased() : boolean
+        +getAttributes() : ArrayList<String>
+        +setAttributes(attributes : ArrayList<Integer>) : void
     }
     class Pilates extends Activity {
+        ..Attributes..
+        -{static} MET_VALUE : final double
+        -repetition : int
+        -weight : int
+        .. Constructors ..
+        +Pilates()
+        +Pilates(name : String, duration : int, intensity : int,
+            hard : boolean, calories : int)
+        +Pilates(name : String, duration : int, intensity : int,
+        hard : boolean, calories : int, repetition : int, weight : int)
+        +Pilates(name : String, duration : int, intensity : int,
+            hard : boolean, calories : int, attributes : ArrayList<Integer>)
+        +Pilates(repetitionWeight : Pilates)
+        .. Getters ..
+        +getRepetition() : int
+        +getWeight() : int
+        .. Setters ..
+        +setRepetition(repetition : int) : void
+        +setWeight(weight : int) : void
+        .. Others methods ..
+        +toString() : String
+        +equals(o : Object) : boolean
+        +clone() : Activity
+        +calculateCalories(u : User) : int
+        +getDistance() : int
+        +getAltimetry() : int
+        +isDistanceBased() : boolean
+        +isAltimetryBased() : boolean
+        +getAttributes() : ArrayList<String>
+        +setAttributes(attributes : ArrayList<Integer>) : void
     }
 }
 
@@ -245,53 +469,6 @@ class ActivityRepetition {
             maxActivitiesPerDay : int,
             user : User,
             isHard: boolean) : ArrayList<ActivityRepetition>
-}
-
-package exceptions {
-    class UserNotFoundException extends java.lang.Exception {
-        .. Constructors ..
-        +UserNotFoundException()
-        +UserNotFoundException(message : String)
-        +UserNotFoundException(message : String,
-            cause : Throwable)
-        +UserNotFoundException(cause : Throwable)
-    }
-
-    class ActivityIsRegisteredException extends java.lang.Exception {
-        .. Constructors ..
-        +ActivityIsRegisteredException()
-        +ActivityIsRegisteredException(message : String)
-        +ActivityIsRegisteredException(message : String,
-            cause : Throwable)
-        +ActivityIsRegisteredException(cause : Throwable)
-    }
-
-    class ActivityNotFoundException extends java.lang.Exception {
-        .. Constructors ..
-        +ActivityNotFoundException()
-        +ActivityNotFoundException(message : String)
-        +ActivityNotFoundException(message : String,
-            cause : Throwable)
-        +ActivityNotFoundException(cause : Throwable)
-    }
-
-    class StateNotLoadedException extends java.lang.Exception {
-        .. Constructors ..
-        +StateNotLoadedException()
-        +StateNotLoadedException(message : String)
-        +StateNotLoadedException(message : String,
-            cause : Throwable)
-        +StateNotLoadedException(cause : Throwable)
-    }
-
-    class StateNotSavedException extends java.lang.Exception {
-        .. Constructors ..
-        +StateNotSavedException()
-        +StateNotSavedException(message : String)
-        +StateNotSavedException(message : String,
-            cause : Throwable)
-        +StateNotSavedException(cause : Throwable)
-    }
 }
 
 class ActivityPlanner {
@@ -411,7 +588,7 @@ class Controller {
     -loadStateIO() : void
 }
 
-note top of ActivityRepetition
+note left of ActivityRepetition
     The <b>ActivityRepetition</b> class
     is used as auxiliary data structure
     to the method <i>createBasedOnGoals</i>
@@ -427,6 +604,5 @@ Event "1" *-right- "1" Activity
 ActivityPlanner "1" *-- "N" User
 Controller -right-> ActivityPlanner : <uses>
 
-Controller -right-> exceptions
 
 @enduml

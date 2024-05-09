@@ -1,0 +1,50 @@
+@startuml
+
+package exceptions {
+    class UserNotFoundException extends java.lang.Exception {
+        .. Constructors ..
+        +UserNotFoundException()
+        +UserNotFoundException(message : String)
+        +UserNotFoundException(message : String,
+            cause : Throwable)
+        +UserNotFoundException(cause : Throwable)
+    }
+
+    class ActivityIsRegisteredException extends java.lang.Exception {
+        .. Constructors ..
+        +ActivityIsRegisteredException()
+        +ActivityIsRegisteredException(message : String)
+        +ActivityIsRegisteredException(message : String,
+            cause : Throwable)
+        +ActivityIsRegisteredException(cause : Throwable)
+    }
+
+    class ActivityNotFoundException extends java.lang.Exception {
+        .. Constructors ..
+        +ActivityNotFoundException()
+        +ActivityNotFoundException(message : String)
+        +ActivityNotFoundException(message : String,
+            cause : Throwable)
+        +ActivityNotFoundException(cause : Throwable)
+    }
+
+    class StateNotLoadedException extends java.lang.Exception {
+        .. Constructors ..
+        +StateNotLoadedException()
+        +StateNotLoadedException(message : String)
+        +StateNotLoadedException(message : String,
+            cause : Throwable)
+        +StateNotLoadedException(cause : Throwable)
+    }
+
+    class StateNotSavedException extends java.lang.Exception {
+        .. Constructors ..
+        +StateNotSavedException()
+        +StateNotSavedException(message : String)
+        +StateNotSavedException(message : String,
+            cause : Throwable)
+        +StateNotSavedException(cause : Throwable)
+    }
+}
+
+@enduml
