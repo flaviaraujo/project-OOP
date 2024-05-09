@@ -1142,7 +1142,6 @@ public class Controller {
         // Now instantiate the user based on the type
         try {
             Class<?> userClass = Class.forName("src.users." + type);
-            System.out.println(userClass);
             Constructor<?> constructor =
                 userClass.getConstructor(int.class,
                                          String.class,
@@ -1382,7 +1381,6 @@ public class Controller {
         Activity a = null;
         try {
             Class<?> activityClass = Class.forName("src.activities." + activity);
-            System.out.println(activityClass);
             Constructor<?> constructor =
                 activityClass.getConstructor(String.class, int.class, int.class, boolean.class, int.class);
             a = (Activity) constructor.newInstance(name, duration, intensity, hard, 0);
