@@ -10,26 +10,28 @@
 \contentsline {section}{\numberline {1.8}Classe \textit {ActivityRepetition}}{7}{section.1.8}%
 \contentsline {section}{\numberline {1.9}Package \textit {exceptions}}{7}{section.1.9}%
 \contentsline {chapter}{\numberline {2}Descrição de Funcionalidades da Aplicação}{8}{chapter.2}%
-\contentsline {section}{\numberline {2.1}Gestão de Utilizadores}{8}{section.2.1}%
-\contentsline {subsection}{\numberline {2.1.1}Adicionar Utilizador}{8}{subsection.2.1.1}%
-\contentsline {subsection}{\numberline {2.1.2}Editar Utilizador}{8}{subsection.2.1.2}%
-\contentsline {subsection}{\numberline {2.1.3}Remover Utilizador}{8}{subsection.2.1.3}%
-\contentsline {subsection}{\numberline {2.1.4}Visualizar Utilizadores}{8}{subsection.2.1.4}%
-\contentsline {section}{\numberline {2.2}Gestão de Atividades}{8}{section.2.2}%
-\contentsline {subsection}{\numberline {2.2.1}Adicionar Atividade}{8}{subsection.2.2.1}%
-\contentsline {subsection}{\numberline {2.2.2}Remover Atividade}{9}{subsection.2.2.2}%
-\contentsline {subsection}{\numberline {2.2.3}Visualizar Atividades}{9}{subsection.2.2.3}%
-\contentsline {section}{\numberline {2.3}Registo e Visualização de Atividades Completas}{9}{section.2.3}%
-\contentsline {subsection}{\numberline {2.3.1}Registar Atividade}{9}{subsection.2.3.1}%
-\contentsline {subsection}{\numberline {2.3.2}Visualizar Registos de Atividades}{9}{subsection.2.3.2}%
-\contentsline {section}{\numberline {2.4}Gestão de Planos de Treino}{9}{section.2.4}%
-\contentsline {subsection}{\numberline {2.4.1}Adicionar Plano de Treino Interativamente}{9}{subsection.2.4.1}%
-\contentsline {subsection}{\numberline {2.4.2}Adicionar Plano de Treino Baseado em Objetivos}{9}{subsection.2.4.2}%
-\contentsline {subsection}{\numberline {2.4.3}Remover Plano de Treino}{9}{subsection.2.4.3}%
-\contentsline {subsection}{\numberline {2.4.4}Visualizar Planos de Treino}{10}{subsection.2.4.4}%
-\contentsline {section}{\numberline {2.5}Simulação}{10}{section.2.5}%
-\contentsline {section}{\numberline {2.6}Estatísticas}{10}{section.2.6}%
-\contentsline {section}{\numberline {2.7}Salvaguarda do Estado da Aplicação}{11}{section.2.7}%
-\contentsline {section}{\numberline {2.8}Argumentos de Linha de Comandos}{12}{section.2.8}%
-\contentsline {chapter}{\numberline {3}Conclusão}{13}{chapter.3}%
+\contentsline {section}{\numberline {2.1}Gestão de Utilizadores}{10}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Criar Utilizador}{11}{subsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.1.2}Remover Utilizador}{12}{subsection.2.1.2}%
+\contentsline {subsection}{\numberline {2.1.3}Visualizar Utilizador}{13}{subsection.2.1.3}%
+\contentsline {subsection}{\numberline {2.1.4}Visualizar Utilizadores}{14}{subsection.2.1.4}%
+\contentsline {subsection}{\numberline {2.1.5}Editar Utilizador}{15}{subsection.2.1.5}%
+\contentsline {section}{\numberline {2.2}Gestão de Atividades}{16}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Adicionar Atividade}{17}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Remover Atividade}{18}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}Visualizar Atividade}{19}{subsection.2.2.3}%
+\contentsline {subsection}{\numberline {2.2.4}Visualizar Atividades}{20}{subsection.2.2.4}%
+\contentsline {section}{\numberline {2.3}Registo e Visualização de Atividades Completas}{21}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Registar Atividade}{21}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Visualizar Registos de Atividades}{21}{subsection.2.3.2}%
+\contentsline {section}{\numberline {2.4}Gestão de Plano de Treino}{22}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Adicionar Plano de Treino Interativamente}{22}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}Adicionar Plano de Treino Baseado em Objetivos}{22}{subsection.2.4.2}%
+\contentsline {subsection}{\numberline {2.4.3}Remover Plano de Treino}{22}{subsection.2.4.3}%
+\contentsline {subsection}{\numberline {2.4.4}Visualizar Plano de Treino}{22}{subsection.2.4.4}%
+\contentsline {section}{\numberline {2.5}Simulação}{23}{section.2.5}%
+\contentsline {section}{\numberline {2.6}Estatísticas}{24}{section.2.6}%
+\contentsline {section}{\numberline {2.7}Salvaguarda do Estado da Aplicação}{25}{section.2.7}%
+\contentsline {section}{\numberline {2.8}Argumentos de Linha de Comandos}{26}{section.2.8}%
+\contentsline {chapter}{\numberline {3}Conclusão}{27}{chapter.3}%
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 
