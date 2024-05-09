@@ -1,27 +1,23 @@
-package src.activityTypes;
+package src.activities;
 
 import src.Activity;
 import src.User;
 
-// TODO remove this
-import src.Controller;
-
-import java.util.ArrayList;
-import java.util.Scanner;
 import java.io.Serializable;
+import java.util.ArrayList;
 
-public abstract class Repetition extends Activity implements Serializable {
+public class Stretching extends Activity implements Serializable {
 
     private static final double MET_VALUE = 3.0;
 
     private int repetition;
 
-    public Repetition() {
+    public Stretching() {
         super();
         this.setRepetition(0);
     }
 
-    public Repetition(
+    public Stretching(
         String name, int duration, int intensity,
         boolean hard, int calories
     ) {
@@ -29,7 +25,7 @@ public abstract class Repetition extends Activity implements Serializable {
         this.setRepetition(0);
     }
 
-    public Repetition(
+    public Stretching(
         String name, int duration, int intensity,
         boolean hard, int calories, int repetition
     ) {
@@ -37,7 +33,14 @@ public abstract class Repetition extends Activity implements Serializable {
         this.setRepetition(repetition);
     }
 
-    public Repetition(Repetition repetition) {
+    public Stretching(
+        String name, int duration, int intensity,
+        boolean hard, int calories, ArrayList<Integer> attributes
+    ) {
+        this(name, duration, intensity, hard, calories, attributes.get(0));
+    }
+
+    public Stretching(Stretching repetition) {
         super(repetition);
         this.setRepetition(repetition.getRepetition());
     }
@@ -72,21 +75,21 @@ public abstract class Repetition extends Activity implements Serializable {
 
         if (o == null || o.getClass() != this.getClass()) return false;
 
-        Repetition repetition = (Repetition) o;
+        Stretching a = (Stretching) o;
         return (
-            this.getName().equals(repetition.getName()) &&
-            this.getDuration() == repetition.getDuration() &&
-            this.getIntensity() == repetition.getIntensity() &&
-            this.getRepetition() == repetition.getRepetition() &&
-            this.getHard() == repetition.getHard()
+            this.getName().equals(a.getName()) &&
+            this.getDuration() == a.getDuration() &&
+            this.getIntensity() == a.getIntensity() &&
+            this.getRepetition() == a.getRepetition() &&
+            this.getHard() == a.getHard()
             // The calories field is not considered in the equals method
             // since it varies depending on the user parameters
         );
     }
 
     @Override
-    public Repetition clone() {
-        return new Repetition(this);
+    public Activity clone() {
+        return new Stretching(this);
     }
 
     @Override
@@ -107,35 +110,37 @@ public abstract class Repetition extends Activity implements Serializable {
         return (int)
             (met * weight * (repetitions / 10.0) *
             (intensity / 100.0) * (nutritionMultiplier / 100.0));
-
     }
 
     @Override
-    public Activity create(Scanner sc, ArrayList<Activity> userActivities) {
+    public int getDistance() {
+        return 0;
+    }
 
-        Repetition activity = (Repetition) super.createAux(sc, userActivities, ACTIVITY_TYPE);
-        if (activity == null) {
-            return null;
-        }
+    @Override
+    public int getAltimetry() {
+        return 0;
+    }
 
-        // TODO remove this
-        Controller c = new Controller();
+    @Override
+    public boolean isDistanceBased() {
+        return false;
+    }
 
-        int repetitions = 0;
+    @Override
+    public boolean isAltimetryBased() {
+        return false;
+    }
 
-        while (true) {
-            System.out.print("Enter the number of repetitions: ");
-            repetitions = c.readInt(sc);
+    @Override
+    public ArrayList<String> getAttributes() {
+        ArrayList<String> attributes = new ArrayList<String>();
+        attributes.add("repetition");
+        return attributes;
+    }
 
-            // check if repetitions is between 1 and 1000
-            if (repetitions < 1 || repetitions > 1000) {
-                System.out.println("Repetitions must be between 1 and 1000.");
-                continue;
-            }
-            break;
-        }
-
-        activity.setRepetition(repetitions);
-        return activity.clone();
+    @Override
+    public void setAttributes(ArrayList<Integer> attributes) {
+        this.setRepetition(attributes.get(0));
     }
 }

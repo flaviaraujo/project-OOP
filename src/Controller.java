@@ -1,22 +1,25 @@
 package src;
 
-import src.activityTypes.Distance; // TODO remove this
 import src.users.*;
+import src.exceptions.*;
 
 import java.util.Scanner;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-import src.exceptions.UserNotFoundException;
-import src.exceptions.ActivityIsRegisteredException;
-import src.exceptions.StateNotSavedException;
-import src.exceptions.StateNotLoadedException;
-
 public class Controller {
+
+    private static final int MAX_TRIES = 3;
 
     private ActivityPlanner m;
     private Scanner sc;
@@ -38,13 +41,13 @@ public class Controller {
         for (int i = 0; i < args.length; i++) {
             if (args[i].equals("--help") || args[i].equals("-h")) {
                 System.out.println(
-                        "Usage: java src.Main [--load <file>] [--user <--id|--email> <id|email>]" +
-                        "Options:" +
-                        "  -h --help: show this help message" +
-                        "  -l --load: load a program state from file" +
-                        "  -u --user: " +
-                        "select an user by id or email to view his perspective" +
-                        "  -e --email: select an user by email (use with --user option after --load option)" +
+                        "Usage: java src.Controller [--load <file>] [--user <--id|--email> <id|email>]\n" +
+                        "Options:\n" +
+                        "  -h --help: show this help message\n" +
+                        "  -l --load: load a program state from file\n" +
+                        "  -u --user: \n" +
+                        "select an user by id or email to view his perspective\n" +
+                        "  -e --email: select an user by email (use with --user option after --load option)\n" +
                         "  -i --id: select an user by ID (use with --user option after --load option)");
                 System.exit(0);
             }
@@ -114,20 +117,20 @@ public class Controller {
     /* main menu */
     private void mainMenu() {
         System.out.println(
-                "\n" +
-                "[Main menu] Please select an option:\n" +
-                "(1) Manage users (create, delete, edit, view)\n" +
-                "(2) Manage user activities (create, delete, view)\n" +
-                "(3) Manage user registered activities (register, view)\n" +
-                "(4) Manage user plan (create, delete, view)\n" +
-                "(5) Start a simulation\n" +
-                "(6) Statistics menu\n" +
-                "(7) Save program state\n" +
-                "(8) Load program state\n" +
-                "(9) Exit");
+            "\n" +
+            "[Main menu] Please select an option:\n" +
+            "(1) Manage users (create, delete, edit, view)\n" +
+            "(2) Manage user activities (create, delete, view)\n" +
+            "(3) Manage user registered activities (register, view)\n" +
+            "(4) Manage user plan (create, delete, view)\n" +
+            "(5) Start a simulation\n" +
+            "(6) Statistics menu\n" +
+            "(7) Save program state\n" +
+            "(8) Load program state\n" +
+            "(9) Exit");
 
         System.out.print("Option: ");
-        int option = readInt(this.sc);
+        int option = readInt();
 
         switch (option) {
             case 1:
@@ -175,17 +178,17 @@ public class Controller {
 
         while (true) {
             System.out.println(
-                    "\n" +
-                    "[Manage users menu] Please select an option:\n" +
-                    "(1) Create an user\n" +
-                    "(2) Delete an user\n" +
-                    "(3) View an user\n" +
-                    "(4) View all users\n" +
-                    "(5) Edit an user\n" +
-                    "(6) Back to main menu");
+                "\n" +
+                "[Manage users menu] Please select an option:\n" +
+                "(1) Create an user\n" +
+                "(2) Delete an user\n" +
+                "(3) View an user\n" +
+                "(4) View all users\n" +
+                "(5) Edit an user\n" +
+                "(6) Back to main menu");
 
             System.out.print("Option: ");
-            int option = readInt(this.sc);
+            int option = readInt();
 
             User user = null;
             ArrayList<String> emails = this.m.getUsersEmails();
@@ -195,14 +198,14 @@ public class Controller {
                 case 1:
                     // Create an user
                     int id = this.m.getNextUserId();
-                    user = createUser(this.sc, emails, types, id);
+                    user = createUser(emails, types, id);
                     this.m.addUser(user);
                     System.out.println("User created successfully. (ID: " + user.getId() + ")");
                     break;
                 case 2:
                     // Delete an user
                     try {
-                        user = this.searchUserIO();
+                        user = searchUserIO();
                         this.m.removeUser(user);
                         System.out.println("User deleted successfully.");
                     }
@@ -213,7 +216,7 @@ public class Controller {
                 case 3:
                     // View an user
                     try {
-                        user = this.searchUserIO();
+                        user = searchUserIO();
                         System.out.println(user);
                     }
                     catch (UserNotFoundException e) {
@@ -230,8 +233,8 @@ public class Controller {
                 case 5:
                     // Edit an user
                     try {
-                        user = this.searchUserIO();
-                        editUser(this.sc, emails, user);
+                        user = searchUserIO();
+                        editUser(emails, user);
                         this.m.updateUser(user);
                         System.out.println("User edited successfully.");
                     }
@@ -253,7 +256,7 @@ public class Controller {
         // Select an user to manage activities
         User user = null;
         try {
-            user = this.searchUserIO();
+            user = searchUserIO();
         }
         catch (UserNotFoundException e) {
             System.out.println(e.getMessage());
@@ -262,43 +265,52 @@ public class Controller {
 
         // User activities submenu
         while (true) {
-            System.out.println();
-            System.out.println("[Manage user activities menu] Please select an option:");
-            System.out.println("(1) Create an activity");
-            System.out.println("(2) Delete an activity");
-            System.out.println("(3) View an activity");
-            System.out.println("(4) View all activities");
-            System.out.println("(5) Back to main menu");
+            System.out.println(
+                "\n" +
+                "[Manage user activities menu] Please select an option:\n" +
+                "(1) Create an activity\n" +
+                "(2) Delete an activity\n" +
+                "(3) View an activity\n" +
+                "(4) View all activities\n" +
+                "(5) Back to main menu");
+
             System.out.print("Option: ");
+            int option = readInt();
 
-            int option = readInt(this.sc);
-
-            ArrayList<Activity> userActivities = user.getActivities();
+            ArrayList<Activity> activities = user.getActivities();
+            ArrayList<String> activitiesNames = this.m.getActivitiesNames(user);
+            ArrayList<String> activitiesAvailable = this.m.getActivities();
             Activity a;
 
             switch (option) {
                 case 1:
                     // Create an activity
-                    Activity activity = Activity.createMenu(this.sc, userActivities);
+                    Activity activity = createActivity(activitiesNames, activitiesAvailable);
                     if (activity == null) {
                         System.out.println("Activity not created.");
                         break;
                     }
                     // Add activity to user
                     user.addActivity(activity);
-                    // Update the Main instance by replacing the user
                     this.m.updateUser(user);
-                    // The state is updated when a new activity for an user is created
                     System.out.println("Activity created successfully.");
                     break;
                 case 2:
-                    if (userActivities.size() == 0) {
+                    if (activities.size() == 0) {
                         System.out.println("The selected user has no activities.");
                         break;
                     }
 
                     // Delete an activity
-                    a = Activity.search(this.sc, userActivities);
+                    try {
+                        String activityName = searchActivityIO(activitiesNames);
+                        a = this.m.getUserActivity(activities, activityName);
+                    }
+                    catch (ActivityNotFoundException e) {
+                        System.out.println(e.getMessage());
+                        break;
+                    }
+
                     try {
                         user.deleteActivity(a);
                     }
@@ -306,27 +318,33 @@ public class Controller {
                         System.out.println(e.getMessage());
                         break;
                     }
-                    // Update the Main instance by replacing the user
                     this.m.updateUser(user);
                     System.out.println("Activity deleted successfully.");
                     break;
                 case 3:
-                    if (userActivities.size() == 0) {
+                    if (activities.size() == 0) {
                         System.out.println("The selected user has no activities.");
                         break;
                     }
 
                     // View an activity
-                    a = Activity.search(this.sc, userActivities);
+                    try {
+                        String activityName = searchActivityIO(activitiesNames);
+                        a = this.m.getUserActivity(activities, activityName);
+                    }
+                    catch (ActivityNotFoundException e) {
+                        System.out.println(e.getMessage());
+                        break;
+                    }
                     System.out.println(a);
                     break;
                 case 4:
                     // View all activities
-                    if (userActivities.size() == 0) {
+                    if (activities.size() == 0) {
                         System.out.println("The selected user has no activities.");
                         break;
                     }
-                    for (Activity t : userActivities) System.out.println(t);
+                    for (Activity t : activities) System.out.println(t);
                     break;
                 case 5:
                     // Back to main menu
@@ -343,7 +361,7 @@ public class Controller {
         // Select an user to add a registered activity or view them
         User user = null;
         try {
-            user = this.searchUserIO();
+            user = searchUserIO();
         }
         catch (UserNotFoundException e) {
             System.out.println(e.getMessage());
@@ -352,25 +370,34 @@ public class Controller {
 
         while (true) {
             // Manage user registed activities
-            System.out.println();
-            System.out.println("[Manage user registered activities menu] Please select an option:");
-            System.out.println("(1) Register an activity");
-            System.out.println("(2) View registered activities");
-            System.out.println("(3) Back to main menu");
-            System.out.print("Option: ");
+            System.out.println(
+                "\n" +
+                "[Manage user registered activities menu] Please select an option:\n" +
+                "(1) Register an activity\n" +
+                "(2) View registered activities\n" +
+                "(3) Back to main menu");
 
-            int option = readInt(this.sc);
+            System.out.print("Option: ");
+            int option = readInt();
 
             switch (option) {
                 case 1:
-                    Activity activity = (Activity) new Distance();
-                    user = activity.register(this.sc, user);
-                    // Update the Main instance by replacing the user
+                    user = registerActivityIO(user);
                     this.m.updateUser(user);
                     break;
                 case 2:
                     // View registered activities
-                    user.viewRegisters();
+                    // Display registers sorted by date
+                    HashMap<LocalDateTime, Activity> registers = user.getRegisters();
+                    List<LocalDateTime> sortedDates = new ArrayList<>(registers.keySet());
+                    Collections.sort(sortedDates);
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+                    for (LocalDateTime date : sortedDates) {
+                        System.out.println(date.format(formatter) + ": {");
+                        System.out.println(registers.get(date));
+                        System.out.println("}");
+                    }
                     break;
                 case 3:
                     // Back to main menu
@@ -387,7 +414,7 @@ public class Controller {
         // Select an user to manage plan
         User user = null;
         try {
-            user = this.searchUserIO();
+            user = searchUserIO();
         }
         catch (UserNotFoundException e) {
             System.out.println(e.getMessage());
@@ -396,18 +423,20 @@ public class Controller {
 
         while (true) {
             // Manage user plan
-            System.out.println();
-            System.out.println("[Manage user plan menu] Please select an option:");
-            System.out.println("(1) Create plan interactively");
-            System.out.println("(2) Create plan based on user goals");
-            System.out.println("(3) Delete plan");
-            System.out.println("(4) View plan");
-            System.out.println("(5) Back to main menu");
-            System.out.print("Option: ");
+            System.out.println(
+                "\n" +
+                "[Manage user plan menu] Please select an option:\n" +
+                "(1) Create plan interactively\n" +
+                "(2) Create plan based on user goals\n" +
+                "(3) Delete plan\n" +
+                "(4) View plan\n" +
+                "(5) Back to main menu");
 
-            int option = readInt(this.sc);
+            System.out.print("Option: ");
+            int option = readInt();
 
             ArrayList<Activity> userActivities = user.getActivities();
+            Plan p = null;
 
             switch (option) {
                 case 1:
@@ -417,7 +446,7 @@ public class Controller {
                     if (old != null) {
                         System.out.println("A plan already exists for the selected user.");
                         System.out.print("Do you want to overwrite the current plan? [y/n]: ");
-                        String delete = this.readYesNo(this.sc);
+                        String delete = readYesNo();
                         if (delete.equals("y")) {
                             user.setPlan(null);
                             System.out.println("Plan deleted successfully.");
@@ -427,8 +456,8 @@ public class Controller {
                             break;
                         }
                     }
-                    Plan p = new Plan();
-                    p = p.create(this.sc, userActivities);
+
+                    p = createPlan(userActivities);
                     user.setPlan(p);
                     if (old == null && p == null) {
                         System.out.println("Plan not created.");
@@ -442,7 +471,7 @@ public class Controller {
                     Plan oldPlan = user.getPlan();
                     if (oldPlan != null) {
                         System.out.print("Do you want to overwrite the user current plan? [y/n]: ");
-                        String delete = this.readYesNo(this.sc);
+                        String delete = readYesNo();
                         if (delete.equals("y")) {
                             user.setPlan(null);
                             System.out.println("Plan deleted successfully.");
@@ -453,13 +482,12 @@ public class Controller {
                         }
                     }
 
-                    Plan plan = new Plan();
-                    plan = plan.createBasedOnGoals(this.sc, user);
-                    if (plan == null) {
+                    p = createBasedOnGoalsIO(user);
+                    if (p == null) {
                         System.out.println("Plan not created.");
                         break;
                     }
-                    user.setPlan(plan);
+                    user.setPlan(p);
                     this.m.updateUser(user);
                     break;
                 case 3:
@@ -474,11 +502,12 @@ public class Controller {
                     break;
                 case 4:
                     // View plan
-                    if (user.getPlan() == null) {
+                    p = user.getPlan();
+                    if (p == null) {
                         System.out.println("The selected user has no plan.");
                         break;
                     }
-                    System.out.print(user.getPlan());
+                    System.out.print(p);
                     break;
                 case 5:
                     // Back to main menu
@@ -492,7 +521,7 @@ public class Controller {
 
     private void simulationSubMenu() {
         LocalDate startDate = LocalDate.now();
-        LocalDate endDate = getSimulationEndDate(this.sc, startDate);
+        LocalDate endDate = getSimulationEndDate(startDate);
         System.out.println(this.m.runSimulation(startDate, endDate));
     }
 
@@ -515,14 +544,14 @@ public class Controller {
                     "(8) Return to main menu");
 
             System.out.print("Option: ");
-            option = readInt(this.sc);
+            option = readInt();
 
             switch (option) {
                 case 1:
                     // 1. The user with most calories burned
                     this.displayStatsSubMenu();
                     System.out.print("Option: ");
-                    option2 = readInt(this.sc);
+                    option2 = readInt();
 
                     switch (option2) {
                         case 1:
@@ -534,8 +563,8 @@ public class Controller {
                             System.out.println("The user with most calories burned is: " + user.getName());
                             break;
                         case 2:
-                            LocalDate start = this.insertStatisticsDate(this.sc, true);
-                            LocalDate end = this.insertStatisticsDate(this.sc, false);
+                            LocalDate start = this.insertStatisticsDate(true);
+                            LocalDate end = this.insertStatisticsDate(false);
                             if (start.isAfter(end)) {
                                 System.out.println("Invalid date range, start date is after end date.");
                                 break;
@@ -558,7 +587,7 @@ public class Controller {
                     // 2. The user with the most activities (registered/completed)
                     this.displayStatsSubMenu();
                     System.out.print("Option: ");
-                    option2 = readInt(this.sc);
+                    option2 = readInt();
 
                     switch (option2) {
                         case 1:
@@ -571,8 +600,8 @@ public class Controller {
                                 + user.getName() + " with " + user.getRegisters().size() + " activities.");
                             break;
                         case 2:
-                            LocalDate start = this.insertStatisticsDate(this.sc, true);
-                            LocalDate end = this.insertStatisticsDate(this.sc, false);
+                            LocalDate start = this.insertStatisticsDate(true);
+                            LocalDate end = this.insertStatisticsDate(false);
                             if (start.isAfter(end)) {
                                 System.out.println("Invalid date range, start date is after end date.");
                                 break;
@@ -603,7 +632,7 @@ public class Controller {
                     // 4. How many km’s were traveled by one user
                     // Select an user to get the km traveled
                     try {
-                        user = this.searchUserIO();
+                        user = searchUserIO();
                     }
                     catch (UserNotFoundException e) {
                         System.out.println(e.getMessage());
@@ -612,7 +641,7 @@ public class Controller {
 
                     this.displayStatsSubMenu();
                     System.out.print("Option: ");
-                    option2 = readInt(this.sc);
+                    option2 = readInt();
 
                     switch (option2) {
                         case 1:
@@ -620,8 +649,8 @@ public class Controller {
                             System.out.println("The user " + user.getName() + " has traveled " + km + " km.");
                             break;
                         case 2:
-                            LocalDate start = this.insertStatisticsDate(this.sc, true);
-                            LocalDate end = this.insertStatisticsDate(this.sc, false);
+                            LocalDate start = this.insertStatisticsDate(true);
+                            LocalDate end = this.insertStatisticsDate(false);
                             if (start.isAfter(end)) {
                                 System.out.println("Invalid date range, start date is after end date.");
                                 break;
@@ -642,7 +671,7 @@ public class Controller {
                     // 5. How many meters of altimetry were climbed by one user
                     // Select an user to get the altimetry climbed
                     try {
-                        user = this.searchUserIO();
+                        user = searchUserIO();
                     }
                     catch (UserNotFoundException e) {
                         System.out.println(e.getMessage());
@@ -651,7 +680,7 @@ public class Controller {
 
                     this.displayStatsSubMenu();
                     System.out.print("Option: ");
-                    option2 = readInt(this.sc);
+                    option2 = readInt();
 
                     switch (option2) {
                         case 1:
@@ -660,8 +689,8 @@ public class Controller {
                                     + altimetry + " meters.");
                             break;
                         case 2:
-                            LocalDate start = this.insertStatisticsDate(this.sc, true);
-                            LocalDate end = this.insertStatisticsDate(this.sc, false);
+                            LocalDate start = this.insertStatisticsDate(true);
+                            LocalDate end = this.insertStatisticsDate(false);
                             if (start.isAfter(end)) {
                                 System.out.println("Invalid date range, start date is after end date.");
                                 break;
@@ -686,7 +715,7 @@ public class Controller {
                     // 7. List the activities of a user
                     // Select an user to list the activities
                     try {
-                        user = this.searchUserIO();
+                        user = searchUserIO();
                     }
                     catch (UserNotFoundException e) {
                         System.out.println(e.getMessage());
@@ -714,7 +743,7 @@ public class Controller {
 
         if (this.m.getUpdatedState()) {
             System.out.print("Do you want to save the current state before exiting? [y/n]: ");
-            String save = this.readYesNo(this.sc);
+            String save = readYesNo();
             if (save.equals("y")) {
                 try {
                     this.m.saveState();
@@ -730,15 +759,235 @@ public class Controller {
     }
 
     /* user perspective menu TODO */
-    private void userMenu(User user) {}
+    private void userMenu(User user) {
+        System.out.println(
+            "\n" +
+            "[User menu] Please select an option:\n" +
+            "( 1) View your profile\n" +
+            "( 2) Edit your profile\n" +
+            "( 3) Create an activity\n" +
+            "( 4) Delete an activity\n" +
+            "( 5) View an activity\n" +
+            "( 6) View all activities\n" +
+            "( 7) Register activity\n" +
+            "( 8) View registered activities\n" +
+            "( 9) Create your plan\n" +
+            "(10) Create plan based on your goals\n" +
+            "(11) Delete your plan\n" +
+            "(12) View your plan\n" +
+            "(13) Statistics menu\n" +
+            "(14) Save program state\n" +
+            "(15) Load program state\n" +
+            "(16) Exit");
+
+        System.out.print("Option: ");
+        int option = readInt();
+
+        ArrayList<String> emails = this.m.getUsersEmails();
+        ArrayList<String> activitiesNames = this.m.getActivitiesNames(user);
+        ArrayList<String> activitiesAvailable = this.m.getActivities();
+
+        Plan p = null;
+
+        Activity a = null;
+        ArrayList<Activity> activities = user.getActivities();
+
+        switch (option) {
+            case 1:
+                // View your profile
+                System.out.println(user);
+                break;
+            case 2:
+                // Edit your profile
+                editUser(emails, user);
+                this.m.updateUser(user);
+                System.out.println("Edited your profile successfully.");
+                break;
+            case 3:
+                // Create an activity
+                Activity activity = createActivity(activitiesNames, activitiesAvailable);
+                if (activity == null) {
+                    System.out.println("Activity not created.");
+                    break;
+                }
+                // Add activity to user
+                user.addActivity(activity);
+                this.m.updateUser(user);
+                System.out.println("Activity created successfully.");
+                break;
+            case 4:
+                // Delete an activity
+                if (activities.size() == 0) {
+                    System.out.println("You have no activities.");
+                    break;
+                }
+
+                // Delete an activity
+                try {
+                    String activityName = searchActivityIO(activitiesNames);
+                    a = this.m.getUserActivity(activities, activityName);
+                }
+                catch (ActivityNotFoundException e) {
+                    System.out.println(e.getMessage());
+                    break;
+                }
+
+                try {
+                    user.deleteActivity(a);
+                }
+                catch (ActivityIsRegisteredException e) {
+                    System.out.println(e.getMessage());
+                    break;
+                }
+                this.m.updateUser(user);
+                System.out.println("Activity deleted successfully.");
+                break;
+            case 5:
+                // View an activity
+                if (activities.size() == 0) {
+                    System.out.println("You have no activities.");
+                    break;
+                }
+
+                // View an activity
+                try {
+                    String activityName = searchActivityIO(activitiesNames);
+                    a = this.m.getUserActivity(activities, activityName);
+                }
+                catch (ActivityNotFoundException e) {
+                    System.out.println(e.getMessage());
+                    break;
+                }
+                System.out.println(a);
+                break;
+            case 6:
+                // View all activities
+                if (activities.size() == 0) {
+                    System.out.println("The selected user has no activities.");
+                    break;
+                }
+                for (Activity t : activities) System.out.println(t);
+                break;
+            case 7:
+                // Register activity
+                user = registerActivityIO(user);
+                this.m.updateUser(user);
+                break;
+            case 8:
+                // View registered activities
+                // Display registers sorted by date
+                HashMap<LocalDateTime, Activity> registers = user.getRegisters();
+                List<LocalDateTime> sortedDates = new ArrayList<>(registers.keySet());
+                Collections.sort(sortedDates);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+                for (LocalDateTime date : sortedDates) {
+                    System.out.println(date.format(formatter) + ": {");
+                    System.out.println(registers.get(date));
+                    System.out.println("}");
+                }
+                break;
+            case 9:
+                // create plan interactively
+                // delete plan if it already exists
+                Plan old = user.getPlan();
+                if (old != null) {
+                    System.out.println("A plan already exists.");
+                    System.out.print("Do you want to overwrite your current plan? [y/n]: ");
+                    String delete = readYesNo();
+                    if (delete.equals("y")) {
+                        user.setPlan(null);
+                        System.out.println("Plan deleted successfully.");
+                    }
+                    else {
+                        System.out.println("Plan wasn't deleted.");
+                        break;
+                    }
+                }
+
+                p = createPlan(activities);
+                user.setPlan(p);
+                if (old == null && p == null) {
+                    System.out.println("Plan not created.");
+                    break;
+                }
+                System.out.println("Plan created successfully.");
+                this.m.updateUser(user);
+                break;
+            case 10:
+                // Create plan based on user goals
+                Plan oldPlan = user.getPlan();
+                if (oldPlan != null) {
+                    System.out.print("Do you want to overwrite your current plan? [y/n]: ");
+                    String delete = readYesNo();
+                    if (delete.equals("y")) {
+                        user.setPlan(null);
+                        System.out.println("Plan deleted successfully.");
+                    }
+                    else {
+                        System.out.println("Plan wasn't deleted.");
+                        break;
+                    }
+                }
+
+                p = createBasedOnGoalsIO(user);
+                if (p == null) {
+                    System.out.println("Plan not created.");
+                    break;
+                }
+                user.setPlan(p);
+                this.m.updateUser(user);
+                break;
+            case 11:
+                // Delete plan
+                if (user.getPlan() == null) {
+                    System.out.println("You have no plan already.");
+                    break;
+                }
+                user.setPlan(null);
+                System.out.println("Plan deleted successfully.");
+                this.m.updateUser(user);
+                break;
+            case 12:
+                // View your plan
+                p = user.getPlan();
+                if (p == null) {
+                    System.out.println("The selected user has no plan.");
+                    break;
+                }
+                System.out.print(p);
+                break;
+            case 13:
+                // Statistics menu
+                this.statisticsSubMenu();
+                break;
+            case 14:
+                // Save program state
+                this.saveStateIO();
+                break;
+            case 15:
+                // Load program state
+                this.loadStateIO();
+                break;
+            case 16:
+                // Exit
+                this.exit();
+                break;
+            default:
+                System.out.println("Invalid option");
+                break;
+        }
+    }
 
     /* user IO methods */
-    private String enterUserName(Scanner sc) {
+    private String enterUserName() {
+
+        int maxTries = MAX_TRIES;
 
         String name;
         while (true) {
             System.out.print("Enter user full name: ");
-            name = readString(sc);
+            name = readString();
             // check if name is between 3 and 256 characters
             if (name.length() < User.MIN_NAME_LENGTH || name.length() > User.MAX_NAME_LENGTH) {
                 System.out.println("Name must be between " + User.MIN_NAME_LENGTH +
@@ -750,12 +999,12 @@ public class Controller {
         return name;
     }
 
-    private String enterUserEmail(Scanner sc, ArrayList<String> emails) { // TODO get emails from m
+    private String enterUserEmail(ArrayList<String> emails) {
 
         String email;
         while (true) {
             System.out.print("Enter the user email: ");
-            String emailBuffer = readString(sc);
+            String emailBuffer = readString();
             // check if email is valid using regex
             if (!emailBuffer.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
                 System.out.println("Email is not valid.");
@@ -779,12 +1028,12 @@ public class Controller {
         return email;
     }
 
-    private String enterUserAddress(Scanner sc) {
+    private String enterUserAddress() {
 
         String address;
         while (true) {
             System.out.print("Enter the user address: ");
-            address = readString(sc);
+            address = readString();
             // check if address is between 5 and 1024 characters
             if (address.length() < User.MIN_ADDRESS_LENGTH || address.length() > User.MAX_ADDRESS_LENGTH) {
                 System.out.println("Address must be between " + User.MIN_ADDRESS_LENGTH +
@@ -796,12 +1045,12 @@ public class Controller {
         return address;
     }
 
-    private int enterUserHeartRate(Scanner sc) {
+    private int enterUserHeartRate() {
 
         int heartRate;
         while (true) {
             System.out.print("Enter the user resting heart rate (in BPM): ");
-            heartRate = readInt(sc);
+            heartRate = readInt();
 
             // check if heart rate is between 20 and 200
             if (User.MIN_HEART_RATE > heartRate || heartRate > User.MAX_HEART_RATE) {
@@ -814,12 +1063,12 @@ public class Controller {
         return heartRate;
     }
 
-    private int enterUserWeight(Scanner sc) {
+    private int enterUserWeight() {
 
         int weight;
         while (true) {
             System.out.print("Enter the user weight (in kg): ");
-            weight = readInt(sc);
+            weight = readInt();
 
             // check if weight is between 20 and 200
             if (User.MIN_WEIGHT > weight || weight > User.MAX_WEIGHT) {
@@ -832,12 +1081,12 @@ public class Controller {
         return weight;
     }
 
-    private int enterUserHeight(Scanner sc) {
+    private int enterUserHeight() {
 
         int height;
         while (true) {
             System.out.print("Enter the user height (in cm): ");
-            height = readInt(sc);
+            height = readInt();
 
             // check if height is between 100 and 220
             if (User.MIN_HEIGHT > height || height > User.MAX_HEIGHT) {
@@ -850,7 +1099,7 @@ public class Controller {
         return height;
     }
 
-    private String enterUserType(Scanner sc, ArrayList<String> types) {
+    private String enterUserType(ArrayList<String> types) {
 
         int N = types.size();
 
@@ -864,7 +1113,7 @@ public class Controller {
             }
 
             System.out.print("Enter the user type: ");
-            int typeCode = readInt(sc);
+            int typeCode = readInt();
 
             // check if user type is valid
             if (typeCode < 1 || typeCode > N) {
@@ -878,15 +1127,15 @@ public class Controller {
         return result;
     }
 
-    private User createUser(Scanner sc, ArrayList<String> emails, ArrayList<String> types, int id) {
+    private User createUser(ArrayList<String> emails, ArrayList<String> types, int id) {
 
-        String name = enterUserName(sc);
-        String email = enterUserEmail(sc, emails);
-        String address = enterUserAddress(sc);
-        int heartRate = enterUserHeartRate(sc);
-        int weight = enterUserWeight(sc);
-        int height = enterUserHeight(sc);
-        String type = enterUserType(sc, types);
+        String name = enterUserName();
+        String email = enterUserEmail(emails);
+        String address = enterUserAddress();
+        int heartRate = enterUserHeartRate();
+        int weight = enterUserWeight();
+        int height = enterUserHeight();
+        String type = enterUserType(types);
 
         // Now instantiate the user based on the type
         try {
@@ -902,15 +1151,19 @@ public class Controller {
                                          int.class);
             return (User) constructor.newInstance(id, name, email, address, heartRate, weight, height);
         }
-        // TODO catch them all
-        catch (NoSuchMethodException | ClassNotFoundException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
-            System.out.println("Error creating user." + e.getMessage());
+        catch (NoSuchMethodException |
+            ClassNotFoundException |
+            IllegalAccessException |
+            InvocationTargetException |
+            InstantiationException e
+        ) {
+            System.out.println("Error creating user: " + e.getMessage());
             return null;
         }
     }
 
     // if 1 id, if 2 email
-    private int chooseHowToSearchUser(Scanner sc) {
+    private int chooseHowToSearchUser() {
 
         int option;
         while (true) {
@@ -920,7 +1173,7 @@ public class Controller {
             System.out.println("(2) By email");
 
             System.out.print("Option: ");
-            option = readInt(sc);
+            option = readInt();
 
             if (!(option == 1 || option == 2)) {
                 System.out.println("Invalid option.");
@@ -935,11 +1188,11 @@ public class Controller {
 
         User user = null;
 
-        int option = chooseHowToSearchUser(this.sc);
+        int option = chooseHowToSearchUser();
 
         if (option == 1) {
             System.out.print("Enter the user ID: ");
-            int id = readInt(this.sc);
+            int id = readInt();
             if (id == -1) {
                 System.out.println("Invalid ID.");
                 throw new UserNotFoundException("User not found.");
@@ -947,7 +1200,7 @@ public class Controller {
             user = this.m.searchUser(id);
         } else {
             System.out.print("Enter the user email: ");
-            String email = readString(this.sc);
+            String email = readString();
             user = this.m.searchUser(email);
         }
 
@@ -959,83 +1212,863 @@ public class Controller {
         return user;
     }
 
-    private void editUser(Scanner sc, ArrayList<String> emails, User user) {
+    private void editUser(ArrayList<String> emails, User user) {
 
         while (true) {
-            System.out.println();
-            System.out.println("Chose what to edit:");
-            System.out.println("(1) Name");
-            System.out.println("(2) Email");
-            System.out.println("(3) Address");
-            System.out.println("(4) Heart rate");
-            System.out.println("(5) Weight");
-            System.out.println("(6) Height");
-            System.out.println("(7) Type");
-            System.out.println("(8) Go back");
-            System.out.print("Option: ");
+            System.out.println(
+                "\n" +
+                "Chose what to edit:\n" +
+                "(1) Name\n" +
+                "(2) Email\n" +
+                "(3) Address\n" +
+                "(4) Heart rate\n" +
+                "(5) Weight\n" +
+                "(6) Height\n" +
+                "(7) Go back");
 
-            int option = readInt(sc);
+            System.out.print("Option: ");
+            int option = readInt();
 
             switch (option) {
                 case 1:
-                    String name = enterUserName(sc);
+                    String name = enterUserName();
                     user.setName(name);
                     System.out.println("Name updated successfully.");
                     break;
-
                 case 2:
-                    String email = enterUserEmail(sc, emails);
+                    String email = enterUserEmail(emails);
                     user.setEmail(email);
                     System.out.println("Email updated successfully.");
                     break;
-
                 case 3:
-                    String address = enterUserAddress(sc);
+                    String address = enterUserAddress();
                     user.setAddress(address);
                     System.out.println("Address updated successfully.");
                     break;
-
                 case 4:
-                    int heartRate = enterUserHeartRate(sc);
+                    int heartRate = enterUserHeartRate();
                     user.setHeartRate(heartRate);
                     System.out.println("Heart rate updated successfully.");
                     break;
                 case 5:
-                    int weight = enterUserWeight(sc);
+                    int weight = enterUserWeight();
                     user.setWeight(weight);
                     System.out.println("Weight updated successfully.");
                     break;
                 case 6:
-                    int height = enterUserHeight(sc);
+                    int height = enterUserHeight();
                     user.setHeight(height);
                     System.out.println("Height updated successfully.");
                     break;
                 case 7:
-                    // TODO remove this option
-                    // User.Type type = enterUserType(sc);
-                    // user.setType(type);
-                    // System.out.println("Type updated successfully.");
-                    // break;
-                case 8:
                     // Go back
                     return;
+                default:
+                    System.out.println("Invalid option.");
+                    break;
             }
         }
     }
 
-    /* atomic IO methods */
-    /* private int inputToSearchUserById(sc, ArrayList<Integer> ids) */
-    /* private String inputToSearchUserByEmail(sc, ArrayList<String> emails) */
-    /* private String inputToSearchActivityByName(sc, ArrayList<String> names) */
-    /* private String inputToSearchPlanByName(sc, ArrayList<String> names) */
+    /* Activity IO methods */
+    private Activity createActivity(ArrayList<String> names, ArrayList<String> activities) {
 
-    private LocalDate getSimulationEndDate(Scanner sc, LocalDate startDate) {
+        int maxTries = MAX_TRIES;
+
+        // Get the activity sub-class from model
+        String activity = null;
+        int N = activities.size();
+        while (--maxTries > 0) {
+            System.out.println("Possible activities:");
+            for (int i = 0; i < N; i++) {
+                System.out.println("  " + (i + 1) + " - " + activities.get(i));
+            }
+
+            System.out.print("Enter the activity: ");
+            int activityCode = readInt();
+
+            // check if activity is valid
+            if (activityCode < 1 || activityCode > N) {
+                System.out.println("Invalid activity.");
+                continue;
+            }
+
+            activity = activities.get(activityCode - 1);
+            break;
+        }
+
+        if (maxTries == 0) {
+            System.out.println("Activity not created.");
+            return null;
+        }
+
+        maxTries = MAX_TRIES;
+
+        // Get the Activity attributes
+        String name = "";
+        while (--maxTries > 0) {
+            System.out.print("Enter the name of the activity: ");
+            String nameBuffer = readString();
+
+            // check if name is between 1 and 100 characters
+            if (nameBuffer.length() < 1 || nameBuffer.length() > 100) {
+                System.out.println("Activity name must be between 1 and 100 characters.");
+                continue;
+            }
+            // check if name is unique
+            boolean isUnique = names.stream().noneMatch(a -> a.equals(nameBuffer));
+            if (!isUnique) {
+                System.out.println("Activity name must be unique.");
+                continue;
+            }
+            name = nameBuffer;
+            break;
+        }
+
+        if (maxTries == 0) {
+            System.out.println("Activity not created.");
+            return null;
+        }
+
+        maxTries = MAX_TRIES;
+
+        int duration = 0;
+        while (--maxTries > 0) {
+            System.out.print("Enter the duration of the activity in minutes: ");
+            duration = readInt();
+
+            // check if duration is between 1 and 1440 minutes
+            if (duration < 1 || duration > 1440) {
+                System.out.println("Duration must be between 1 and 1440 minutes.");
+                continue;
+            }
+            break;
+        }
+
+        if (maxTries == 0) {
+            System.out.println("Activity not created.");
+            return null;
+        }
+
+        maxTries = MAX_TRIES;
+
+        int intensity = 0;
+        while (--maxTries > 0) {
+            System.out.print("Enter the intensity of the activity (1-100): ");
+            intensity = readInt();
+
+            // check if intensity is between 1 and 100
+            if (intensity < 1 || intensity > 100) {
+                System.out.println("Intensity must be between 1 and 100.");
+                continue;
+            }
+            break;
+        }
+
+        if (maxTries == 0) {
+            System.out.println("Activity not created.");
+            return null;
+        }
+
+        maxTries = MAX_TRIES;
+
+        System.out.print("Is the activity hard? [y/n]: ");
+        String hardBuffer = readYesNo();
+        boolean hard = hardBuffer.equals("y");
+
+        // Instantiate activity with current attributes
+        Activity a = null;
+        try {
+            Class<?> activityClass = Class.forName("src.activities." + activity);
+            System.out.println(activityClass);
+            Constructor<?> constructor =
+                activityClass.getConstructor(String.class, int.class, int.class, boolean.class, int.class);
+            a = (Activity) constructor.newInstance(name, duration, intensity, hard, 0);
+        }
+        catch (NoSuchMethodException |
+            ClassNotFoundException |
+            IllegalAccessException |
+            InvocationTargetException |
+            InstantiationException e
+        ) {
+            System.out.println("Error creating activity: " + e.getMessage());
+            return null;
+        }
+
+        // Fill the dynamic attributes
+        ArrayList<String> attributes = a.getAttributes();
+        ArrayList<Integer> attributesToSet = new ArrayList<>();
+
+        for (String attribute : attributes) {
+            while (--maxTries > 0) {
+                System.out.print("Enter the " + attribute + ": ");
+                int value = readInt();
+                if (value == -1) {
+                    System.out.println("Invalid value.");
+                    continue;
+                }
+                attributesToSet.add(value);
+                break;
+            }
+
+            if (maxTries == 0) {
+                System.out.println("Activity not created.");
+                return null;
+            }
+
+            maxTries = MAX_TRIES;
+        }
+
+        // Set the dynamic attributes
+        a.setAttributes(attributesToSet);
+        return a;
+    }
+
+    private String searchActivityIO(ArrayList<String> userActivitiesNames) throws ActivityNotFoundException {
+
+        int maxTries = MAX_TRIES;
+        String activity = null;
+        while (maxTries-- > 0) {
+            // Print activities names
+            System.out.println("User activities:");
+            for (String n : userActivitiesNames) {
+                System.out.println("  -> " + n);
+            }
+            System.out.print("Enter the name of the activity: ");
+            String name = this.readString();
+
+            activity = userActivitiesNames.stream()
+                .filter(n -> n.equals(name))
+                .findFirst()
+                .orElse(null);
+
+            if (activity == null) {
+                System.out.println("Activity not found.");
+                continue;
+            }
+
+            return activity;
+        }
+
+        if (activity == null) {
+            throw new ActivityNotFoundException("Activity not found.");
+        }
+
+        return activity;
+    }
+
+    /* Register IO methods */
+
+    private User registerActivityIO(User u) {
+
+        int maxTries = MAX_TRIES;
+
+        Activity a = null;
+        while (--maxTries > 0) {
+            System.out.println("Choose an option:");
+            System.out.println("(1) Register an existing activity");
+            System.out.println("(2) Register a new activity");
+            System.out.print("Option: ");
+
+            int option = this.readInt();
+
+            ArrayList<Activity> userActivities = u.getActivities();
+            switch (option) {
+                case 1:
+                    if (userActivities.isEmpty()) {
+                        System.out.println("No activities found.");
+                        System.out.println("Please register a new activity.");
+                        continue;
+                    }
+
+                    try {
+                        String activityName = searchActivityIO(this.m.getActivitiesNames(u));
+                        a = this.m.getUserActivity(userActivities, activityName);
+                    }
+                    catch (ActivityNotFoundException e) {
+                        System.out.println(e.getMessage());
+                        continue;
+                    }
+                    u.addActivity(a);
+                    break;
+                case 2:
+                    ArrayList<String> activitiesNames = this.m.getActivitiesNames(u);
+                    ArrayList<String> activitiesAvailable = this.m.getActivities();
+
+                    a = createActivity(activitiesNames, activitiesAvailable);
+                    if (a == null) {
+                        System.out.println("Activity not created.");
+                        continue;
+                    }
+                    u.addActivity(a);
+                    break;
+                default:
+                    System.out.println("Invalid choice.");
+                    continue;
+            }
+            break;
+        }
+
+        if (maxTries == 0) {
+            System.out.println("Activity not registered.");
+            return u;
+        }
+
+        maxTries = MAX_TRIES;
+
+        // Enter date manually or use current date
+        System.out.println("");
+        System.out.println("Registering activity: " + a.getName());
+        System.out.println("(1) Enter date manually");
+        System.out.println("(2) Use current date");
+        System.out.print("Option: ");
+
+        int dateOption = this.readInt();
+
+        LocalDateTime datetime = LocalDateTime.now();
+
+        if (dateOption == 1) {
+            while (--maxTries > 0) {
+                System.out.print("Enter date (yyyy-mm-dd): ");
+                String date = this.readString();
+
+                System.out.print("Enter time (hh:mm): ");
+                String time = this.readString();
+
+                try {
+                    datetime = LocalDateTime.parse(date + "T" + time);
+                }
+                catch (DateTimeParseException e) {
+                    System.out.println("Invalid datetime format.");
+                    continue;
+                }
+
+                if (!datetime.isBefore(LocalDateTime.now())) {
+                    System.out.println("Date must be less than current date.");
+                    continue;
+                }
+                break;
+            }
+
+            if (maxTries == 0) {
+                System.out.println("Activity not registered.");
+                return u;
+            }
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        // Create a new register
+        Activity register = a.clone();
+
+        int calories = register.calculateCalories(u);
+        register.setCalories(calories);
+
+        // Register an activity in the user
+        u.register(datetime, register);
+
+        // Print the registered activity
+        System.out.println("Activity registered successfully: ");
+        System.out.println(register.getName() + " on " + datetime.format(formatter));
+        System.out.println(register.getCalories() + " calories burned.");
+
+        return u;
+    }
+
+    /* Plan IO methods */
+
+    private Plan createPlan(ArrayList<Activity> userActivities) {
+
+        if (userActivities.isEmpty()) {
+            System.out.println("There are no activities available.");
+            System.out.println("Please add activities before creating a plan.");
+            return null;
+        }
+
+        int maxActivities = Event.MAX_REPETITIONS;
+
+        // Plan
+        Plan plan = new Plan();
+
+        // Get name of the plan
+        System.out.print("Enter the name of the plan: ");
+        String name = this.readString();
+        plan.setName(name);
+
+        // start on sunday and ask how many activities wants to add on that day, and so on
+        int counterDaysOff = 0;
+        for (int i = 1; i <= 7; i++) {
+
+            int maxTries = MAX_TRIES;
+
+            int activities = 0;
+            while (--maxTries > 0) {
+                System.out.print("How many activities do you want on " +
+                    convertDayToString(i) + "? (0-" + maxActivities + "): ");
+
+                activities = this.readInt();
+
+                if (activities < 0 || activities > maxActivities) {
+                    System.out.println("Invalid number of activities. " +
+                        "Please enter a number between 0 and " + maxActivities + ".");
+                    continue;
+                }
+                break;
+            }
+
+            if (maxTries == 0) {
+                System.out.println("Plan not created.");
+                return null;
+            }
+
+            if (activities == 0) {
+                counterDaysOff++;
+                continue;
+            }
+
+            int eventCount = 0;
+            for (int j = 0; j < activities;) {
+
+                System.out.println("Event number " + (++eventCount));
+
+                Event e = createEvent(userActivities, activities - j, i);
+                if (e == null) {
+                    System.out.println("Event not created.");
+                    continue;
+                }
+
+                plan.addEvent(e);
+                j += e.getActivityRepetitions();
+            }
+        }
+
+        if (counterDaysOff == 7) {
+            System.out.println("You have scheduled no activities for the week.");
+            System.out.println("You must be joking with the programmer kings.");
+            return null;
+        }
+
+        return plan.clone();
+    }
+
+    private Plan createBasedOnGoalsIO(User user) {
+        if (user.getActivities().isEmpty()) {
+            System.out.println("There are no activities available.");
+            System.out.println("Please add activities before trying to generate a plan.");
+            return null;
+        }
+
+        int caloriesGoal = 0;
+        int maxActivitiesPerDay = 0;
+        int maxDisitinctActivitiesPerDay = 0;
+        int nActivityRepetitionPerWeek = 0;
+        ArrayList<Activity> selectedActivities = new ArrayList<Activity>();
+
+        int maxTries = MAX_TRIES;
+
+        while (--maxTries > 0) {
+            System.out.print("Enter caloric goal per week: ");
+            caloriesGoal = readInt();
+            if (caloriesGoal < 0) {
+                System.out.println("Invalid caloric goal. Please enter a positive number.");
+                continue;
+            }
+            break;
+        }
+
+        if (maxTries == 0) {
+            System.out.println("Plan not created.");
+            return null;
+        }
+
+        maxTries = MAX_TRIES;
+
+        while (--maxTries > 0) {
+            System.out.print("Enter max activities per day: ");
+            maxActivitiesPerDay = readInt();
+            if (maxActivitiesPerDay < 1 || maxActivitiesPerDay > 3) {
+                System.out.println("Invalid number of activities. Please enter a number between 1 and 3.");
+                continue;
+            }
+            break;
+        }
+
+        if (maxTries == 0) {
+            System.out.println("Plan not created.");
+            return null;
+        }
+
+        maxTries = MAX_TRIES;
+
+        while (--maxTries > 0) {
+            System.out.print("Enter max distinct activities per day: ");
+            maxDisitinctActivitiesPerDay = readInt();
+            if (maxDisitinctActivitiesPerDay < 1 || maxDisitinctActivitiesPerDay > 3) {
+                System.out.println("Invalid number of activities. Please enter a number between 1 and 3.");
+                continue;
+            }
+            break;
+        }
+
+        if (maxTries == 0) {
+            System.out.println("Plan not created.");
+            return null;
+        }
+
+        maxTries = MAX_TRIES;
+
+        while (--maxTries > 0) {
+            System.out.print("Enter number of repetitions of activities per week: ");
+            nActivityRepetitionPerWeek = readInt();
+            if (nActivityRepetitionPerWeek < 1) {
+                System.out.println("Invalid number of repetitions. Please enter a number greater than 0.");
+                continue;
+            }
+            break;
+        }
+
+        if (maxTries == 0) {
+            System.out.println("Plan not created.");
+            return null;
+        }
+
+        maxTries = MAX_TRIES;
+
+        while (--maxTries > 0) {
+            ArrayList<Activity> userActivities = user.getActivities();
+            System.out.print("Enter number of your activities to select (1-" + userActivities.size() + "): ");
+            int nActivities = readInt();
+            if (nActivities < 1 || nActivities > userActivities.size()) {
+                System.out.println("Invalid number of activities. Please enter a number between 1 and " +
+                    user.getActivities().size() + ".");
+                continue;
+            }
+
+            ArrayList<Activity> toSearch = new ArrayList<Activity>(userActivities);
+
+            for (int i = 0; i < nActivities; i++) {
+                System.out.println("Select activity number " + (i + 1) + ".");
+
+                Activity activity;
+                ArrayList<Activity> activities = user.getActivities();
+                ArrayList<String> activitiesNames = this.m.getActivitiesNames(user);
+                ArrayList<String> activitiesAvailable = this.m.getActivities();
+                try {
+                    String activityName = searchActivityIO(activitiesNames);
+                    activity = this.m.getUserActivity(activities, activityName);
+                }
+                catch (ActivityNotFoundException e) {
+                    System.out.println(e.getMessage());
+                    i--;
+                    continue;
+                }
+                selectedActivities.add(activity);
+                toSearch.remove(activity);
+            }
+            break;
+        }
+
+        if (maxTries == 0) {
+            System.out.println("Plan not created.");
+            return null;
+        }
+
+        Plan plan = new Plan();
+        plan = createBasedOnGoals(
+                    user,
+                    caloriesGoal,
+                    maxActivitiesPerDay,
+                    maxDisitinctActivitiesPerDay,
+                    nActivityRepetitionPerWeek,
+                    selectedActivities);
+        return plan;
+    }
+
+    // create plan based on user goals
+    public Plan createBasedOnGoals(
+        User user,
+        int caloriesGoal,
+        int maxActivitiesPerDay,
+        int maxDisitinctActivitiesPerDay,
+        int nActivityRepetitionPerWeek,
+        ArrayList<Activity> selectedActivities
+    ) {
+        // restrictions
+        // hard activituies can't be in the same day and consecutive days
+        // max activities per day (max 3)
+        // min distinct activities per day (max 3)
+        // nRepActivityPerWeek (min 1, no max)
+
+        // days until the next hard activity is possible
+        int daysUntilHard = 0;
+        // boolean canBeHard: (daysUntilHard == 0);
+        // reset: daysUntilHard = 2;
+
+        // number of disitinct activities added in one day
+        int distinctCount = 0;
+
+        // total number of activities (for display purposes only)
+        int totalActivities = 0;
+
+        // seperate activities by hard and not hard (sorted by calories desc)
+        ActivityRepetition arAux = new ActivityRepetition();
+
+        ArrayList<ActivityRepetition> activitiesHard =
+            arAux.create(selectedActivities, nActivityRepetitionPerWeek, maxActivitiesPerDay, user, true);
+
+        ArrayList<ActivityRepetition> activities =
+            arAux.create(selectedActivities, nActivityRepetitionPerWeek, maxActivitiesPerDay, user, false);
+
+        ActivityRepetition ar = null;
+        Activity a = null;
+        int repetitionsLeft = 0;
+
+        ActivityRepetition arHard = null;
+        Activity aHard = null;
+        int repetitionsLeftHard = 0;
+
+        boolean saturdayCanBeHard = true;
+
+        ArrayList<Event> events = new ArrayList<Event>();
+
+        for (int day = 1; day <= 7; day++) {
+
+            distinctCount = 0;
+
+            if (daysUntilHard > 0) {
+                daysUntilHard--;
+            }
+
+            if (activitiesHard.isEmpty() && activities.isEmpty()) {
+                break;
+            }
+
+            for (int i = 0; i < maxActivitiesPerDay;) {
+
+                if (activitiesHard.isEmpty() && activities.isEmpty()) {
+                    break;
+                }
+
+                if (!activities.isEmpty()) {
+                    ar = activities.get(0);
+                    a = ar.getActivity();
+                    repetitionsLeft = ar.getRepetitionsLeft();
+                }
+                else {
+                    ar = null;
+                }
+
+                if (!activitiesHard.isEmpty()) {
+                    arHard = activitiesHard.get(0);
+                    aHard = arHard.getActivity();
+                    repetitionsLeftHard = arHard.getRepetitionsLeft();
+                }
+                else {
+                    arHard = null;
+                }
+
+                int nActivityOfThisType = Math.min(repetitionsLeft, maxActivitiesPerDay - i);
+
+                if (ar == null ||
+                    (arHard != null &&
+                    aHard.calculateCalories(user) >= a.calculateCalories(user) * nActivityOfThisType &&
+                    daysUntilHard == 0 &&
+                    day != 7) ||
+                    (day == 7 && saturdayCanBeHard &&
+                    (arHard != null &&
+                    aHard.calculateCalories(user) >= a.calculateCalories(user) * nActivityOfThisType &&
+                    daysUntilHard == 0))
+                ) {
+                    // add hard activity (only one can be added)
+                    Event event = new Event(aHard, 1, day, LocalTime.of(8 + 4 * i, 0));
+                    events.add(event);
+
+                    // update repetitions
+                    repetitionsLeftHard--;
+                    arHard.setRepetitionsLeft(repetitionsLeftHard);
+
+                    // hard activities logic (reset daysUntilHard)
+                    daysUntilHard = 2;
+
+                    // total activities counter
+                    totalActivities++;
+
+                    // increment activity iterator
+                    i++;
+
+                    // re-sort
+                    activitiesHard = arAux.sort(activitiesHard, 1, user);
+
+                    // if it's sunday then saturday can't be hard activity day
+                    if (day == 1) {
+                        saturdayCanBeHard = false;
+                    }
+                }
+                else if (ar != null) {
+                    // add normal activity
+                    Event event = new Event(a, nActivityOfThisType, day, LocalTime.of(8 + 4 * i, 0));
+                    events.add(event);
+
+                    // update repetitions
+                    repetitionsLeft -= nActivityOfThisType;
+                    ar.setRepetitionsLeft(repetitionsLeft);
+
+                    // total activities counter
+                    totalActivities += nActivityOfThisType;
+
+                    // increment activity iterator
+                    i += nActivityOfThisType;
+
+                    // re-sort
+                    activities = arAux.sort(activities, maxActivitiesPerDay - i, user);
+                }
+
+                // increment distinct activities counter
+                distinctCount++;
+                if (distinctCount >= maxDisitinctActivitiesPerDay) {
+                    break;
+                }
+            }
+        }
+
+        int possibleActivitiesPerWeek = Math.min(maxActivitiesPerDay * 7, nActivityRepetitionPerWeek * selectedActivities.size());
+
+        // Check if plan meets the calories goal
+        int calories = 0;
+        for (Event e : events) {
+            calories += e.getActivity().calculateCalories(user) * e.getActivityRepetitions();
+        }
+        if (calories < caloriesGoal) {
+            System.out.println("Based on your goals, it's impossible to create a plan.");
+            System.out.println("Total activities: " + totalActivities + " / " + possibleActivitiesPerWeek);
+            System.out.println("Calories: " + calories + " / " + caloriesGoal);
+            return null;
+        }
+
+        // create plan
+        Plan plan = new Plan("Plan based on goals", events);
+
+        // display plan and relevant info
+        System.out.println(plan.getName());
+        for (Event e : plan.getEvents()) {
+            System.out.println(e);
+            System.out.println("Expected calories: " +
+                e.getActivity().calculateCalories(user) * e.getActivityRepetitions());
+            System.out.println();
+        }
+        System.out.println("Total activities: " + totalActivities + " / " + possibleActivitiesPerWeek);
+        System.out.println("Calories: " + calories + " / " + caloriesGoal);
+        System.out.println("Plan generated successfully.");
+
+        return plan.clone();
+    }
+
+    /* Event IO methods */
+
+    private Event createEvent(ArrayList<Activity> activities, int maxRepetitions, int day) {
+
+        if (activities.size() == 0) {
+            System.out.println("You have no activities to schedule an event for.");
+            return null;
+        }
+
+        Activity activity;
+        ArrayList<String> activitiesNames = this.m.getActivitiesNames(activities);
+        try {
+            String activityName = searchActivityIO(activitiesNames);
+            activity = this.m.getUserActivity(activities, activityName);
+        }
+        catch (ActivityNotFoundException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+
+        int maxTries = MAX_TRIES;
+
+        int activityRepetitions = 1;
+        if (maxRepetitions != 1) {
+            while (--maxTries > 0) {
+                System.out.print("Enter the number of times you want to repeat " +
+                    "the activity (1-" + maxRepetitions + "): ");
+                activityRepetitions = this.readInt();
+
+                if (activityRepetitions < 1 || activityRepetitions > maxRepetitions) {
+                    System.out.println("Invalid number of repetitions. Please enter a number " +
+                        "between 1 and " + maxRepetitions + ".");
+                    continue;
+                }
+                break;
+            }
+        }
+
+        if (maxTries == 0) {
+            System.out.println("Event not created.");
+            return null;
+        }
+
+        maxTries = MAX_TRIES;
+
+        LocalTime time = null;
+        while (--maxTries > 0) {
+            System.out.print("Enter the time of the event (HH:mm): ");
+            String timeBuffer = this.readString();
+            try {
+                time = LocalTime.parse(timeBuffer);
+            }
+            catch (DateTimeParseException e) {
+                System.out.println("Invalid time format.");
+                continue;
+            }
+            break;
+        }
+
+        if (maxTries == 0) {
+            System.out.println("Event not created.");
+            return null;
+        }
+
+        Event event = new Event(activity, activityRepetitions, day, time);
+        System.out.println("Event scheduled successfully.");
+        return event.clone();
+    }
+
+    /* Utility static methods */
+
+    public static String convertDayToString(int day) {
+        switch (day) {
+            case 1:
+                return "Sunday";
+            case 2:
+                return "Monday";
+            case 3:
+                return "Tuesday";
+            case 4:
+                return "Wednesday";
+            case 5:
+                return "Thursday";
+            case 6:
+                return "Friday";
+            case 7:
+                return "Saturday";
+            default:
+                return "Invalid day";
+        }
+    }
+
+    public static String convertTimeToString(LocalTime time) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        return time.format(formatter);
+    }
+
+    /* Simulation IO methods */
+
+    private LocalDate getSimulationEndDate(LocalDate startDate) {
 
         LocalDate endDate = null;
         while (true) {
             System.out.print("Enter the end date of the simulation (yyyy-mm-dd): ");
 
-            endDate = readDate(sc);
+            endDate = readDate();
             if (endDate == null) {
                 continue;
             }
@@ -1049,13 +2082,15 @@ public class Controller {
         return endDate;
     }
 
-    private LocalDate insertStatisticsDate(Scanner sc, boolean start) {
+    /* Statistics IO methods */
+
+    private LocalDate insertStatisticsDate(boolean start) {
 
         LocalDate date = null;
         while (true) {
             System.out.print("Insert the " + (start ? "start" : "end") + " date (yyyy-mm-dd): ");
 
-            date = readDate(sc);
+            date = readDate();
             if (date == null) {
                 continue;
             }
@@ -1067,15 +2102,14 @@ public class Controller {
 
     /* simple IO methods */
 
-    // TODO change to private
-    public String readString(Scanner sc) {
+    private String readString() {
         String option = "";
         try {
-            option = sc.nextLine();
+            option = this.sc.nextLine();
         }
         catch (NoSuchElementException e) {
             System.out.println("\nEOF detected, exiting...");
-            sc.close();
+            this.sc.close();
             System.exit(0);
         }
         catch (IllegalStateException e) {
@@ -1085,11 +2119,10 @@ public class Controller {
         return option;
     }
 
-    // TODO change to private
-    public int readInt(Scanner sc) {
+    private int readInt() {
         int option = 0;
         try {
-            option = Integer.parseInt(readString(sc));
+            option = Integer.parseInt(readString());
         }
         catch (NumberFormatException e) {
             return -1;
@@ -1098,11 +2131,10 @@ public class Controller {
         return option;
     }
 
-    // TODO change to private
-    public String readYesNo(Scanner sc) {
+    private String readYesNo() {
         String option = "";
         while (true) {
-            option = readString(sc).toLowerCase();
+            option = readString().toLowerCase();
             if (option.equals("y") || option.equals("n")) {
                 break;
             }
@@ -1111,10 +2143,10 @@ public class Controller {
         return option;
     }
 
-    private LocalDate readDate(Scanner sc) {
+    private LocalDate readDate() {
         LocalDate date = null;
         try {
-            date = LocalDate.parse(readString(sc));
+            date = LocalDate.parse(readString());
         }
         catch (DateTimeParseException e) {
             System.out.println("Invalid date format.");
@@ -1124,6 +2156,7 @@ public class Controller {
     }
 
     /* state management methods with IO */
+
     private void saveStateIO() {
         try {
             System.out.println("Saving state to " + this.m.getStateFilepath());
@@ -1139,7 +2172,7 @@ public class Controller {
 
         if (this.m.getUpdatedState()) {
             System.out.print("Warning: current state will be lost. Do you want to continue? [y/n]: ");
-            String cont = this.readYesNo(this.sc);
+            String cont = readYesNo();
             if (cont.equals("n")) {
                 return;
             }

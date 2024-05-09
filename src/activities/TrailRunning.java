@@ -1,16 +1,12 @@
-package src.activityTypes;
+package src.activities;
 
 import src.Activity;
 import src.User;
 
-// TODO remove this
-import src.Controller;
-
-import java.util.ArrayList;
-import java.util.Scanner;
 import java.io.Serializable;
+import java.util.ArrayList;
 
-public abstract class DistanceAltimetry extends Activity implements Serializable {
+public class TrailRunning extends Activity implements Serializable {
 
     private static final double MET_VALUE = 16.0;
     private static final int ALTIMETRY_FACTOR = 4;
@@ -18,13 +14,13 @@ public abstract class DistanceAltimetry extends Activity implements Serializable
     private int distance;
     private int altimetry;
 
-    public DistanceAltimetry() {
+    public TrailRunning() {
         super();
         this.setDistance(0);
         this.setAltimetry(0);
     }
 
-    public DistanceAltimetry(
+    public TrailRunning(
         String name, int duration, int intensity,
         boolean hard, int calories
     ) {
@@ -33,7 +29,7 @@ public abstract class DistanceAltimetry extends Activity implements Serializable
         this.setAltimetry(0);
     }
 
-    public DistanceAltimetry(
+    public TrailRunning(
         String name, int duration, int intensity,
         boolean hard, int calories, int distance, int altimetry
     ) {
@@ -42,16 +38,25 @@ public abstract class DistanceAltimetry extends Activity implements Serializable
         this.setAltimetry(altimetry);
     }
 
-    public DistanceAltimetry(DistanceAltimetry distanceAltimetry) {
+    public TrailRunning(
+        String name, int duration, int intensity,
+        boolean hard, int calories, ArrayList<Integer> attributes
+    ) {
+        this(name, duration, intensity, hard, calories, attributes.get(0), attributes.get(1));
+    }
+
+    public TrailRunning(TrailRunning distanceAltimetry) {
         super(distanceAltimetry);
         this.setDistance(distanceAltimetry.getDistance());
         this.setAltimetry(distanceAltimetry.getAltimetry());
     }
 
+    @Override
     public int getDistance() {
         return this.distance;
     }
 
+    @Override
     public int getAltimetry() {
         return this.altimetry;
     }
@@ -87,22 +92,22 @@ public abstract class DistanceAltimetry extends Activity implements Serializable
 
         if (o == null || o.getClass() != this.getClass()) return false;
 
-        DistanceAltimetry distanceAltimetry = (DistanceAltimetry) o;
+        TrailRunning a = (TrailRunning) o;
         return (
-            this.getName().equals(distanceAltimetry.getName()) &&
-            this.getDuration() == distanceAltimetry.getDuration() &&
-            this.getIntensity() == distanceAltimetry.getIntensity() &&
-            this.getDistance() == distanceAltimetry.getDistance() &&
-            this.getAltimetry() == distanceAltimetry.getAltimetry() &&
-            this.getHard() == distanceAltimetry.getHard()
+            this.getName().equals(a.getName()) &&
+            this.getDuration() == a.getDuration() &&
+            this.getIntensity() == a.getIntensity() &&
+            this.getDistance() == a.getDistance() &&
+            this.getAltimetry() == a.getAltimetry() &&
+            this.getHard() == a.getHard()
             // The calories field is not considered in the equals method
             // since it varies depending on the user parameters
         );
     }
 
     @Override
-    public DistanceAltimetry clone() {
-        return new DistanceAltimetry(this);
+    public Activity clone() {
+        return new TrailRunning(this);
     }
 
     @Override
@@ -114,7 +119,6 @@ public abstract class DistanceAltimetry extends Activity implements Serializable
         int weight = u.getWeight();
         int height = u.getHeight();
         int nutritionMultiplier = u.getCaloriesMultiplier();
-        double met = MET_VALUE;
 
         double weightFactor = Math.min(weight / 200.0, 2);
         weightFactor = Math.max(weightFactor, 1);
@@ -126,49 +130,30 @@ public abstract class DistanceAltimetry extends Activity implements Serializable
 
         return (int)
             (weight * (nutritionMultiplier / 100.0) *
-            met * (intensity / 100.0) * ((distance + (altimetry * ALTIMETRY_FACTOR)) / 1000.0));
+            MET_VALUE * (intensity / 100.0) * ((distance + (altimetry * ALTIMETRY_FACTOR)) / 1000.0));
     }
 
     @Override
-    public Activity create(Scanner sc, ArrayList<Activity> userActivities) {
+    public boolean isDistanceBased() {
+        return true;
+    }
 
-        DistanceAltimetry activity = (DistanceAltimetry) super.createAux(sc, userActivities, ACTIVITY_TYPE);
-        if (activity == null) {
-            return null;
-        }
+    @Override
+    public boolean isAltimetryBased() {
+        return true;
+    }
 
-        // TODO remove this
-        Controller c = new Controller();
+    @Override
+    public ArrayList<String> getAttributes() {
+        ArrayList<String> attributes = new ArrayList<String>();
+        attributes.add("distance");
+        attributes.add("altimetry");
+        return attributes;
+    }
 
-        int distance = 0;
-        int altimetry = 0;
-
-        while (true) {
-            System.out.print("Enter the distance of the activity in meters: ");
-            distance = c.readInt(sc);
-
-            // check if distance is between 1 and 50000 meters
-            if (distance < 1 || distance > 50000) {
-                System.out.println("Distance must be between 1 and 50000 meters.");
-                continue;
-            }
-            break;
-        }
-
-        while (true) {
-            System.out.print("Enter the altimetry of the activity in meters: ");
-            altimetry = c.readInt(sc);
-
-            // check if altimetry is between 1 and 10000 meters
-            if (altimetry < 1 || altimetry > 10000) {
-                System.out.println("Altimetry must be between 1 and 10000 meters.");
-                continue;
-            }
-            break;
-        }
-
-        activity.setDistance(distance);
-        activity.setAltimetry(altimetry);
-        return activity.clone();
+    @Override
+    public void setAttributes(ArrayList<Integer> attributes) {
+        this.setDistance(attributes.get(0));
+        this.setAltimetry(attributes.get(1));
     }
 }

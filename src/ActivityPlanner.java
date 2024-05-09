@@ -1,7 +1,8 @@
 package src;
 
-import src.activityTypes.*;
+import src.exceptions.*;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
@@ -24,12 +25,7 @@ import java.io.ObjectOutputStream;
 import java.io.OptionalDataException;
 import java.io.StreamCorruptedException;
 
-// custom exceptions
-import src.exceptions.UserNotFoundException;
-import src.exceptions.StateNotSavedException;
-import src.exceptions.StateNotLoadedException;
-
-public class ActivityPlanner {
+public class ActivityPlanner implements Serializable {
 
     /* Attributes */
     private HashMap<Integer, User> users; // currently loaded users
@@ -138,6 +134,43 @@ public class ActivityPlanner {
         return types;
     }
 
+    public ArrayList<String> getActivitiesNames(ArrayList<Activity> activities) {
+        ArrayList<String> names = new ArrayList<String>();
+
+        for (Activity a : activities) {
+            names.add(a.getName());
+        }
+
+        return names;
+    }
+
+    public ArrayList<String> getActivitiesNames(User u) {
+        ArrayList<Activity> activities = u.getActivities();
+        return getActivitiesNames(activities);
+    }
+
+    public ArrayList<String> getActivities() {
+        ArrayList<String> activities = new ArrayList<String>();
+
+        // List the classes that are in the activities package
+        for (Class<?> c : getClasses("src.activities")) {
+            activities.add(c.getSimpleName());
+        }
+
+        return activities;
+    }
+
+    public Activity getUserActivity(ArrayList<Activity> activities, String activityName) throws ActivityNotFoundException {
+        Activity a = activities.stream()
+            .filter(activity -> activity.getName().equals(activityName))
+            .findFirst()
+            .orElse(null);
+        if (a == null) {
+            throw new ActivityNotFoundException("Activity " + activityName + " not found.");
+        }
+        return a;
+    }
+
     private List<Class<?>> getClasses(String packageName) {
         List<Class<?>> classes = new ArrayList<>();
         try {
@@ -202,7 +235,7 @@ public class ActivityPlanner {
 
             output.append(
                 "Day " + (day + 1) + " " +
-                event.convertDayToString(currentWeekDay) + " " +
+                Controller.convertDayToString(currentWeekDay) + " " +
                 startDate.plusDays(day).format(dateFormatter) + "\n"
             );
 
@@ -381,16 +414,16 @@ public class ActivityPlanner {
         return user;
     }
 
-    // 3. The type of activity most practiced by the users TODO new activities
+    // 3. The type of activity most practiced by the users
     public String mostPracticedActivityType() {
 
         String result = "None";
-        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+        HashMap<String, Integer> map = new HashMap<>();
 
         for (User u : this.users.values()) {
 
             for (Activity r : u.getRegisters().values()) {
-                int type = r.getType();
+                String type = r.getClass().getSimpleName();
                 if (map.containsKey(type)) {
                     map.put(type, map.get(type) + 1);
                 }
@@ -401,11 +434,10 @@ public class ActivityPlanner {
         }
 
         int max = 0;
-        Activity a = (Activity) new Distance();
-        for (Entry<Integer, Integer> entry : map.entrySet()) {
+        for (Entry<String, Integer> entry : map.entrySet()) {
             if (entry.getValue() > max) {
                 max = entry.getValue();
-                result = a.getTypeString((int) entry.getKey());
+                result = entry.getKey();
             }
         }
 
@@ -420,13 +452,8 @@ public class ActivityPlanner {
 
         for (Activity r : user.getRegisters().values()) {
 
-            if (r.isDistance()) {
-                Distance da = (Distance) r;
-                c += da.getDistance();
-            }
-            else if (r.isDistanceAltimetry()) {
-                DistanceAltimetry da = (DistanceAltimetry) r;
-                c += da.getDistance();
+            if (r.isDistanceBased()) {
+                c += r.getDistance();
             }
         }
 
@@ -445,13 +472,8 @@ public class ActivityPlanner {
 
                 Activity r = entry.getValue();
 
-                if (r.isDistance()) {
-                    Distance da = (Distance) r;
-                    c += da.getDistance();
-                }
-                else if (r.isDistanceAltimetry()) {
-                    DistanceAltimetry da = (DistanceAltimetry) r;
-                    c += da.getDistance();
+                if (r.isDistanceBased()) {
+                    c += r.getDistance();
                 }
             }
         }
@@ -467,9 +489,8 @@ public class ActivityPlanner {
 
         for (Activity r : user.getRegisters().values()) {
 
-            if (r.isDistanceAltimetry()) {
-                DistanceAltimetry da = (DistanceAltimetry) r;
-                c += da.getAltimetry();
+            if (r.isAltimetryBased()) {
+                c += r.getAltimetry();
             }
         }
 
@@ -489,9 +510,8 @@ public class ActivityPlanner {
 
                 Activity r = entry.getValue();
 
-                if (r.isDistanceAltimetry()) {
-                    DistanceAltimetry da = (DistanceAltimetry) r;
-                    c += da.getAltimetry();
+                if (r.isAltimetryBased()) {
+                    c += r.getAltimetry();
                 }
             }
         }
@@ -515,14 +535,14 @@ public class ActivityPlanner {
                 plan = p;
                 user = u;
                 for (Event e : p.getEvents()) {
-                    max += e.getActivity().calculateCalories(u);
+                    max += e.getActivity().calculateCalories(u) * e.getActivityRepetitions();
                 }
                 continue;
             }
 
             int tmp = 0;
             for (Event e : p.getEvents()) {
-                tmp += e.getActivity().calculateCalories(u);
+                tmp += e.getActivity().calculateCalories(u) * e.getActivityRepetitions();
             }
             if (tmp > max) {
                 max = tmp;
@@ -574,26 +594,27 @@ public class ActivityPlanner {
             FileOutputStream fileOut = new FileOutputStream(this.stateFilepath);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
 
-            out.writeObject(this.users);
-
+            out.writeObject(this);
             out.flush();
             out.close();
             fileOut.close();
 
             this.updatedState = false;
         }
-        catch (NotSerializableException e) {
-            throw new StateNotSavedException("Object not serializable: " + e.getMessage());
-        }
         catch (FileNotFoundException e) {
             throw new StateNotSavedException("File not found: \"" + this.stateFilepath + "\"");
+        }
+        catch (InvalidClassException e) {
+            throw new StateNotSavedException("Invalid class: " + e.getMessage());
+        }
+        catch (NotSerializableException e) {
+            throw new StateNotSavedException("Object not serializable: " + e.getMessage());
         }
         catch (IOException e) {
             throw new StateNotSavedException("IOException. Error: " + e.getMessage());
         }
         catch (Exception e) {
             throw new StateNotSavedException("Error saving state: " + e.getMessage() + ".\n");
-            // e.printStackTrace();
         }
     }
 
@@ -603,20 +624,12 @@ public class ActivityPlanner {
             FileInputStream fileIn = new FileInputStream(this.stateFilepath);
             ObjectInputStream in = new ObjectInputStream(fileIn);
 
-            HashMap<?, ?> tmpUsers = (HashMap<?, ?>) in.readObject();
-
-            this.users = new HashMap<Integer, User>(tmpUsers.size());
-            for (Object obj : tmpUsers.values()) {
-                if (obj instanceof User) {
-                    User u = (User) obj;
-                    this.users.put(u.getId(), u);
-                }
-            }
-
+            ActivityPlanner planner = (ActivityPlanner) in.readObject();
             in.close();
             fileIn.close();
+            this.users = planner.users;
             this.updatedState = false;
-
+            this.stateFilepath = planner.stateFilepath;
         }
         catch (FileNotFoundException e) {
             throw new StateNotLoadedException("File not found: \"" + this.stateFilepath + "\"");
@@ -644,7 +657,6 @@ public class ActivityPlanner {
         }
         catch (Exception e) {
             throw new StateNotLoadedException("Error loading state: " + e.getMessage());
-            // e.printStackTrace();
         }
     }
 }

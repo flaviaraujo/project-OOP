@@ -3,8 +3,7 @@
 build:
 	javac -Xlint:unchecked \
 		src/users/*.java \
-		src/activityTypes/*.java \
-		src/activityTypes/activities/*.java \
+		src/activities/*.java \
 		src/exceptions/*.java \
 		src/*.java
 
@@ -33,7 +32,6 @@ install:
 clean:
 	rm -rf \
 		src/users/*.class \
-		src/activityTypes/*.class \
-		src/activityTypes/activities/*.class \
+		src/activities/*.class \
 		src/exceptions/*.class \
 		src/*.class

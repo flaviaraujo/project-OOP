@@ -1,29 +1,25 @@
-package src.activityTypes;
+package src.activities;
 
 import src.Activity;
 import src.User;
 
-// TODO remove this
-import src.Controller;
-
-import java.util.ArrayList;
-import java.util.Scanner;
 import java.io.Serializable;
+import java.util.ArrayList;
 
-public abstract class RepetitionWeight extends Activity implements Serializable {
+public class Weightlifting extends Activity implements Serializable {
 
     private static final double MET_VALUE = 5.0;
 
     private int repetition;
     private int weight;
 
-    public RepetitionWeight() {
+    public Weightlifting() {
         super();
         this.setRepetition(0);
         this.setWeight(0);
     }
 
-    public RepetitionWeight(
+    public Weightlifting(
         String name, int duration, int intensity,
         boolean hard, int calories
     ) {
@@ -32,7 +28,7 @@ public abstract class RepetitionWeight extends Activity implements Serializable 
         this.setWeight(0);
     }
 
-    public RepetitionWeight(
+    public Weightlifting(
         String name, int duration, int intensity,
         boolean hard, int calories, int repetition, int weight
     ) {
@@ -41,10 +37,17 @@ public abstract class RepetitionWeight extends Activity implements Serializable 
         this.setWeight(weight);
     }
 
-    public RepetitionWeight(RepetitionWeight repetitionWeight) {
-        super(repetitionWeight);
-        this.setRepetition(repetitionWeight.getRepetition());
-        this.setWeight(repetitionWeight.getWeight());
+    public Weightlifting(
+        String name, int duration, int intensity,
+        boolean hard, int calories, ArrayList<Integer> attributes
+    ) {
+        this(name, duration, intensity, hard, calories, attributes.get(0), attributes.get(1));
+    }
+
+    public Weightlifting(Weightlifting repetition) {
+        super(repetition);
+        this.setRepetition(repetition.getRepetition());
+        this.setWeight(repetition.getWeight());
     }
 
     public int getRepetition() {
@@ -70,7 +73,7 @@ public abstract class RepetitionWeight extends Activity implements Serializable 
         sb.append("  Name: " + this.getName() + ",\n");
         sb.append("  Duration: " + this.getDuration() + " minutes,\n");
         sb.append("  Intensity: " + this.getIntensity() + ",\n");
-        sb.append("  Repetition: " + this.getRepetition() + " times,\n");
+        sb.append("  Repetition: " + this.getRepetition() + " times\n");
         sb.append("  Weight: " + this.getWeight() + " kg\n");
         sb.append("  Hard: " + this.getHard() + ",\n");
         if (this.getCalories() != 0) {
@@ -86,22 +89,22 @@ public abstract class RepetitionWeight extends Activity implements Serializable 
 
         if (o == null || o.getClass() != this.getClass()) return false;
 
-        RepetitionWeight repetitionWeight = (RepetitionWeight) o;
+        Weightlifting a = (Weightlifting) o;
         return (
-            this.getName().equals(repetitionWeight.getName()) &&
-            this.getDuration() == repetitionWeight.getDuration() &&
-            this.getIntensity() == repetitionWeight.getIntensity() &&
-            this.getRepetition() == repetitionWeight.getRepetition() &&
-            this.getWeight() == repetitionWeight.getWeight() &&
-            this.getHard() == repetitionWeight.getHard()
+            this.getName().equals(a.getName()) &&
+            this.getDuration() == a.getDuration() &&
+            this.getIntensity() == a.getIntensity() &&
+            this.getRepetition() == a.getRepetition() &&
+            this.getWeight() == a.getWeight() &&
+            this.getHard() == a.getHard()
             // The calories field is not considered in the equals method
             // since it varies depending on the user parameters
         );
     }
 
     @Override
-    public RepetitionWeight clone() {
-        return new RepetitionWeight(this);
+    public Activity clone() {
+        return new Weightlifting(this);
     }
 
     @Override
@@ -132,50 +135,39 @@ public abstract class RepetitionWeight extends Activity implements Serializable 
         return (int)
         (met * weight * (((repetitions / 10.0) * (repetitionWeight/10.0))/repWeightRatio) *
         (intensity / 100.0) * (nutritionMultiplier / 100.0));
-
     }
 
+    @Override
+    public int getDistance() {
+        return 0;
+    }
 
     @Override
-    public Activity create(Scanner sc, ArrayList<Activity> userActivities) {
+    public int getAltimetry() {
+        return 0;
+    }
 
-        RepetitionWeight activity = (RepetitionWeight) super.createAux(sc, userActivities, ACTIVITY_TYPE);
-        if (activity == null) {
-            return null;
-        }
+    @Override
+    public boolean isDistanceBased() {
+        return false;
+    }
 
-        // TODO remove this
-        Controller c = new Controller();
+    @Override
+    public boolean isAltimetryBased() {
+        return false;
+    }
 
-        int repetitions = 0;
-        int weight = 0;
+    @Override
+    public ArrayList<String> getAttributes() {
+        ArrayList<String> attributes = new ArrayList<String>();
+        attributes.add("repetition");
+        attributes.add("weight");
+        return attributes;
+    }
 
-        while (true) {
-            System.out.print("Enter the number of repetitions: ");
-            repetitions = c.readInt(sc);
-
-            // check if repetitions is between 1 and 1000
-            if (repetitions < 1 || repetitions > 1000) {
-                System.out.println("Repetitions must be between 1 and 1000.");
-                continue;
-            }
-            break;
-        }
-
-        while (true) {
-            System.out.print("Enter the weight of the activity in kg: ");
-            weight = c.readInt(sc);
-
-            // check if weight is between 1 and 300 kg
-            if (weight < 1 || weight > 300) {
-                System.out.println("Weight must be between 1 and 300 kg.");
-                continue;
-            }
-            break;
-        }
-
-        activity.setRepetition(repetitions);
-        activity.setWeight(weight);
-        return activity.clone();
+    @Override
+    public void setAttributes(ArrayList<Integer> attributes) {
+        this.setRepetition(attributes.get(0));
+        this.setWeight(attributes.get(1));
     }
 }

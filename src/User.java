@@ -316,17 +316,4 @@ public abstract class User implements Serializable {
     public void register(LocalDateTime date, Activity register) {
         this.registers.put(date, register.clone());
     }
-
-    public void viewRegisters() {
-        // Display registers sorted by date
-        List<LocalDateTime> sortedDates = new ArrayList<>(this.registers.keySet());
-        Collections.sort(sortedDates);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
-        for (LocalDateTime date : sortedDates) {
-            System.out.println(date.format(formatter) + ": {");
-            System.out.println(this.registers.get(date));
-            System.out.println("}");
-        }
-    }
 }
