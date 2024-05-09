@@ -758,7 +758,7 @@ public class Controller {
         System.exit(0);
     }
 
-    /* user perspective menu TODO */
+    /* user perspective menu */
     private void userMenu(User user) {
         System.out.println(
             "\n" +
