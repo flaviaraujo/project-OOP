@@ -1,8 +1,5 @@
 This is makeindex, version 2.15 [TeX Live 2022/dev] (kpathsea + Thai support).
 Scanning style file ./output/nomencl.istdone (0 attributes redefined, 0 ignored).
-Scanning input file output/main.nlo...
-!! Input index error (file = output/main.nlo, line = 1):
-   -- Unknown index keyword \nomenclatureentry.
-done (0 entries accepted, 1 rejected).
+Scanning input file output/main.nlo...done (0 entries accepted, 0 rejected).
 Nothing written in output/main.nls.
 Transcript written in output/main.ilg.

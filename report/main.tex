@@ -138,20 +138,12 @@
 
 \chapter{Arquitetura de Classes}
 \section{Diagrama de Classes}
-\textcolor{red}{
-    Descrever o diagrama de classes da aplicação, apresentando as classes e as suas relações.
-}
-
-\newgeometry{top=1.5cm,left=0.2cm,right=0.2cm,bottom=3.5cm}
-
-\begin{figure}[!ht]
-    \centering
-    \includegraphics[scale=0.25]{images/diagram.png}
-    \caption{Diagrama de Classes}
-    \label{fig:diagrama-classes}
-\end{figure}
-
-\loadgeometry{default}
+    \begin{minipage}{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/diagram.png}
+        \captionof{figure}{Diagrama de Classes}
+        \label{fig:diagrama-classes}
+    \end{minipage}
 
 \section{Classe \textit{ActivityPlanner}}
     A classe \textit{ActivityPlanner} funciona como o modelo e \textit{facade} da aplicação,
@@ -171,6 +163,9 @@
     utilizados para a listagem de utilizadores e atividades oferecidas pela aplicação, ao criar um novo utilizador ou atividade iterativamente,
     na classe \textit{Controller}.
 
+\clearpage
+
+\newgeometry{top=2.5cm,left=3cm,right=3cm,bottom=3cm}
 \section{Classe \textit{Controller}}
     A classe \textit{Controller} é a classe responsável pela execução do programa -
     faz o \textit{parsing} dos argumentos da linha de comandos,
@@ -206,12 +201,13 @@
     \end{itemize}
 
     A classe \textit{Controller} funciona como uma \textit{interface} entre o utilizador e a aplicação,
-    sendo responsável por chamar os métodos da classe \textit{ActivityPlanner} e por apresentar os resultados ao utilizador.
+    sendo responsável por chamar os métodos da classe \textit{ActivityPlanner} e por apresentar os resultados.
 
     No sistema MVC esta classe representa o \textit{controller} assim como o \textit{view},
     uma vez que é responsável por apresentar os menus interativos,
     fazendo as respetivas execuções através dos métodos da classe \textit{ActivityPlanner}.
 
+\clearpage
 \section{Classe \textit{User}}
     A superclasse \textit{User} representa um utilizador da aplicação, sendo constituída pelos seguintes atributos:
 
@@ -241,6 +237,8 @@
     sem que fosse necessário alterar a classe \textit{User} e outras componentes da aplicação,
     garantindo, deste modo, a modularidade, manutenção e extensabilidade da superclasse \textit{User} e das suas subclasses.
 
+\loadgeometry{default}
+\clearpage
 \section{Classe \textit{Activity}}
     A superclasse \textit{Activity} representa uma atividade física, sendo constituída pelos seguintes atributos:
 
@@ -252,7 +250,35 @@
         \item \textit{\textbf{calories : int}} - Número de calorias queimadas durante a atividade. O registo deste atributo deve-se à mutação dos parâmetros do utilizador para o cálculo do consumo calórico, desde a frequência cardíaca, o peso, bem como a altura deste. Assim, este atributo foi utilizado de forma a garantir a salvaguarda do valor de calorias queimadas num registo de uma atividade.
     \end{itemize}
 
-    // TODO falar sobre metodos e subclasses assim como os atributos "dinamicos" das subclasses
+    A classe \textit{Activity}, assim como a classe \textit{User}, foi desenvolvida de forma a permitir a extensão desta,
+    através da implementação de novos tipos de atividades, sem que fosse necessário alterar a classe \textit{Activity} e
+    outras componentes da aplicação.
+
+    As subclasses de \textit{Activity} contêm atributos específicos que caracterizam a atividade em questão,
+    como por exemple, a distância percorrida, o número de repetições, o peso levantado, entre outros.
+
+    Foram implementadas as seguintes subclasses de \textit{Activity}:
+    \begin{itemize}
+        \item \textit{\textbf{Swimming}} - Atividade de natação, compostas pelos atributos \textit{distance : int};
+        \item \textit{\textbf{Treadmill}} - Atividade de corrida em passadeira, compostas pelos atributos \textit{distance : int};
+        \item \textit{\textbf{TrailRunning}} - Atividade de corrida em trilhos, compostas pelos atributos \textit{distance : int} e \textit{altimetry : int};
+        \item \textit{\textbf{BTT}} - Atividade de BTT, compostas pelos atributos \textit{distance : int} e \textit{altimetry : int};
+        \item \textit{\textbf{RopeJumping}} - Atividade de saltar à corda, compostas pelos atributos \textit{repetitions : int};
+        \item \textit{\textbf{Stretching}} - Atividade de alongamentos, compostas pelos atributos \textit{repetitions : int};
+        \item \textit{\textbf{Weightlifting}} - Atividade de levantamento de pesos, compostas pelos atributos \textit{repetitions : int} e \textit{weight : int};
+        \item \textit{\textbf{Pilates}} - Atividade de pilates, compostas pelos atributos \textit{repetitions : int} e \textit{weight : int};
+    \end{itemize}
+
+    Para cada uma destas subclasses é definido o atributo MET (\textit{Metabolic Equivalent of Task}) da atividade,
+    que é utilizado para o cálculo do consumo calórico da atividade,
+    este também definido como um método abstrato na superclasse \textit{Activity}.
+
+    Nas subclasses de \textit{Activity} foram implementados métodos para obter e definir os atributos específicos da atividade,
+    estes permitem a criação destas atividades de forma iterativa, através da classe \textit{Controller}.
+
+    A classe \textit{Activity} foi desenvolvida tirando proveito do conceito de polimorfismo,
+    permitindo a criação de atividades de forma genérica, através da superclasse \textit{Activity},
+    e a sua manipulação de forma específica, através dos atributos únicos das respetivas subclasses.
 
 \section{Classe \textit{Event}}
     A classe \textit{Event} representa um evento correspondente a um plano de treino, sendo constituída pelos seguintes atributos:
@@ -264,8 +290,6 @@
         \item \textit{\textbf{time : LocalTime}} - Hora do evento.
     \end{itemize}
 
-    TODO
-
 \section{Classe \textit{Plan}}
     A classe \textit{Plan} representa um plano de treino, por definição, semanal, que um utilizador pode criar, vizualizar e remover.
 
@@ -275,7 +299,6 @@
         \item \textit{\textbf{events : ArrayList<Event>}} - Lista de eventos que compõem o plano de treino.
     \end{itemize}
 
-    TODO
     As funcionalidades proporcionadas por esta classe, bem como a classe \textit{Event}, serão detalhadas no subcapítulo \textit{\nameref{sec:gestao-planos-treino}}.
 
 \section{Classe \textit{ActivityRepetition}}
@@ -388,79 +411,13 @@ Este valor booleano é alterado para \textit{true} sempre que o estado da aplica
 %==========================================================================
 
 %==========================================================================
-% BEGIN CONCLUSÕES DE TRABALHO FUTURO
+% BEGIN CONCLUSÃO
 %==========================================================================
 
-\chapter{Conclusões e Trabalho Futuro}
-    \textcolor{red}{
-        Maybe
-    }
+\chapter{Conclusão}
+    \textcolor{red}{Maybe}
 
 %==========================================================================
-% END CONCLUSÕES DE TRABALHO FUTURO
-%==========================================================================
-
-%==========================================================================
-% BEGIN BIBLIOGRAFIA
-%==========================================================================
-
-%% Changes biblibography name
-%% Portuguese babel default : "Bibliografia"
-%% Personally I prefer "Referências"
-% \renewcommand\bibname{Referências}
-
-%% https://www.overleaf.com/learn/latex/bibliography_management_with_bibtex
-% \begin{thebibliography}{9}
-% \textcolor{red}{
-%     <<Enumeração dos diversos recursos bibliográficos utilizados. Utilizar o sistema de referenciação APA (https://guias.sdum.uminho.pt/apa).>>
-% }
-% \end{thebibliography}
-
-%==========================================================================
-% END BIBLIOGRAFIA
-%==========================================================================
-
-%==========================================================================
-% BEGIN LISTA DE SIGLAS E ACRÓNIMOS
-%==========================================================================
-
-%% Portuguese babel does not translate this environment
-\renewcommand{\nomname}{Lista de Siglas e Acrónimos}
-
-%% Text that can be shown before acronyms list
-\renewcommand{\nompreamble}{
-    \textcolor{red}{
-        <<Apresentar uma lista com todas as siglas e acrónimos utilizados durante a realização do trabalho. O formato base para esta lista deverá ser da forma como abaixo se apresenta.>>
-    }
-}
-
-%% acronyms
-\nomenclature[01]{\textbf{POO}}{Programação Orientada a Objetos}
-
-%% Show acronyms
-\printnomenclature
-
-%==========================================================================
-% END LISTA DE SIGLAS E ACRÓNIMOS
-%==========================================================================
-
-%==========================================================================
-% BEGIN ANEXOS
-%==========================================================================
-
-%% Why \addchap, instead of \chapter?
-%% \addchap has no numbering but appears in table of contents.
-% \addchap{Anexos}
-%
-%     \textcolor{red}{
-%         <<Os anexos deverão ser utilizados para a inclusão de informação adicional necessária para uma melhor compreensão do relatório o para complementar tópicos, secções ou assuntos abordados. Os anexos criados deverão ser numerados e possuir uma designação. Estes dados permitirão complementar o Índice geral do relatório relativamente à enumeração e apresentação dos diversos anexos.>>
-%     }
-%
-%     %% section version of \addchap
-%     \addsec{Anexo 1}
-
-
-%==========================================================================
-% END ANEXOS
+% END CONCLUSÃO
 %==========================================================================
 \end{document}
