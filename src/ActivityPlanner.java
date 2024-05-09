@@ -39,17 +39,18 @@ public class ActivityPlanner implements Serializable {
         this.stateFilepath = "data/state.ser"; // default state filepath
     }
 
-    /* Getters and Setters */
+    /* Setters */
+    public void setStateFilepath(String stateFilepath) {
+        this.stateFilepath = stateFilepath;
+    }
+
+    /* Getters */
     public String getStateFilepath() {
         return this.stateFilepath;
     }
 
     public boolean getUpdatedState() {
         return this.updatedState;
-    }
-
-    public void setStateFilepath(String stateFilepath) {
-        this.stateFilepath = stateFilepath;
     }
 
     public HashMap<Integer, User> getUsers() {
@@ -59,6 +60,8 @@ public class ActivityPlanner implements Serializable {
         }
         return users;
     }
+
+    /* User management methods */
 
     public int getUsersSize() {
         return this.users.size();
@@ -134,6 +137,8 @@ public class ActivityPlanner implements Serializable {
         return types;
     }
 
+    /* Activity management methods */
+
     public ArrayList<String> getActivitiesNames(ArrayList<Activity> activities) {
         ArrayList<String> names = new ArrayList<String>();
 
@@ -171,6 +176,8 @@ public class ActivityPlanner implements Serializable {
         return a;
     }
 
+    /* Utility methods */
+
     private List<Class<?>> getClasses(String packageName) {
         List<Class<?>> classes = new ArrayList<>();
         try {
@@ -193,7 +200,8 @@ public class ActivityPlanner implements Serializable {
         return classes;
     }
 
-    /* simulation method */
+    /* Simulation method */
+
     public String runSimulation(LocalDate startDate, LocalDate endDate) {
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -297,6 +305,7 @@ public class ActivityPlanner implements Serializable {
     }
 
     /* Statistics methods */
+
     // 1. The user with most calories burned
     // 1.1 All time
     public User mostCaloriesBurned() {
@@ -583,7 +592,8 @@ public class ActivityPlanner implements Serializable {
         return output.toString();
     }
 
-    /* state management methods */
+    /* State management methods */
+
     public void saveState() throws StateNotSavedException {
 
         if (!this.updatedState) {

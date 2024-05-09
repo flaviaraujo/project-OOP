@@ -23,7 +23,6 @@ abstract class User {
     -activities : ArrayList<Activity>
     -registers : HashMap<LocalDateTime, Register>
     -plan : Plan
-    --
     .. Constructors ..
     +User()
     +User(int id, String name, String email,
@@ -36,7 +35,7 @@ abstract class User {
         HashMap<LocalDateTime, Register> registers,
         Plan plan)
     +User(User user)
-    .. Methods - Getters ..
+    .. Getters ..
     +getId() : int
     +getName() : String
     +getEmail() : String
@@ -49,7 +48,7 @@ abstract class User {
     +getRegisters() : HashMap<LocalDateTime, Register>
     +getPlan() : Plan
     +{abstract} getCaloriesMultiplier() : int
-    .. Methods - Setters ..
+    .. Setters ..
     +setId(int id) : void
     +setName(String name) : void
     +setEmail(String email) : void
@@ -61,14 +60,14 @@ abstract class User {
     +setActivities(ArrayList<Activity> activities) : void
     +setRegisters(HashMap<LocalDateTime, Register> registers) : void
     +setPlan(Plan plan) : void
-    .. Methods - Other ..
+    .. Other methods ..
     +toString() : String
     +equals(Object o) : boolean
     +{abstract} clone() : User
-    .. Methods - Activities ..
+    .. Activities methods ..
     +addActivity(Activity activity) : void
     +deleteActivity(Activity activity) : void
-    .. Methods - Registers ..
+    .. Registers methods ..
     +register(LocalDateTime date, Activity register) : void
 }
 
@@ -85,42 +84,28 @@ abstract class Activity {
     -intensity : int
     -hard : boolean
     -calories : int
-    --
     .. Constructors ..
     +Activity()
     +Activity(String name, int duration, int intensity, boolean hard, int calories)
     +Activity(Activity activity)
-    .. Methods - Getters ..
+    .. Getters ..
     +{abstract} getACTIVITY_TYPE() : int
     +getName() : String
     +getDuration() : int
     +getIntensity() : int
     +getHard() : boolean
     +getCalories() : int
-    .. Methods - Setters ..
+    .. Setters ..
     +setName(String name) : void
     +setDuration(int duration) : void
     +setIntensity(int intensity) : void
     +setHard(boolean hard) : void
     +setCalories(int calories) : void
-    .. Methods - Others ..
+    .. Others methods ..
     +{abstract} toString() : String
     +{abstract} equals(Object o) : boolean
     +{abstract} clone() : Activity
     +{abstract} caloriesBurned(User u) : int
-    .. Methods - Activity Type ..
-    +isDistance() : boolean
-    +isDistanceAltimetry() : boolean
-    +isRepetition() : boolean
-    +isRepetitionWeight() : boolean
-    +getType() : int
-    +getTypeString() : String
-    .. Methods - Manage Activities ..
-    +{abstract} create(Scanner sc, ArrayList<Activity> userActivities) : Activity
-    +{static} createAux(Scanner sc, ArrayList<Activity> userActivities, int activityType) : Activity
-    +{static} createMenu(Scanner sc, ArrayList<Activity> userActivities) : Activity
-    +{static} search(Scanner sc, ArrayList<Activity> userActivities) : Activity
-    +{static} register(Scanner sc, User u) : User
 }
 
 package activities {
@@ -129,7 +114,6 @@ package activities {
         -{static} final ACTIVITY_TYPE : int
         -{static} final MET_VALUE : double
         -distance : int
-        --
         .. Constructors ..
         +Distance()
         +Distance(String name, int duration, int intensity,
@@ -157,7 +141,6 @@ package activities {
         -{static} final ALTIMETRY_FACTOR : int
         -distance : int
         -altimetry : int
-        --
         .. Constructors ..
         +DistanceAltimetry()
         +DistanceAltimetry(String name, int duration, int intensity, boolean hard, int calories)
@@ -184,7 +167,6 @@ package activities {
         -{static} final ACTIVITY_TYPE : int
         -{static} final MET_VALUE : double
         -repetition : int
-        --
         .. Constructors ..
         +Repetition()
         +Repetition(String name, int duration, int intensity, boolean hard, int calories)
@@ -210,7 +192,6 @@ package activities {
         -{static} final MET_VALUE : double
         -repetition : int
         -weight : int
-        --
         .. Constructors ..
         +RepetitionWeight()
         +RepetitionWeight(String name, int duration, int intensity, boolean hard, int calories)
@@ -237,18 +218,17 @@ class Plan {
     .. Attributes ..
     -name : String
     -events : ArrayList<Event>
-    --
     .. Constructors ..
     +Plan()
     +Plan(String name, ArrayList<Event> events)
     +Plan(Plan plan)
-    .. Methods - Getters ..
+    .. Getters ..
     +getName() : String
     +getEvents() : ArrayList<Event>
-    .. Methods - Setters ..
+    .. Setters ..
     +setName(String name) : void
     +setEvents(ArrayList<Event> events) : void
-    .. Methods - Others ..
+    .. Others methods ..
     +toString() : String
     +equals(Object o) : boolean
     +clone() : Plan
@@ -264,24 +244,23 @@ class Event {
     -activityRepetitions : int
     -day : int
     -time : LocalTime
-    --
     .. Constructors ..
     +Event()
     +Event(Activity activity, int activityRepetitions, int day,
         LocalTime time)
     +Event(Event event)
-    .. Methods - Getters ..
+    .. Getters ..
     +getMAX_REPETITIONS() : final int
     +getActivity() : Activity
     +getActivityRepetitions() : int
     +getDay() : int
     +getTime() : LocalTime
-    .. Methods - Setters ..
+    .. Setters ..
     +setActivity(Activity activity) : void
     +setActivityRepetitions(int activityRepetitions) : void
     +setDay(int day) : void
     +setTime(LocalTime time) : void
-    .. Methods - Others ..
+    .. Others methods ..
     +toString() : String
     +equals(Object o) : boolean
     +clone() : Event
@@ -292,7 +271,29 @@ class Event {
         int maxRepetitions int day) : Event
 }
 
-class ActivityRepetition {}
+class ActivityRepetition {
+    .. Attributes ..
+    -activity : Activity
+    -repetitionsLeft : int
+    .. Constructors ..
+    +ActivityRepetition()
+    +ActivityRepetition(Activity activity, int repetitionsLeft)
+    .. Getters ..
+    +getActivity() : Activity
+    +getRepetitionsLeft() : int
+    .. Setter ..
+    +setRepetitionsLeft(int repetitionsLeft) : void
+    .. Other methods ..
+    +create(ars : ArrayList<ActivityRepetition>) : ArrayList<ActivityRepetition>
+    +sort(ar : ArrayList<ActivityRepetition>
+          maxActivitiesPerDay : int,
+          user : User) : ArrayList<ActivityRepetition>
+    +create(a : ArrayList<Activity>,
+            maxRepetitionPerWeek : int,
+            maxActivitiesPerDay : int,
+            user : User,
+            isHard: boolean) : ArrayList<ActivityRepetition>
+}
 
 package exceptions {
     class ActivityIsRegisteredException extends java.lang.Exception
@@ -304,29 +305,54 @@ package exceptions {
 
 class ActivityPlanner {
     .. Attributes ..
-    -updatedState : boolean
     -users : HashMap<Integer, User>
-    -defaultStateFilepath : final String
-    --
-    .. Methods ..
-    +{static} main(String args[]) : void
-    -{static} userMenu(Scanner sc, String stateFilepath, Main m, IO io, User user) : void
-    -{static} mainMenu(Scanner sc, String stateFilepath, Main m, IO io) : void
-    -{static} exit(String stateFilepath, Main m, Scanner sc) : void
-    -{static} saveState(String stateFilepath, Main m) : void
-    -{static} loadState(String stateFilepath, Main m, Scanner sc) : void
-    --
-    .. Methods - Manage Users..
-    +addUser(User user, int id) : void
-    +removeUser(User user) : void
-    +updateUser(User user) : void
-    --
-    ..Methods - Getters..
+    -updatedState : boolean
+    -stateFilepath : String
+    .. Constructor ..
+    +ActivityPlanner()
+    .. Setter ..
+    +setStateFilepath(stateFilepath : String) : void
+    .. Getters ..
+    +getStateFilepath() : String
     +getUpdatedState() : boolean
     +getUsers() : HashMap<Integer, User>
-    ..Methods - Setters..
-    +setUpdatedState(boolean updatedState) : void
-    +setUsers(HashMap<Integer, User> users) : void
+    .. User management methods ..
+    +getUsersSize() : int
+    +getUserById(id : int) : User
+    +getUserByEmail(email : String) : User
+    +getNextUserId() : int
+    +getUsersIds() : ArrayList<Integer>
+    +getUsersEmails() : ArrayList<String>
+    +addUser(user : User) : void
+    +removeUser(user : User) : void
+    +updateUser(user : User) : void
+    +searchUser(id : int) : User
+    +searchUser(email : String) : User
+    +getUserTypes() : ArrayList<String>
+    .. Activity management methods ..
+    +getActivitiesNames(activities : ArrayList<Activity>) : ArrayList<String>
+    +getActivitiesNames(u : User) : ArrayList<String>
+    +getActivities() : ArrayList<String>
+    +getUserActivity(activities : ArrayList<Activity>, activityName : String) : Activity
+    .. Utility methods ..
+    -getClasses(packageName : String) : List<Class<?>>
+    .. Simulation method ..
+    +runSimulation(startDate : LocalDate, endDate : LocalDate) : String
+    .. Statistics methods ..
+    +mostCaloriesBurned() : User
+    +mostCaloriesBurned(start : LocalDate, end : LocalDate) : User
+    +mostActivities() : User
+    +mostActivities(start : LocalDate, end : LocalDate) : User
+    +mostPracticedActivityType() : String
+    +kmTraveled(user : User) : double
+    +kmTraveled(user : User, start : LocalDate, end : LocalDate) : double
+    +altimetryClimbed(user : User) : int
+    +altimetryClimbed(user : User, start : LocalDate, end : LocalDate) : int
+    +mostCaloriesBurnedPlan() : String
+    +listActivities(user : User) : String
+    .. State management methods ..
+    +saveState() : void
+    +loadState() : void
 }
 
 class Controller {
@@ -389,10 +415,19 @@ class Controller {
     -readInt() : int
     -readYesNo() : String
     -readDate() : LocalDate
-    .. State Management IO methods ..
+    .. State management IO methods ..
     -saveStateIO() : void
     -loadStateIO() : void
 }
+
+note top of ActivityRepetition
+    The <b>ActivityRepetition</b> class
+    is used as auxiliary data structure
+    to the method <i>createBasedOnGoals</i>
+    located in the <b>Controller</b> class
+end note
+
+Controller -left-> ActivityRepetition : <uses>
 
 User "1" *-- "N" Activity
 User "1" *-- "1" Plan
@@ -400,5 +435,6 @@ Plan "1" *-right- "N" Event
 Event "1" *-right- "1" Activity
 ActivityPlanner "1" *-- "N" User
 Controller -right-> ActivityPlanner : <uses>
+Controller -right-> exceptions
 
 @enduml

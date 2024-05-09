@@ -2158,7 +2158,7 @@ public class Controller {
         return date;
     }
 
-    /* State Management IO methods */
+    /* State management IO methods */
 
     private void saveStateIO() {
         try {
