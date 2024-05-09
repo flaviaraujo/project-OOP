@@ -519,6 +519,8 @@ public class Controller {
         }
     }
 
+    /* Simulation menu */
+
     private void simulationSubMenu() {
         LocalDate startDate = LocalDate.now();
         LocalDate endDate = getSimulationEndDate(startDate);
@@ -526,6 +528,7 @@ public class Controller {
     }
 
     /* statistics menu */
+
     private void statisticsSubMenu() {
 
         User user = null;
@@ -1785,7 +1788,7 @@ public class Controller {
     }
 
     // create plan based on user goals
-    public Plan createBasedOnGoals(
+    private Plan createBasedOnGoals(
         User user,
         int caloriesGoal,
         int maxActivitiesPerDay,
@@ -2032,34 +2035,6 @@ public class Controller {
         return event.clone();
     }
 
-    /* Utility static methods */
-
-    public static String convertDayToString(int day) {
-        switch (day) {
-            case 1:
-                return "Sunday";
-            case 2:
-                return "Monday";
-            case 3:
-                return "Tuesday";
-            case 4:
-                return "Wednesday";
-            case 5:
-                return "Thursday";
-            case 6:
-                return "Friday";
-            case 7:
-                return "Saturday";
-            default:
-                return "Invalid day";
-        }
-    }
-
-    public static String convertTimeToString(LocalTime time) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        return time.format(formatter);
-    }
-
     /* Simulation IO methods */
 
     private LocalDate getSimulationEndDate(LocalDate startDate) {
@@ -2098,6 +2073,34 @@ public class Controller {
             break;
         }
         return date;
+    }
+
+    /* Utility static methods */
+
+    public static String convertDayToString(int day) {
+        switch (day) {
+            case 1:
+                return "Sunday";
+            case 2:
+                return "Monday";
+            case 3:
+                return "Tuesday";
+            case 4:
+                return "Wednesday";
+            case 5:
+                return "Thursday";
+            case 6:
+                return "Friday";
+            case 7:
+                return "Saturday";
+            default:
+                return "Invalid day";
+        }
+    }
+
+    public static String convertTimeToString(LocalTime time) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        return time.format(formatter);
     }
 
     /* simple IO methods */
@@ -2155,7 +2158,7 @@ public class Controller {
         return date;
     }
 
-    /* state management methods with IO */
+    /* State Management IO methods */
 
     private void saveStateIO() {
         try {

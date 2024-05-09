@@ -38,7 +38,7 @@ public abstract class User implements Serializable {
     private int weight; // kg
     private int height; // cm
     private ArrayList<Activity> activities;
-    private HashMap<LocalDateTime, Activity> registers; // alternative LinkedHashMap
+    private HashMap<LocalDateTime, Activity> registers;
     private Plan plan;
  
     /* Default Constructor */
@@ -142,8 +142,6 @@ public abstract class User implements Serializable {
         return this.height;
     }
 
-    public abstract int getCaloriesMultiplier();
-
     public ArrayList<Activity> getActivities() {
         ArrayList<Activity> activities = new ArrayList<Activity>();
 
@@ -169,6 +167,8 @@ public abstract class User implements Serializable {
         }
         return this.plan.clone();
     }
+
+    public abstract int getCaloriesMultiplier();
 
     /* Instance Methods - Setters */
     public void setId(int id) {

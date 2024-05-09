@@ -1,10 +1,10 @@
 @startuml
 
-class User {
+abstract class User {
     .. Attributes ..
     -{static} MIN_NAME_LENGTH : final int
     -{static} MAX_NAME_LENGTH : final int
-    -{static} MAX_EMAIL_LENGTH : final int 
+    -{static} MAX_EMAIL_LENGTH : final int
     -{static} MIN_ADDRESS_LENGTH : final int
     -{static} MAX_ADDRESS_LENGTH : final int
     -{static} MIN_HEART_RATE : final int
@@ -20,7 +20,6 @@ class User {
     -heartRate : int
     -weight : int
     -height : int
-    -type : User.Type
     -activities : ArrayList<Activity>
     -registers : HashMap<LocalDateTime, Register>
     -plan : Plan
@@ -29,11 +28,13 @@ class User {
     +User()
     +User(int id, String name, String email,
         String address, int heartRate, int weight,
-        int height, Type type)
+        int height)
     +User(int id, String name, String email,
-        String address, int heartRate, int weight, int height,
-        Type type, ArrayList<Activity> activities,
-        HashMap<LocalDateTime, Register> registers, Plan plan)
+        String address, int heartRate, int weight,
+        int height,
+        ArrayList<Activity> activities,
+        HashMap<LocalDateTime, Register> registers,
+        Plan plan)
     +User(User user)
     .. Methods - Getters ..
     +getId() : int
@@ -47,6 +48,7 @@ class User {
     +getActivities() : ArrayList<Activity>
     +getRegisters() : HashMap<LocalDateTime, Register>
     +getPlan() : Plan
+    +{abstract} getCaloriesMultiplier() : int
     .. Methods - Setters ..
     +setId(int id) : void
     +setName(String name) : void
@@ -62,45 +64,27 @@ class User {
     .. Methods - Other ..
     +toString() : String
     +equals(Object o) : boolean
-    +clone() : User
-    .. Methods - Manage Users ..
-    +enterName(Scanner sc) : String
-    +enterEmail(Scanner sc, HashMap<Integer, User> users) : String
-    +enterAddress(Scanner sc) : String
-    +enterHeartRate(Scanner sc) : int
-    +enterWeight(Scanner sc) : int
-    +enterHeight(Scanner sc) : int
-    +enterType(Scanner sc) : User.Type
-    +{static} create(Scanner sc, HashMap<Integer, User> users, User user) : User
-    +{static} search(Scanner sc, HashMap<Integer, User> users, User user) : User
-    +{static} view(Scanner sc, HashMap<Integer, User> users, User user) : void
-    +{static} delete(Scanner sc, HashMap<Integer, User> users, User user) : void
+    +{abstract} clone() : User
     .. Methods - Activities ..
     +addActivity(Activity activity) : void
     +deleteActivity(Activity activity) : void
     .. Methods - Registers ..
     +register(LocalDateTime date, Activity register) : void
-    +viewRegisters() : void
 }
 
-enum User.Type {
-    OCCASIONAL(40),
-    AMATEUR(60),
-    PROFESSIONAL(90)
-    --
-    .. Attribute ..
-    -nutritionMultiplier : int
-    .. Getter ..
-    +getNutritionMultiplier() : int
+package users {
+    class Occasional extends User
+    class Amateur extends User
+    class Professional extends User
 }
 
 abstract class Activity {
     .. Attributes ..
-    #name : String
-    #duration : int
-    #intensity : int
-    #hard : boolean
-    #calories : int
+    -name : String
+    -duration : int
+    -intensity : int
+    -hard : boolean
+    -calories : int
     --
     .. Constructors ..
     +Activity()
@@ -273,10 +257,9 @@ class Plan {
     +create(Scanner sc, ArrayList<Activity> userActivities) : Plan
 }
 
-
 class Event {
     .. Attributes ..
-    -{static} final MAX_REPETITIONS : int
+    -{static} MAX_REPETITIONS : final int
     -activity : Activity
     -activityRepetitions : int
     -day : int
@@ -309,37 +292,21 @@ class Event {
         int maxRepetitions int day) : Event
 }
 
-class Stats {
-    .. Statistics Methods ..
-    +mostCaloriesBurned(HashMap<Integer, User> users) : User
-    +mostCaloriesBurned(HashMap<Integer, User> users, LocalDate start, LocalDate end) : User
-    +mostActivities(HashMap<Integer, User> users) : User
-    +mostActivities(HashMap<Integer, User> users, LocalDate start, LocalDate end) : User
-    +mostPracticedActivityType(HashMap<Integer, User> users) : String
-    +kmTraveled(User user) : double
-    +kmTraveled(User user, LocalDate start, LocalDate end) : double
-    +altimetryClimbed(User user) : int
-    +altimetryClimbed(User user, LocalDate start, LocalDate end) : int
-    +mostCaloriesBurnedPlan(HashMap<Integer, User> users) : Plan
-    --
-    .. Statistics Menu Methods ..
-    +displayStatsMenu() : void
-    +displayStatsMenu2() : void
-    +insertDate(Scanner sc, boolean start) : LocalDate
-    +statsMenu(Scanner sc, HashMap<Integer, User> users) : void
+class ActivityRepetition {}
+
+package exceptions {
+    class ActivityIsRegisteredException extends java.lang.Exception
+    class ActivityNotFoundException extends java.lang.Exception
+    class StateNotLoadedException extends java.lang.Exception
+    class StateNotSavedException extends java.lang.Exception
+    class UserNotFoundException extends java.lang.Exception
 }
 
-class Simulation {
-    .. Methods ..
-    +run(Scanner sc, HashMap<Integer, User> users) : void
-    +getSimulationEndDate(Scanner sc, LocalDate startDate) : LocalDate
-}
-
-class Main {
+class ActivityPlanner {
     .. Attributes ..
     -updatedState : boolean
     -users : HashMap<Integer, User>
-    -defaultStateFilepath : final String 
+    -defaultStateFilepath : final String
     --
     .. Methods ..
     +{static} main(String args[]) : void
@@ -362,15 +329,76 @@ class Main {
     +setUsers(HashMap<Integer, User> users) : void
 }
 
-User <|- User.Type
+class Controller {
+    .. Attributes ..
+    -{static} MAX_TRIES : final int
+    -m : ActivityPlanner
+    -sc : Scanner
+    .. Constructor ..
+    +Controller()
+    .. Menu methods ..
+    +main(args : String[]) : void
+    -mainMenu() : void
+    -userMenu(user : User) : void
+    -manageUserSubMenu() : void
+    -manageUserActivitiesSubMenu() : void
+    -manageUserRegisteredActivitiesSubMenu() : void
+    -manageUserPlanSubMenu() : void
+    -simulationSubMenu() : void
+    -statisticsSubMenu() : void
+    -displayStatsSubMenu() : void
+    -exit() : void
+    .. User IO methods ..
+    -enterUserName() : String
+    -enterUserEmail(emails : ArrayList<String>) : String
+    -enterUserAddress() : String
+    -enterUserHeartRate() : int
+    -enterUserWeight() : int
+    -enterUserHeight() : int
+    -enterUserType(types : ArrayList<String>) : String
+    -createUser(emails : ArrayList<String>, types : ArrayList<String>, id : int) : User
+    -chooseHowToSearchUser() : int
+    -searchUserIO() : User
+    -editUser(emails: ArrayList<String>, user : User) : void
+    .. Activity IO methods ..
+    -createActivity(names : ArrayList<String>, activities : ArrayList<String>) : Activity
+    -searchActivityIO(userActivitiesNames : ArrayList<String>) : String
+    .. Register IO methods ..
+    -registerActivityIO(user : User) : User
+    .. Plan IO methods ..
+    -createPlan(userActivities : ArrayList<Activity>) : Plan
+    -createBasedOnGoalsIO(user : User) : Plan
+    -createBasedOnGoals(
+        user : User,
+        caloriesGoal : int,
+        maxActivitiesPerDay : int,
+        maxDisitinctActivitiesPerDay : int,
+        nActivityRepetitionPerWeek : int,
+        selectedActivities : ArrayList<Activity>) : Plan
+    .. Event IO methods ..
+    -createEvent(activities : ArrayList<Activity>, maxRepetitions : int, day : int) : Event
+    .. Simulation IO methods ..
+    -getSimulationEndDate(startDate : LocalDate) : LocalDate
+    .. Statistics IO methods ..
+    -insertStatisticsDate(start : boolean) : LocalDate
+    .. Utility static methods ..
+    +{static} convertDayToString(day : int) : String
+    +{static} convertTimeToString(time : LocalTime) : String
+    .. simple IO methods ..
+    -readString() : String
+    -readInt() : int
+    -readYesNo() : String
+    -readDate() : LocalDate
+    .. State Management IO methods ..
+    -saveStateIO() : void
+    -loadStateIO() : void
+}
+
 User "1" *-- "N" Activity
 User "1" *-- "1" Plan
 Plan "1" *-right- "N" Event
 Event "1" *-right- "1" Activity
-Main "1" *-- "N" User
-Main --> Activity : uses
-Main --> Plan : uses
-Main --> Stats : uses
-Main --> Simulation : uses
+ActivityPlanner "1" *-- "N" User
+Controller -right-> ActivityPlanner : <uses>
 
 @enduml
