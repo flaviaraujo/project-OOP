@@ -11,7 +11,8 @@ run:
 	java src.Controller
 
 diagram:
-	plantuml -tpng diagram/diagram.puml
+	plantuml -tpng diagram/diagram.puml && \
+	plantuml -tpng diagram/exceptions.puml
 
 report:
 	cd report && \
