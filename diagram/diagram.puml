@@ -25,16 +25,15 @@ abstract class User {
     -plan : Plan
     .. Constructors ..
     +User()
-    +User(int id, String name, String email,
-        String address, int heartRate, int weight,
-        int height)
-    +User(int id, String name, String email,
-        String address, int heartRate, int weight,
-        int height,
-        ArrayList<Activity> activities,
-        HashMap<LocalDateTime, Register> registers,
-        Plan plan)
-    +User(User user)
+    +User(id : int, name : String, email : String,
+        address : String, heartRate : int, weight : int,
+        height : int)
+    +User(id : int, name : String, email : String,
+        address : String, heartRate : int, weight : int,
+        height : int, activities : ArrayList<Activity>,
+        registers : HashMap<LocalDateTime, Register>,
+        plan : Plan)
+    +User(user : User)
     .. Getters ..
     +getId() : int
     +getName() : String
@@ -43,38 +42,74 @@ abstract class User {
     +getHeartRate() : int
     +getWeight() : int
     +getHeight() : int
-    +getType() : User.Type
     +getActivities() : ArrayList<Activity>
     +getRegisters() : HashMap<LocalDateTime, Register>
     +getPlan() : Plan
     +{abstract} getCaloriesMultiplier() : int
     .. Setters ..
-    +setId(int id) : void
-    +setName(String name) : void
-    +setEmail(String email) : void
-    +setAddress(String address) : void
-    +setHeartRate(int heartRate) : void
-    +setWeight(int weight) : void
-    +setHeight(int height) : void
-    +setType(Type type) : void
-    +setActivities(ArrayList<Activity> activities) : void
-    +setRegisters(HashMap<LocalDateTime, Register> registers) : void
-    +setPlan(Plan plan) : void
+    +setId(id : int) : void
+    +setName(name : String) : void
+    +setEmail(email : String) : void
+    +setAddress(address : String) : void
+    +setHeartRate(heartRate : int) : void
+    +setWeight(weight : int) : void
+    +setHeight(height : int) : void
+    +setActivities(activities : ArrayList<Activity>) : void
+    +setRegisters(registers : HashMap<LocalDateTime, Register>) : void
+    +setPlan(plan : Plan) : void
     .. Other methods ..
     +toString() : String
-    +equals(Object o) : boolean
+    +equals(o : Object) : boolean
     +{abstract} clone() : User
     .. Activities methods ..
-    +addActivity(Activity activity) : void
-    +deleteActivity(Activity activity) : void
+    +addActivity(activity : Activity) : void
+    +deleteActivity(activity : Activity) : void
     .. Registers methods ..
-    +register(LocalDateTime date, Activity register) : void
+    +register(date : LocalDateTime, register : Activity) : void
 }
 
 package users {
-    class Occasional extends User
-    class Amateur extends User
-    class Professional extends User
+    class Occasional extends User {
+        .. Attributes ..
+        -caloriesMultiplier : final int
+        .. Constructors ..
+        +Occasional()
+        +Occasional(id : int, name : String, email : String,
+            address : String, heartRate : int, weight : int,
+            height : int)
+        +Occasional(Occasional u)
+        .. Methods ..
+        +clone() : User
+        +getCaloriesMultiplier() : int
+    }
+
+    class Amateur extends User {
+        .. Attributes ..
+        -caloriesMultiplier : final int
+        .. Constructors ..
+        +Amateur()
+        +Amateur(id : int, name : String, email : String,
+            address : String, heartRate : int, weight : int,
+            height : int)
+        +Amateur(Amateur u)
+        .. Methods ..
+        +clone() : User
+        +getCaloriesMultiplier() : int
+    }
+
+    class Professional extends User {
+        .. Attributes ..
+        -caloriesMultiplier : final int
+        .. Constructors ..
+        +Professional()
+        +Professional(id : int, name : String, email : String,
+            address : String, heartRate : int, weight : int,
+            height : int)
+        +Professional(Professional u)
+        .. Methods ..
+        +clone() : User
+        +getCaloriesMultiplier() : int
+    }
 }
 
 abstract class Activity {
@@ -86,131 +121,53 @@ abstract class Activity {
     -calories : int
     .. Constructors ..
     +Activity()
-    +Activity(String name, int duration, int intensity, boolean hard, int calories)
-    +Activity(Activity activity)
+    +Activity(name : String, duration : int, intensity : int,
+        hard : boolean, calories : int)
+    +Activity(activity : Activity)
     .. Getters ..
-    +{abstract} getACTIVITY_TYPE() : int
     +getName() : String
     +getDuration() : int
     +getIntensity() : int
     +getHard() : boolean
     +getCalories() : int
     .. Setters ..
-    +setName(String name) : void
-    +setDuration(int duration) : void
-    +setIntensity(int intensity) : void
-    +setHard(boolean hard) : void
-    +setCalories(int calories) : void
-    .. Others methods ..
+    +setName(name : String) : void
+    +setDuration(duration : int) : void
+    +setIntensity(intensity : int) : void
+    +setHard(hard : boolean) : void
+    +setCalories(calories : int) : void
+    .. Others methods (abstract) ..
     +{abstract} toString() : String
-    +{abstract} equals(Object o) : boolean
+    +{abstract} equals(o : Object) : boolean
     +{abstract} clone() : Activity
-    +{abstract} caloriesBurned(User u) : int
+    +{abstract} calculateCalories(u : User) : int
+    +{abstract} getDistance() : int
+    +{abstract} getAltimetry() : int
+    +{abstract} isDistanceBased() : boolean
+    +{abstract} isAltimetryBased() : boolean
+    +{abstract} getAttributes() : ArrayList<String>
+    +{abstract} setAttributes(attributes : ArrayList<Integer>) : void
 }
 
 package activities {
-    class Distance extends Activity {
-        .. Attributes ..
-        -{static} final ACTIVITY_TYPE : int
-        -{static} final MET_VALUE : double
-        -distance : int
-        .. Constructors ..
-        +Distance()
-        +Distance(String name, int duration, int intensity,
-            boolean hard, int calories)
-        +Distance(String name, int duration, int intensity,
-            boolean hard, int calories, int distance)
-        +Distance(Distance distance)
-        .. Methods - Getters ..
-        +getACTIVITY_TYPE() : final int
-        +getDistance() : int
-        .. Methods - Setters ..
-        +setDistance(int distance) : void
-        .. Methods - Others ..
-        +toString() : String
-        +equals(Object o) : boolean
-        +clone() : Distance
-        +calculateCalories(User u) : int
-        +create(Scanner sc, ArrayList<Activity> userActivities) : Activity
+    class Swimming extends Activity {
+    }
+    class Treadmill extends Activity {
     }
 
-    class DistanceAltimetry extends Activity {
-        .. Attributes ..
-        -{static} final ACTIVITY_TYPE : int
-        -{static} final MET_VALUE : double
-        -{static} final ALTIMETRY_FACTOR : int
-        -distance : int
-        -altimetry : int
-        .. Constructors ..
-        +DistanceAltimetry()
-        +DistanceAltimetry(String name, int duration, int intensity, boolean hard, int calories)
-        +DistanceAltimetry(String name, int duration, int intensity, boolean hard, int calories,
-            int distance, int altimetry)
-        +DistanceAltimetry(DistanceAltimetry distanceAltimetry)
-        .. Methods - Getters ..
-        +getACTIVITY_TYPE() : final int
-        +getDistance() : int
-        +getAltimetry() : int
-        .. Methods - Setters ..
-        +setDistance(int distance) : void
-        +setAltimetry(int altimetry) : void
-        .. Methods - Others ..
-        +toString() : String
-        +equals(Object o) : boolean
-        +clone() : DistanceAltimetry
-        +calculateCalories(User u) : int
-        +create(Scanner sc, ArrayList<Activity> userActivities) : Activity
+    class TrailRunning extends Activity {
+    }
+    class BTT extends Activity {
     }
 
-    class Repetition extends Activity {
-        .. Attributes ..
-        -{static} final ACTIVITY_TYPE : int
-        -{static} final MET_VALUE : double
-        -repetition : int
-        .. Constructors ..
-        +Repetition()
-        +Repetition(String name, int duration, int intensity, boolean hard, int calories)
-        +Repetition(String name, int duration, int intensity, boolean hard, int calories,
-            int repetition)
-        +Repetition(Repetition repetition)
-        .. Methods - Getters ..
-        +getACTIVITY_TYPE() : final int
-        +getRepetition() : int
-        .. Methods - Setters ..
-        +setRepetition(int repetition) : void
-        .. Methods - Others ..
-        +toString() : String
-        +equals(Object o) : boolean
-        +clone() : Repetition
-        +calculateCalories(User u) : int
-        +create(Scanner sc, ArrayList<Activity> userActivities) : Activity
+    class RopeJumping extends Activity {
+    }
+    class Stretching extends Activity {
     }
 
-    class RepetitionWeight extends Activity {
-        .. Attributes ..
-        -{static} final ACTIVITY_TYPE : int
-        -{static} final MET_VALUE : double
-        -repetition : int
-        -weight : int
-        .. Constructors ..
-        +RepetitionWeight()
-        +RepetitionWeight(String name, int duration, int intensity, boolean hard, int calories)
-        +RepetitionWeight(String name, int duration, int intensity, boolean hard, int calories,
-            int repetition, int weight)
-        +RepetitionWeight(RepetitionWeight repetitionWeight)
-        .. Methods - Getters ..
-        +getACTIVITY_TYPE() : final int
-        +getRepetition() : int
-        +getWeight() : int
-        .. Methods - Setters ..
-        +setRepetition(int repetition) : void
-        +setWeight(int weight) : void
-        .. Methods - Others ..
-        +toString() : String
-        +equals(Object o) : boolean
-        +clone() : RepetitionWeight
-        +calculateCalories(User u) : int
-        +create(Scanner sc, ArrayList<Activity> userActivities) : Activity
+    class Weightlifiting extends Activity {
+    }
+    class Pilates extends Activity {
     }
 }
 
@@ -220,21 +177,21 @@ class Plan {
     -events : ArrayList<Event>
     .. Constructors ..
     +Plan()
-    +Plan(String name, ArrayList<Event> events)
-    +Plan(Plan plan)
+    +Plan(name : String, events : ArrayList<Event>)
+    +Plan(plan : Plan)
     .. Getters ..
     +getName() : String
     +getEvents() : ArrayList<Event>
     .. Setters ..
-    +setName(String name) : void
-    +setEvents(ArrayList<Event> events) : void
+    +setName(name : String) : void
+    +setEvents(events : ArrayList<Event>) : void
     .. Others methods ..
     +toString() : String
-    +equals(Object o) : boolean
+    +equals(o : Object) : boolean
     +clone() : Plan
-    +addEvent(Event event) : void
-    +removeEvent(Event event) : void
-    +create(Scanner sc, ArrayList<Activity> userActivities) : Plan
+    .. Events management methods ..
+    +addEvent(event : Event) : void
+    +removeEvent(event : Event) : void
 }
 
 class Event {
@@ -246,29 +203,24 @@ class Event {
     -time : LocalTime
     .. Constructors ..
     +Event()
-    +Event(Activity activity, int activityRepetitions, int day,
-        LocalTime time)
-    +Event(Event event)
+    +Event(activity : Activity, activityRepetitions : int,
+        day : int, time : LocalTime)
+    +Event(event : Event)
     .. Getters ..
-    +getMAX_REPETITIONS() : final int
     +getActivity() : Activity
     +getActivityRepetitions() : int
     +getDay() : int
     +getTime() : LocalTime
     .. Setters ..
-    +setActivity(Activity activity) : void
-    +setActivityRepetitions(int activityRepetitions) : void
-    +setDay(int day) : void
-    +setTime(LocalTime time) : void
+    +setActivity(activity : Activity) : void
+    +setActivityRepetitions(activityRepetitions : int) : void
+    +setDay(day: int) : void
+    +setTime(time : LocalTime) : void
     .. Others methods ..
     +toString() : String
-    +equals(Object o) : boolean
+    +equals(o : Object) : boolean
     +clone() : Event
-    +convertDayToString(int day) : String
-    +convertTimeToString(LocalTime time) : String
-    +isValidDay(int day) : boolean
-    +create(Scanner sc, ArrayList<Activity> userActivities,
-        int maxRepetitions int day) : Event
+    +isValidDay(day : int) : boolean
 }
 
 class ActivityRepetition {
@@ -296,11 +248,50 @@ class ActivityRepetition {
 }
 
 package exceptions {
-    class ActivityIsRegisteredException extends java.lang.Exception
-    class ActivityNotFoundException extends java.lang.Exception
-    class StateNotLoadedException extends java.lang.Exception
-    class StateNotSavedException extends java.lang.Exception
-    class UserNotFoundException extends java.lang.Exception
+    class UserNotFoundException extends java.lang.Exception {
+        .. Constructors ..
+        +UserNotFoundException()
+        +UserNotFoundException(message : String)
+        +UserNotFoundException(message : String,
+            cause : Throwable)
+        +UserNotFoundException(cause : Throwable)
+    }
+
+    class ActivityIsRegisteredException extends java.lang.Exception {
+        .. Constructors ..
+        +ActivityIsRegisteredException()
+        +ActivityIsRegisteredException(message : String)
+        +ActivityIsRegisteredException(message : String,
+            cause : Throwable)
+        +ActivityIsRegisteredException(cause : Throwable)
+    }
+
+    class ActivityNotFoundException extends java.lang.Exception {
+        .. Constructors ..
+        +ActivityNotFoundException()
+        +ActivityNotFoundException(message : String)
+        +ActivityNotFoundException(message : String,
+            cause : Throwable)
+        +ActivityNotFoundException(cause : Throwable)
+    }
+
+    class StateNotLoadedException extends java.lang.Exception {
+        .. Constructors ..
+        +StateNotLoadedException()
+        +StateNotLoadedException(message : String)
+        +StateNotLoadedException(message : String,
+            cause : Throwable)
+        +StateNotLoadedException(cause : Throwable)
+    }
+
+    class StateNotSavedException extends java.lang.Exception {
+        .. Constructors ..
+        +StateNotSavedException()
+        +StateNotSavedException(message : String)
+        +StateNotSavedException(message : String,
+            cause : Throwable)
+        +StateNotSavedException(cause : Throwable)
+    }
 }
 
 class ActivityPlanner {
@@ -435,6 +426,7 @@ Plan "1" *-right- "N" Event
 Event "1" *-right- "1" Activity
 ActivityPlanner "1" *-- "N" User
 Controller -right-> ActivityPlanner : <uses>
+
 Controller -right-> exceptions
 
 @enduml
