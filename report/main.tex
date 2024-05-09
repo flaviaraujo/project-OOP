@@ -155,9 +155,10 @@
 
 \loadgeometry{default}
 
-\section{Classe \textit{Main}}
-    A classe \textit{Main} é a classe principal da aplicação, sendo responsável pela execução desta - faz o \textit{parsing} dos argumentos da linha de comandos, carrega o estado da aplicação, caso este tenha sido guardado anteriormente, e executa a aplicação. 
-    Por conseguinte, a \textit{Main} é constituída pelos seguintes atributos:
+\section{Classe \textit{Controller}}
+    A classe \textit{Controller} é a classe responsável pela execução do programa - faz o \textit{parsing} dos argumentos da linha de comandos, carrega o estado da aplicação, caso este tenha sido guardado anteriormente, e executa a aplicação.
+    É nesta classe que ocorrem as interações com o utilizador, através de menus interativos.
+    Por conseguinte, a \textit{Controller} é constituída pelos seguintes atributos:
 
     \begin{itemize}
         \item \textit{\textbf{updatedState : boolean}} - Indica se o estado da aplicação foi alterado desde a última vez que foi guardado;
@@ -179,7 +180,7 @@
 
 
 \section{Classe \textit{User}}
-    [TODO - Adicionar um tipo de Uilizador e descrever User.Type]
+    [TODO - Adicionar um tipo de Uilizador]
     A classe \textit{User} representa um utilizador da aplicação, sendo constituída pelos seguintes atributos:
 
     \begin{itemize}
