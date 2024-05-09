@@ -1,6 +1,5 @@
 package src;
 
-import src.users.*;
 import src.exceptions.*;
 
 import java.util.Scanner;
