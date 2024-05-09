@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class BTT extends Activity implements Serializable {
 
-    private static final double MET_VALUE = 14.0;
+    private static final double MET_VALUE = 8.0;
     private static final int ALTIMETRY_FACTOR = 3;
 
     private int distance;
@@ -113,24 +113,31 @@ public class BTT extends Activity implements Serializable {
     @Override
     public int calculateCalories(User u) {
 
+        // User parameters
+        int nutritionMultiplier = u.getCaloriesMultiplier();
+        double nutritionFactor = nutritionMultiplier / 100.0;
+
+        int weight = u.getWeight();
+        int height = u.getHeight();
+        double weightFactor = Math.min((weight * 2) / User.MAX_WEIGHT, 0.6);
+        double heightFactor = Math.min((height * 2) / User.MAX_HEIGHT, 0.6);
+        double weightHeightFactor = weightFactor * heightFactor;
+
+        int bpm = u.getHeartRate();
+        double bpmFactor = (bpm / User.MAX_HEART_RATE) + 1;
+
+        double met = MET_VALUE * ((weightHeightFactor + bpmFactor) / 2);
+
+        // Activity parameters
         int altimetry = this.getAltimetry();
         int intensity = this.getIntensity();
         int distance = this.getDistance();
-        int weight = u.getWeight();
-        int height = u.getHeight();
-        int nutritionMultiplier = u.getCaloriesMultiplier();
 
-        double weightFactor = Math.min(weight / 200.0, 2);
-        weightFactor = Math.max(weightFactor, 1);
-
-        // return (int)
-        //     (weightFactor * (height / 100.0) * (nutritionMultiplier / 100.0) *
-        //     met * (intensity / 100.0) * duration *
-        //     ((distance + altimetry * ALTIMETRY_FACTOR) / 1000.0));
-
-        return (int)
-            (weight * (nutritionMultiplier / 100.0) *
-            MET_VALUE * (intensity / 100.0) * ((distance + (altimetry * ALTIMETRY_FACTOR)) / 1000.0));
+        return (int) (
+            met * nutritionFactor *
+            intensity / 100.0 *
+            (distance + altimetry * ALTIMETRY_FACTOR) / 1000.0
+        );
     }
 
     @Override

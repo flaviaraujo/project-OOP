@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Pilates extends Activity implements Serializable {
 
-    private static final double MET_VALUE = 3.8;
+    private static final double MET_VALUE = 2.4;
 
     private int repetition;
     private int weight;
@@ -110,31 +110,33 @@ public class Pilates extends Activity implements Serializable {
     @Override
     public int calculateCalories(User u) {
 
-        int repetitions = this.getRepetition();
-        int repetitionWeight = this.getWeight();
-        int intensity = this.getIntensity();
-        int duration = this.getDuration();
+        // User parameters
+        int nutritionMultiplier = u.getCaloriesMultiplier();
+        double nutritionFactor = nutritionMultiplier / 100.0;
+
         int weight = u.getWeight();
         int height = u.getHeight();
-        int nutritionMultiplier = u.getCaloriesMultiplier();
-        double restingBPM = u.getHeartRate();
-        double met = MET_VALUE;
+        double weightFactor = Math.min((weight * 2) / User.MAX_WEIGHT, 0.6);
+        double heightFactor = Math.min((height * 2) / User.MAX_HEIGHT, 0.6);
+        double weightHeightFactor = weightFactor * heightFactor;
 
-        double weightFactor = Math.min(weight / 200.0, 2);
-        weightFactor = Math.max(weightFactor, 1);
+        int bpm = u.getHeartRate();
+        double bpmFactor = (bpm / User.MAX_HEART_RATE) + 1;
 
-       double repWeightRatio = Math.min(1 + ((double) repetitionWeight / (double) weight), 2);
+        double met = MET_VALUE * ((weightHeightFactor + bpmFactor) / 2);
 
-        // return (int)
-        //     (weightFactor * (height / 100.0) * (nutritionMultiplier / 100.0) *
-        //     met * (intensity / 100.0) * duration *
-        //     repetitions * repWeightRatio);
+        // Activity parameters
+        int intensity = this.getIntensity();
+        int repetition = this.getRepetition();
+        int weightActivity = Math.min(this.getWeight(), 200);
+        double weightFactorActivity = (200 + weightActivity) / 200.0;
+        met *= weightFactorActivity;
 
-        met += (restingBPM - 60) / 10.0 * 0.1;
-
-        return (int)
-        (met * weight * (((repetitions / 10.0) * (repetitionWeight/10.0))/repWeightRatio) *
-        (intensity / 100.0) * (nutritionMultiplier / 100.0));
+        return (int) (
+            met * nutritionFactor *
+            intensity / 100.0 *
+            repetition
+        );
     }
 
     @Override

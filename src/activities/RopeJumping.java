@@ -95,21 +95,30 @@ public class RopeJumping extends Activity implements Serializable {
     @Override
     public int calculateCalories(User u) {
 
-        int repetitions = this.getRepetition();
-        int intensity = this.getIntensity();
-        int weight = u.getWeight();
+        // User parameters
         int nutritionMultiplier = u.getCaloriesMultiplier();
-        double restingBPM = u.getHeartRate();
-        double met = MET_VALUE;
+        double nutritionFactor = nutritionMultiplier / 100.0;
 
-        double weightFactor = Math.min(weight / 200.0, 2);
-        weightFactor = Math.max(weightFactor, 1);
+        int weight = u.getWeight();
+        int height = u.getHeight();
+        double weightFactor = Math.min((weight * 2) / User.MAX_WEIGHT, 0.6);
+        double heightFactor = Math.min((height * 2) / User.MAX_HEIGHT, 0.6);
+        double weightHeightFactor = weightFactor * heightFactor;
 
-        met += (restingBPM - 60) / 10.0 * 0.1;
+        int bpm = u.getHeartRate();
+        double bpmFactor = (bpm / User.MAX_HEART_RATE) + 1;
 
-        return (int)
-            (met * weight * (repetitions / 10.0) *
-            (intensity / 100.0) * (nutritionMultiplier / 100.0));
+        double met = MET_VALUE * ((weightHeightFactor + bpmFactor) / 2);
+
+        // Activity parameters
+        int intensity = this.getIntensity();
+        int repetition = this.getRepetition();
+
+        return (int) (
+            met * nutritionFactor *
+            intensity / 100.0 *
+            repetition
+        );
     }
 
     @Override

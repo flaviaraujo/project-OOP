@@ -98,23 +98,33 @@ public class Treadmill extends Activity implements Serializable {
         return new Treadmill(this);
     }
 
-    /* Calculate calories */
     @Override
     public int calculateCalories(User u) {
 
-        int intensity = this.getIntensity();
-        int distance = this.getDistance();
+        // User parameters
+        int nutritionMultiplier = u.getCaloriesMultiplier();
+        double nutritionFactor = nutritionMultiplier / 100.0;
+
         int weight = u.getWeight();
         int height = u.getHeight();
-        int heartRate = u.getHeartRate();
-        int caloriesMultiplier = u.getCaloriesMultiplier();
+        double weightFactor = Math.min((weight * 2) / User.MAX_WEIGHT, 0.6);
+        double heightFactor = Math.min((height * 2) / User.MAX_HEIGHT, 0.6);
+        double weightHeightFactor = weightFactor * heightFactor;
 
-        double weightFactor = Math.min(weight / 200.0, 2);
-        weightFactor = Math.max(weightFactor, 1);
+        int bpm = u.getHeartRate();
+        double bpmFactor = (bpm / User.MAX_HEART_RATE) + 1;
 
-        return (int)
-            (weight * (caloriesMultiplier / 100.0) *
-            MET_VALUE * (intensity / 100.0) * (distance / 1000.0));
+        double met = MET_VALUE * ((weightHeightFactor + bpmFactor) / 2);
+
+        // Activity parameters
+        int intensity = this.getIntensity();
+        int distance = this.getDistance();
+
+        return (int) (
+            met * nutritionFactor *
+            intensity / 100.0 *
+            distance / 1000.0
+        );
     }
 
     @Override
