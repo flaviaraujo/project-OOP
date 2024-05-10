@@ -118,7 +118,7 @@
 \renewcommand{\listfigurename}{Índice de Figuras}
 % \renewcommand{\listtablename}{Índice de Tabelas}
 
-\newgeometry{top=2.5cm,left=3cm,right=3cm,bottom=4cm}
+\newgeometry{top=2cm,left=3cm,right=3cm,bottom=4cm}
 \tableofcontents
 \pagebreak
 \listoffigures
@@ -146,6 +146,17 @@
         \captionof{figure}{Diagrama de Classes}
         \label{fig:diagrama-classes}
     \end{minipage}
+\section{Diagrama de Exceções}
+    Foram utilizadas as seguintes exceções em certas componentes da aplicação:
+
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[width=\textwidth]{images/exceptions.png}
+        \caption{Diagrama de Exceções}
+        \label{fig:diagrama-excecoes}
+    \end{figure}
+
+    Consulte a secção \textit{\nameref{sec:exceptions}} para mais detalhes sobre as exceções utilizadas.
 
 \section{Classe \textit{ActivityPlanner}}
     A classe \textit{ActivityPlanner} funciona como o modelo e \textit{facade} da aplicação,
@@ -310,6 +321,7 @@
     a qual será detalhada a forma como esta classe é utilizada.
 
 \section{Package \textit{exceptions}}
+    \label{sec:exceptions}
     Foi também criado um \textit{package} \textit{exceptions}, onde foram definidas as seguintes exceções:
 
     \begin{itemize}
@@ -574,7 +586,9 @@ Este valor booleano é alterado para \textit{true} sempre que o estado da aplica
 %==========================================================================
 
 \chapter{Conclusão}
-    \textcolor{red}{Maybe}
+    Em suma, a aplicação \textit{Activity Planner} foi desenvolvida com o intuito de permitir a gestão de atividades físicas, através da gestão de utilizadores, atividades, planos de treino, simulação de atividades e visualização de estatísticas.
+
+    Foram implementadas todas as funcionalidades propostas no enunciado, bem como outras funcionalidades adicionais, como a salvaguarda do estado da aplicação e a capacidade de carregar diferentes estados da aplicação através da linha de comandos, usufruindo das metodologias de programação orientada a objetos aprendidas nas aulas - desde a separação da aplicação numa derivação do MVC, hierarquia e polimorfismo de classes, uma arquitetura modular e extensível, com a utilização de exceções para a deteção e gestão de erros, assim como o encapsulamento de dados.
 
 %==========================================================================
 % END CONCLUSÃO

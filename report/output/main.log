@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2024.3.14)  10 MAY 2024 00:40
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2024.4.14)  10 MAY 2024 16:22
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1103,14 +1103,14 @@ LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <10.95> not available
 * layoutoffset:(h,v)=(0.0pt,0.0pt)
 * modes: 
 * h-part:(L,W,R)=(85.35826pt, 426.79135pt, 85.35826pt)
-* v-part:(T,H,B)=(71.13188pt, 660.10394pt, 113.81102pt)
+* v-part:(T,H,B)=(56.9055pt, 674.33032pt, 113.81102pt)
 * \paperwidth=597.50787pt
 * \paperheight=845.04684pt
 * \textwidth=426.79135pt
-* \textheight=660.10394pt
+* \textheight=674.33032pt
 * \oddsidemargin=13.08827pt
 * \evensidemargin=13.08827pt
-* \topmargin=-41.0131pt
+* \topmargin=-55.23949pt
 * \headheight=18.125pt
 * \headsep=21.75pt
 * \topskip=12.0pt
@@ -1145,15 +1145,17 @@ LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <10.95> not available
 chapter 1.
 File: images/diagram.png Graphic file (type bmp)
 <images/diagram.png>
-LaTeX Font Info:    Font shape `TU/lmss/bx/it' in size <17.28> not available
-(Font)              Font shape `TU/lmss/bx/sl' tried instead on input line 150.
-
+File: images/exceptions.png Graphic file (type bmp)
+<images/exceptions.png>
 [1
 
 
 ]
+LaTeX Font Info:    Font shape `TU/lmss/bx/it' in size <17.28> not available
+(Font)              Font shape `TU/lmss/bx/sl' tried instead on input line 161.
+
 LaTeX Font Info:    Font shape `TU/lmss/bx/it' in size <10.95> not available
-(Font)              Font shape `TU/lmss/bx/sl' tried instead on input line 158.
+(Font)              Font shape `TU/lmss/bx/sl' tried instead on input line 169.
 
  [2]
 *geometry* verbose mode - [ newgeometry ] result:
@@ -1281,10 +1283,10 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 27512 strings out of 478174
- 576219 string characters out of 5854282
- 1046850 words of memory out of 5000000
- 47634 multiletter control sequences out of 15000+600000
+ 27524 strings out of 478174
+ 576471 string characters out of 5854282
+ 1046852 words of memory out of 5000000
+ 47645 multiletter control sequences out of 15000+600000
  474409 words of font info for 75 fonts, out of 8000000 for 9000
  16 hyphenation exceptions out of 8191
  108i,13n,106p,10620b,1160s stack positions out of 5000i,500n,10000p,200000b,80000s
