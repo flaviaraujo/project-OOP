@@ -21,7 +21,7 @@ abstract class User {
     -weight : int
     -height : int
     -activities : ArrayList<Activity>
-    -registers : HashMap<LocalDateTime, Register>
+    -registers : HashMap<LocalDateTime, Activity>
     -plan : Plan
     .. Constructors ..
     +User()
@@ -31,7 +31,7 @@ abstract class User {
     +User(id : int, name : String, email : String,
         address : String, heartRate : int, weight : int,
         height : int, activities : ArrayList<Activity>,
-        registers : HashMap<LocalDateTime, Register>,
+        registers : HashMap<LocalDateTime, Activity>,
         plan : Plan)
     +User(user : User)
     .. Getters ..
@@ -43,7 +43,7 @@ abstract class User {
     +getWeight() : int
     +getHeight() : int
     +getActivities() : ArrayList<Activity>
-    +getRegisters() : HashMap<LocalDateTime, Register>
+    +getRegisters() : HashMap<LocalDateTime, Activity>
     +getPlan() : Plan
     +{abstract} getCaloriesMultiplier() : int
     .. Setters ..
@@ -55,7 +55,7 @@ abstract class User {
     +setWeight(weight : int) : void
     +setHeight(height : int) : void
     +setActivities(activities : ArrayList<Activity>) : void
-    +setRegisters(registers : HashMap<LocalDateTime, Register>) : void
+    +setRegisters(registers : HashMap<LocalDateTime, Activity>) : void
     +setPlan(plan : Plan) : void
     .. Other methods ..
     +toString() : String
