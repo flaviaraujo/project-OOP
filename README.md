@@ -1,4 +1,49 @@
-# POO
+# Activity Planner
+
+A Fitness program developed in Java for the Object Oriented Programming class during the 2023/2024 academic year.
+
+- [Description and Requirements](project.pdf)
+
+- [Report](report.pdf)
+
+- [Class Diagram](diagram.pdf)
+
+
+## Description
+
+Activity Planner is a program that allows users to register their activities and generate a training plan according to their goals, as well as providing various statistics on the program state.
+
+
+## Compilation and Execution
+
+To compile the program, run the following command:
+
+```
+make
+```
+
+As for executing the program, run the following command:
+
+```
+java src.Controller
+```
+
+
+## Usage
+
+The program has the following options:
+
+```
+Usage: java src.Controller [--load <file>] [--user <--id|--email> <id|email>]
+Options:
+  -h --help: show this help message
+  -l --load: load a program state from file
+  -u --user: 
+select an user by id or email to view his perspective
+  -e --email: select an user by email (use with --user option after --load option)
+  -i --id: select an user by ID (use with --user option after --load option)
+```
+
 
 ## Requirements
 
@@ -19,31 +64,15 @@
   - **Max number of distinct activities per day**: no restrictions;
   - **Expected amount of calories burned**: the plan should be generated to burn at least this amount of calories;
 
+
 ## Further Objectives
 
 - Allowing saving and loading the state of the program
 - Simulating the user's progress by skipping time
 - Allow each user to register the activities they have done (with indicators of the activity like distance, altimetry, time, calories, etc)
 
-## TODO list
 
-- [x] Remove class Register (Notes - 1)
-- [x] Activity name problem with spaces when searching
-- [x] Change the users from ArrayList to a HashMap (Notes - 2)
-- [x] Change user to include weight, height and age
-- [x] Add max/min values to user attributes
-- [x] fix activity name input in create plan interactively
-- [x] Command line arguments
-- [x] Add user perspective
-- [x] Add more exception handling - nextInt, next and nextLine
-- [x] When calling User.deleteActivity() check in the registers if the activity is being used and if so throw exception.
-- [x] Add option to create activity when registering a register, and its unique in user activities array
-- [x] In simulation if an activity is repeated at the end of the day, add it to the next day
-- [x] Sort events in a plan by date time
-- [x] Add hard notion to activities
-- [x] Encapsulation in Main class
-- [x] Encapsulate app; add clone's
-- [x] Fix statistic n7 itter the user registers instead
-- [ ] review functions to get calories burned
-- [x] Add create plan based on user objectives
-- [x] MVC
+## Authors
+
+- Flávia Araújo - [@flaviaraujo](https://github.com/flaviaraujo)
+- Miguel Carvalho - [@migueltc13](https://github.com/migueltc13)
