@@ -92,7 +92,7 @@
 \begin{flushleft}
 \begin{abstract}
     No âmbito da Unidade Curricular Programação Orientada a Objetos, foi-nos proposto o
-    desenvolvimento de uma aplicação de gestão de atividades físicas, à qual desginamos de \textit{Activity Planner}.
+    desenvolvimento de uma aplicação de gestão de atividades físicas, à qual designamos de \textit{Activity Planner}.
 
     A aplicação desenvolvida permite a gestão de utilizadores, atividades, planos de treino, simulação de atividades e
     visualização de estatísticas. A aplicação foi desenvolvida em \textit{Java}, utilizando o paradigma de programação
@@ -147,7 +147,7 @@
         \label{fig:diagrama-classes-simplificado}
     \end{figure}
 \section{Diagrama de Classes}
-    Para uma mehor visiualização da arquitetura de classes da aplicação, apresentada
+    Para uma melhor visualização da arquitetura de classes da aplicação, apresentada
     na seguinte figura \textit{\ref{fig:diagrama-classes}}, consulte o diagrama de classes
     em formato \textit{pdf} em \href{diagram.pdf}{\textcolor{blue}{\underline{diagram.pdf}}}.
     \newgeometry{top=0.5cm,left=0.2cm,right=0.2cm,bottom=3cm}
@@ -244,7 +244,7 @@
         \item \textit{\textbf{heartRate : int}} - Frequência cardíaca em repouso do utilizador, em batimentos por minuto;
         \item \textit{\textbf{weight : int}} - Peso do utilizador, em kilogramas;
         \item \textit{\textbf{height : int}} - Altura do utilizador, em centímetros;
-        \item \textit{\textbf{activities : ArrayList<Activity>}} - Conjunto de atividades de interesse de um utilizador, utlizada para a simplificação de um registo da atividade praticada ou da criação de um plano de treino;
+        \item \textit{\textbf{activities : ArrayList<Activity>}} - Conjunto de atividades de interesse de um utilizador, utilizada para a simplificação de um registo da atividade praticada ou da criação de um plano de treino;
         \item \textit{\textbf{registers : HashMap<LocalDateTime, Activity>}} - Conjunto de atividades praticadas por um utilizador, com a respetiva data e hora de prática, atividade praticada e consumo calórico;
         \item \textit{\textbf{plan : Plan}} - Plano de treino semanal de um utilizador.
     \end{itemize}
@@ -252,7 +252,7 @@
     Os atributos \textit{weight}, \textit{height} e \textit{heartRate} são utilizados para o cálculo do consumo calórico de uma atividade,
     sendo estes parâmetros mutáveis, uma vez que podem ser alterados ao longo do tempo.
 
-    Para além dos vários construtores, dos métodos tradicionais de acesso e modificação dos atributos (\textit{getters} e \textit{setters}), métodos para a cópia profunda dos objetos desta classe, conversão para \textit{String} e igualdade entre objetos desta classe, foram implementados métodos para a adição/remoção de uma atividade de interesse, bem como métodos para o registo de uma atividade por parte de um utlizador.
+    Para além dos vários construtores, dos métodos tradicionais de acesso e modificação dos atributos (\textit{getters} e \textit{setters}), métodos para a cópia profunda dos objetos desta classe, conversão para \textit{String} e igualdade entre objetos desta classe, foram implementados métodos para a adição/remoção de uma atividade de interesse, bem como métodos para o registo de uma atividade por parte de um utilizador.
 
     A classe \textit{User} foi desenvolvida de forma a permitir a extensão desta, através da implementação de novos tipos de utilizadores.
     Assim, foi definida uma hierarquia de classes, onde a classe \textit{User} é a superclasse e as suas subclasses são \textit{Occasional}, \textit{Amateur} e \textit{Professional}.
@@ -280,7 +280,7 @@
     outras componentes da aplicação.
 
     As subclasses de \textit{Activity} contêm atributos específicos que caracterizam a atividade em questão,
-    como por exemple, a distância percorrida, o número de repetições, o peso levantado, entre outros.
+    como por exemplo, a distância percorrida, o número de repetições, o peso levantado, entre outros.
 
     Foram implementadas as seguintes subclasses de \textit{Activity}:
     \begin{itemize}
@@ -316,7 +316,7 @@
     \end{itemize}
 
 \section{Classe \textit{Plan}}
-    A classe \textit{Plan} representa um plano de treino, por definição, semanal, que um utilizador pode criar, vizualizar e remover.
+    A classe \textit{Plan} representa um plano de treino, por definição, semanal, que um utilizador pode criar, visualizar e remover.
 
     Esta é composta pelos seguintes atributos:
     \begin{itemize}
@@ -329,7 +329,7 @@
     As funcionalidades proporcionadas por esta classe, bem como a classe \textit{Event}, serão detalhadas no subcapítulo \textit{\nameref{sec:gestao-plano-treino}}.
 
 \section{Classe \textit{ActivityRepetition}}
-    A classe \textit{ActivityRepetition} é utlizada como um objeto auxiliar para a criação de um plano de treino baseado nos objetivos de um utilizador.
+    A classe \textit{ActivityRepetition} é utilizada como um objeto auxiliar para a criação de um plano de treino baseado nos objetivos de um utilizador.
 
     O processo de geração de planos de treino baseados em objetivos será aprofundado no subcapítulo \textit{\nameref{sec:gestao-plano-treino}},
     a qual será detalhada a forma como esta classe é utilizada.
@@ -374,7 +374,7 @@
 
 \clearpage
 \section{Gestão de Utilizadores}
-    \label{sec:gestao-utlizadores}
+    \label{sec:gestao-utilizadores}
     \begin{figure}[!ht]
         \centering
         \includegraphics[width=\textwidth]{images/manageUsersSubMenu.png}
@@ -431,7 +431,7 @@
     \clearpage
     \subsection{Visualizar Utilizadores}
     Nesta opção são apresentados todos os utilizadores da aplicação,
-    atrvés da iteração sobre a lista de utilizadores da aplicação,
+    através da iteração sobre a lista de utilizadores da aplicação,
     e a apresentação dos dados de cada utilizador.
 
     \begin{figure}[!ht]
@@ -539,7 +539,7 @@
     \clearpage
     \subsection{Registar Atividade}
     Em primeiro lugar, é feita a seleção do utilizador que praticou a atividade,
-    de seguida é dada opção de resgitar a atividade de interesse do utilizador ou
+    de seguida é dada opção de registar a atividade de interesse do utilizador ou
     de criar uma nova atividade de interesse, caso esta não exista.
 
     Após a seleção da atividade, é questionada a data e hora da prática da atividade,
@@ -582,14 +582,14 @@
 
     \clearpage
     \subsection{Adicionar Plano de Treino Interativamente}
-    A aplicação verifica se o utlizador já tinha um plano de treino, e caso tenha,
+    A aplicação verifica se o utilizador já tinha um plano de treino, e caso tenha,
     é questionado se este pretende substituir o plano atual.
 
     Inicialmente é perguntado ao utilizador o nome do plano de treino a ser criado,
     de seguida para cada dia da semana é questionado o número de atividades a serem praticadas,
     e são selecionadas as atividades a serem praticadas, a hora e o número de repetições destas.
 
-    A aplicação garante que o utlizador escolheu pelo menos uma atividade em toda a semana.
+    A aplicação garante que o utilizador escolheu pelo menos uma atividade em toda a semana.
 
     Por fim é apresentada uma mensagem de sucesso,
     é criado um novo plano de treino, com o nome e os respetivos eventos, com o dia
@@ -619,7 +619,7 @@
 
     \clearpage
     \subsection{Adicionar Plano de Treino Baseado em Objetivos}
-    Como na opção anterior, a aplicação verifica se o utlizador já tinha um plano de treino,
+    Como na opção anterior, a aplicação verifica se o utilizador já tinha um plano de treino,
     e caso tenha, é questionado se este pretende substituir o plano atual.
 
     De seguida é questionado as seguintes restrições à criação do plano de treino:
@@ -635,12 +635,12 @@
     estas não podem ser praticadas no mesmo dia, nem em dias consecutivos.
 
     Para a criação do plano de treino baseado em objetivos, é utilizado um algoritmo de maximização de calorias,
-    para tal é utlizada a classe \textit{ActivityRepetition} como um objeto auxiliar,
+    para tal é utilizada a classe \textit{ActivityRepetition} como um objeto auxiliar,
     que é instanciada com cada atividade selecionada e o número de repetições de uma atividade por semana.
 
-    Estes objetos são guardados numa lista, que depois é ordenada de forma descrescente,
+    Estes objetos são guardados numa lista, que depois é ordenada de forma decrescente,
     em relação ao número de calorias queimadas multiplicadas pelo número de repetições possíveis por dia,
-    ou seja o valor mínimo entre o número de repetições por semana restantes da ativadade em questão e o
+    ou seja o valor mínimo entre o número de repetições por semana restantes da atividade em questão e o
     número de repetições por dia restantes de atividades em geral. Se uma atividade é do tipo \textit{hard},
     o valor máximo de repetições por dia é um automaticamente.
 
@@ -656,11 +656,11 @@
 
     Em caso de empante entre uma atividade do tipo \textit{hard} e uma ou mais atividades normais,
     é sempre selecionada a atividade do tipo \textit{hard}, com intuito de maximizar o número de calorias queimadas,
-    visto que estas atividades de tipo hard são restritas a três por semana é necessário, nestes casos, colocar-las em primeiro
+    visto que estas atividades de tipo hard são restritas a três por semana é necessário, nestes casos, colocá-las em primeiro
     lugar, caso contrário pode haver a possibilidade de não serem praticadas no resto da semana.
 
     No fim do algoritmo, este verifica se o número de calorias queimadas é superior ao número de calorias mínimas desejadas,
-    e se tal acontecer o plano é criado, adicionado e apresentado ao utlizador, caso contrário é apresentada uma mensagem que
+    e se tal acontecer o plano é criado, adicionado e apresentado ao utilizador, caso contrário é apresentada uma mensagem que
     afirma a impossibilidade de criar um plano de treino com as restrições impostas.
 
     \begin{figure}[!ht]
@@ -680,7 +680,7 @@
     \clearpage
     \subsection{Remover Plano de Treino}
     Nesta opção é removido o plano de treino de um utilizador se tal existir,
-    deseguida o utlizador é atualizado na lista de utilizadores da aplicação.
+    de seguida o utilizador é atualizado na lista de utilizadores da aplicação.
 
     A remoção de um plano é feita através do método \textit{user.setPlan(null)},
     para tal atualizados os outros métodos de forma a garantir que não hajam
@@ -713,7 +713,7 @@
     A componente de simulação de atividades é feito por um salto no tempo,
     esta data é questionada (na classe \textit{Controller}) e de seguida
     é chamado o método \textit{runSimulation} da classe \textit{ActivityPlanner},
-    com a data de ínicio (data atual) e a data de fim (data questionada),
+    com a data de início (data atual) e a data de fim (data questionada),
     devendo esta ser superior à data atual.
 
     A simulação é feita a partir dos planos de treino dos utilizadores,
@@ -725,7 +725,7 @@
     por quem e a atividade praticada, a que horas, e o respetivo consumo calórico.
 
     No final da simulação, é apresentado um resumo da simulação,
-    com o número de utlizadores com atividades praticadas,
+    com o número de utilizadores com atividades praticadas,
     o número de atividades praticadas,
     bem como o número de repetições de todas as atividades praticadas,
     e o consumo calórico total de todos os utilizadores que praticaram atividades.
@@ -765,7 +765,7 @@
         \label{fig:submenu-stats}
     \end{figure}
 
-    Pode consultar os métodos para o calculo de estastísticas na classe \textit{ActivityPlanner}.
+    Pode consultar os métodos para o calculo de estatísticas na classe \textit{ActivityPlanner}.
 
     \subsection{Utilizador que mais calorias dispendeu}
         Para esta estatística é iterado sobre todos os utilizadores da aplicação,
@@ -805,8 +805,8 @@
         e será uma das atividades implementadas no \textit{package activities}, se houverem registos,
         caso contrário será apresentado \textit{"None"}.
 
-    \subsection{Quantos km's que um utilizador percorreu}
-        Para determinar quantos km's um utilizador percorreu, em primeiro é selecionado o utilizador em questão,
+    \subsection{Quantos kms que um utilizador percorreu}
+        Para determinar quantos kilómetros um utilizador percorreu, em primeiro é selecionado o utilizador em questão,
         e de seguida é iterado sobre todos os registos de atividades deste utilizador,
         e através do método \textit{isDistanceBased} da classe \textit{Activity} é verificado se a atividade é baseada em distância,
         se tal acontecer é somado o valor da distância da atividade ao somatório.
@@ -814,7 +814,7 @@
         Para casos em um intervalo de tempo, são apenas considerados os registos de atividades dentro desse intervalo,
         através da verificação da chave no dicionário de registos de atividades.
 
-        Como a distância é medida em metros este valor do somatório é convertido para km's,
+        Como a distância é medida em metros este valor do somatório é convertido para kilómetros,
         e apresentado ao utilizador no fim do cálculo.
 
     \subsection{Quantos metros de altimetria que um utilizador totalizou}
@@ -879,9 +879,9 @@ A aplicação também dispõe de uma capacidade inteligente de detetar mudanças
     \item Notificar o utilizador que, ao carregar um novo estado, o estado atual será perdido, se houver alterações, dando a opção de retornar atrás se este não quiser perder o estado atual.
 \end{itemize}
 
-O valor do atributo \textit{updatedState} é incializado a \textit{false} no ínicio da execução do programa e é alterado para \textit{false} sempre que o estado da aplicação é guardado, no método \textit{saveState}, ou carregado, no método \textit{loadState}, referidos anteriormente.
+O valor do atributo \textit{updatedState} é inicializado a \textit{false} no início da execução do programa e é alterado para \textit{false} sempre que o estado da aplicação é guardado, no método \textit{saveState}, ou carregado, no método \textit{loadState}, referidos anteriormente.
 
-Este valor booleano é alterado para \textit{true} sempre que o estado da aplicação é alterado, seja através da adição, edição ou remoção de um utilizador, de uma atualização de uma atividade de um utilizador, do registo de uma nova atividade ou da criação/remoção de um plano de treino para um utlizador em específico.
+Este valor booleano é alterado para \textit{true} sempre que o estado da aplicação é alterado, seja através da adição, edição ou remoção de um utilizador, de uma atualização de uma atividade de um utilizador, do registo de uma nova atividade ou da criação/remoção de um plano de treino para um utilizador em específico.
 
 \clearpage
 \section{Argumentos de Linha de Comandos}
