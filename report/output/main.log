@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2024.3.14)  11 MAY 2024 22:22
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2024.3.14)  11 MAY 2024 22:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1325,7 +1325,11 @@ File: images/Simulation2.png Graphic file (type bmp)
 <images/Simulation2.png>
  [34
 
-] [35]
+]
+
+LaTeX Warning: Text page 35 contains only floats.
+
+[35]
 File: images/statsMenu.png Graphic file (type bmp)
 <images/statsMenu.png>
 File: images/statsSubMenu.png Graphic file (type bmp)
@@ -1337,8 +1341,7 @@ File: images/statsSubMenu.png Graphic file (type bmp)
 ]
 File: images/help_option.png Graphic file (type bmp)
 <images/help_option.png>
-
-[40
+ [40
 
 ]
 chapter 3.
