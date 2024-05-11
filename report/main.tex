@@ -324,6 +324,8 @@
         \item \textit{\textbf{events : ArrayList<Event>}} - Lista de eventos que compõem o plano de treino.
     \end{itemize}
 
+    Os planos de treino têm uma duração semanal, sendo compostos por eventos, que representam as atividades a serem praticadas em cada dia da semana.
+
     As funcionalidades proporcionadas por esta classe, bem como a classe \textit{Event}, serão detalhadas no subcapítulo \textit{\nameref{sec:gestao-plano-treino}}.
 
 \section{Classe \textit{ActivityRepetition}}
@@ -617,8 +619,63 @@
 
     \clearpage
     \subsection{Adicionar Plano de Treino Baseado em Objetivos}
-    Como na opção anterior, a aplicação verifica se o utlizador já tinha um plano de treino, e caso tenha,
-    é questionado se este pretende substituir o plano atual.
+    Como na opção anterior, a aplicação verifica se o utlizador já tinha um plano de treino,
+    e caso tenha, é questionado se este pretende substituir o plano atual.
+
+    De seguida é questionado as seguintes restrições à criação do plano de treino:
+    \begin{itemize}
+        \item \textit{Calorias mínimas} - Calorias mínimas a serem queimadas no plano de treino;
+        \item \textit{Número máximo de atividades por dia} - Número máximo de atividades a serem praticadas por dia, máximo três;
+        \item \textit{Número máximo de atividades distintas por dia} - Número máximo de atividades distintas a serem praticadas por dia, máximo três;
+        \item \textit{Número máximo de repetições por atividade} - Número máximo de repetições a serem praticadas por atividade por semana;
+        \item \textit{Ativadades de interesse} - Atividades de interesse selecionadas pelo utilizador, que podem ser praticadas no plano de treino;
+    \end{itemize}
+
+    Para além destas restrições está implícito que, se o utilizador seleciona uma atividade do tipo \textit{hard},
+    estas não podem ser praticadas no mesmo dia, nem em dias consecutivos.
+
+    Para a criação do plano de treino baseado em objetivos, é utilizado um algoritmo de maximização de calorias,
+    para tal é utlizada a classe \textit{ActivityRepetition} como um objeto auxiliar,
+    que é instanciada com cada atividade selecionada e o número de repetições de uma atividade por semana.
+
+    Estes objetos são guardados numa lista, que depois é ordenada de forma descrescente,
+    em relação ao número de calorias queimadas multiplicadas pelo número de repetições possíveis por dia,
+    ou seja o valor mínimo entre o número de repetições por semana restantes da ativadade em questão e o
+    número de repetições por dia restantes de atividades em geral. Se uma atividade é do tipo \textit{hard},
+    o valor máximo de repetições por dia é um automaticamente.
+
+    De seguida, para cada dia da semana, é selecionada a atividade (com o seu respetivo número de repetições restantes)
+    com o maior valor de calorias, e se possível - não ultrapassando o número máximo de atividades por dia
+    nem o número máximo de atividades distintas por dia -,
+    são adicionadas mais atividades para esse dia, até que esta condição não seja satisfeita passando para o próximo dia.
+
+    É também registado se um dia têm uma atividade do tipo \textit{hard},
+    para que não seja praticada uma atividade deste tipo no dia seguinte (nem no próprio dia)
+    sendo o número máximo de atividades do tipo \textit{hard} por semana limitado a três
+    (exemplo: domingo, terça-feira, quinta-feira).
+
+    Em caso de empante entre uma atividade do tipo \textit{hard} e uma ou mais atividades normais,
+    é sempre selecionada a atividade do tipo \textit{hard}, com intuito de maximizar o número de calorias queimadas,
+    visto que estas atividades de tipo hard são restritas a três por semana é necessário, nestes casos, colocar-las em primeiro
+    lugar, caso contrário pode haver a possibilidade de não serem praticadas no resto da semana.
+
+    No fim do algoritmo, este verifica se o número de calorias queimadas é superior ao número de calorias mínimas desejadas,
+    e se tal acontecer o plano é criado, adicionado e apresentado ao utlizador, caso contrário é apresentada uma mensagem que
+    afirma a impossibilidade de criar um plano de treino com as restrições impostas.
+
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[width=\textwidth]{images/createPlanGoals1.png}
+        \caption{Adição de Plano de Treino Baseado em Objetivos}
+        \label{fig:add-plan-goals-1}
+    \end{figure}
+
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[width=\textwidth]{images/createPlanGoals2.png}
+        \caption{Adição de Plano de Treino Baseado em Objetivos}
+        \label{fig:add-plan-goals-2}
+    \end{figure}
 
     \clearpage
     \subsection{Remover Plano de Treino}

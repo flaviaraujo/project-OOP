@@ -29,11 +29,11 @@
 \contentsline {section}{\numberline {2.4}Gestão de Plano de Treino}{26}{section.2.4}%
 \contentsline {subsection}{\numberline {2.4.1}Adicionar Plano de Treino Interativamente}{27}{subsection.2.4.1}%
 \contentsline {subsection}{\numberline {2.4.2}Adicionar Plano de Treino Baseado em Objetivos}{29}{subsection.2.4.2}%
-\contentsline {subsection}{\numberline {2.4.3}Remover Plano de Treino}{30}{subsection.2.4.3}%
-\contentsline {subsection}{\numberline {2.4.4}Visualizar Plano de Treino}{31}{subsection.2.4.4}%
-\contentsline {section}{\numberline {2.5}Simulação}{32}{section.2.5}%
-\contentsline {section}{\numberline {2.6}Estatísticas}{33}{section.2.6}%
-\contentsline {section}{\numberline {2.7}Salvaguarda do Estado da Aplicação}{34}{section.2.7}%
-\contentsline {section}{\numberline {2.8}Argumentos de Linha de Comandos}{35}{section.2.8}%
-\contentsline {chapter}{\numberline {3}Conclusão}{36}{chapter.3}%
+\contentsline {subsection}{\numberline {2.4.3}Remover Plano de Treino}{32}{subsection.2.4.3}%
+\contentsline {subsection}{\numberline {2.4.4}Visualizar Plano de Treino}{33}{subsection.2.4.4}%
+\contentsline {section}{\numberline {2.5}Simulação}{34}{section.2.5}%
+\contentsline {section}{\numberline {2.6}Estatísticas}{35}{section.2.6}%
+\contentsline {section}{\numberline {2.7}Salvaguarda do Estado da Aplicação}{36}{section.2.7}%
+\contentsline {section}{\numberline {2.8}Argumentos de Linha de Comandos}{37}{section.2.8}%
+\contentsline {chapter}{\numberline {3}Conclusão}{38}{chapter.3}%
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 
