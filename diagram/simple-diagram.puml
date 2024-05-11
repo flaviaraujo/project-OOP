@@ -1,0 +1,36 @@
+@startuml
+
+left to right direction
+
+abstract class User
+package users {
+    class Occasional extends User
+    class Amateur extends User
+    class Professional extends User
+}
+abstract class Activity
+package activities {
+    class Swimming extends Activity
+    class Treadmill extends Activity
+    class TrailRunning extends Activity
+    class BTT extends Activity
+    class RopeJumping extends Activity
+    class Stretching extends Activity
+    class Weightlifiting extends Activity
+    class Pilates extends Activity
+}
+class Plan
+class Event
+class ActivityRepetition
+class ActivityPlanner
+class Controller
+
+ActivityPlanner -right- ActivityRepetition
+User o-- Activity
+User o-- Plan
+Plan o-right- Event
+Event o-right- Activity
+ActivityPlanner o-- User
+Controller o-- ActivityPlanner
+
+@enduml
