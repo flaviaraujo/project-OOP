@@ -1,5 +1,7 @@
 @startuml
 
+left to right direction
+
 abstract class User {
     .. Attributes ..
     -{static} MIN_NAME_LENGTH : final int
@@ -453,12 +455,12 @@ class ActivityRepetition {
     -repetitionsLeft : int
     .. Constructors ..
     +ActivityRepetition()
-    +ActivityRepetition(Activity activity, int repetitionsLeft)
+    +ActivityRepetition(activity : Activity, repetitionsLeft : int)
     .. Getters ..
     +getActivity() : Activity
     +getRepetitionsLeft() : int
     .. Setter ..
-    +setRepetitionsLeft(int repetitionsLeft) : void
+    +setRepetitionsLeft(repetitionsLeft : int) : void
     .. Other methods ..
     +create(ars : ArrayList<ActivityRepetition>) : ArrayList<ActivityRepetition>
     +sort(ar : ArrayList<ActivityRepetition>
@@ -468,7 +470,7 @@ class ActivityRepetition {
             maxRepetitionPerWeek : int,
             maxActivitiesPerDay : int,
             user : User,
-            isHard: boolean) : ArrayList<ActivityRepetition>
+            isHard : boolean) : ArrayList<ActivityRepetition>
 }
 
 class ActivityPlanner {
@@ -504,6 +506,14 @@ class ActivityPlanner {
     +getUserActivity(activities : ArrayList<Activity>, activityName : String) : Activity
     .. Utility methods ..
     -getClasses(packageName : String) : List<Class<?>>
+    .. Plan methos ..
+    +createBasedOnGoals(
+        u : User,
+        caloriesGoal : int,
+        maxActivitiesPerDay : int,
+        maxDisitinctActivitiesPerDay : int,
+        nActivityRepetitionPerWeek : int,
+        selectedActivities : ArrayList<Activity>) : Plan
     .. Simulation method ..
     +runSimulation(startDate : LocalDate, endDate : LocalDate) : String
     .. Statistics methods ..
@@ -562,13 +572,6 @@ class Controller {
     .. Plan IO methods ..
     -createPlan(userActivities : ArrayList<Activity>) : Plan
     -createBasedOnGoalsIO(user : User) : Plan
-    -createBasedOnGoals(
-        user : User,
-        caloriesGoal : int,
-        maxActivitiesPerDay : int,
-        maxDisitinctActivitiesPerDay : int,
-        nActivityRepetitionPerWeek : int,
-        selectedActivities : ArrayList<Activity>) : Plan
     .. Event IO methods ..
     -createEvent(activities : ArrayList<Activity>, maxRepetitions : int, day : int) : Event
     .. Simulation IO methods ..
@@ -595,14 +598,13 @@ note left of ActivityRepetition
     located in the <b>Controller</b> class
 end note
 
-Controller -left-> ActivityRepetition : <uses>
+ActivityPlanner -right- ActivityRepetition : <uses>
 
-User "1" *-- "N" Activity
-User "1" *-- "1" Plan
-Plan "1" *-right- "N" Event
-Event "1" *-right- "1" Activity
-ActivityPlanner "1" *-- "N" User
-Controller -right-> ActivityPlanner : <uses>
-
+User "-activities\n-registers" o-- "0..*" Activity
+User "-plan" o-- "0..1" Plan
+Plan "\n-events" o-right- "1..*" Event
+Event "-activity\n" o-right- "1..1" Activity
+ActivityPlanner "-users\n<color:red>id : Integer" o-- "0..*" User
+Controller "-m" o-- "1..1" ActivityPlanner
 
 @enduml
