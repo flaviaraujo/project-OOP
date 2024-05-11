@@ -200,6 +200,196 @@ public class ActivityPlanner implements Serializable {
         return classes;
     }
 
+    /* Plan method */
+
+    public String createPlanBasedOnGoals(
+        User u,
+        int caloriesGoal,
+        int maxActivitiesPerDay,
+        int maxDisitinctActivitiesPerDay,
+        int nActivityRepetitionPerWeek,
+        ArrayList<Activity> selectedActivities
+    ) {
+        // restrictions
+        // hard activituies can't be in the same day and consecutive days
+        // max activities per day (max 3)
+        // min distinct activities per day (max 3)
+        // nRepActivityPerWeek (min 1, no max)
+
+        // encapsulate user to avoid changes
+        User user = u.clone();
+
+        // days until the next hard activity is possible
+        int daysUntilHard = 0;
+        // boolean canBeHard: (daysUntilHard == 0);
+        // reset: daysUntilHard = 2;
+
+        // number of disitinct activities added in one day
+        int distinctCount = 0;
+
+        // total number of activities (for display purposes only)
+        int totalActivities = 0;
+
+        // seperate activities by hard and not hard (sorted by calories desc)
+        ActivityRepetition arAux = new ActivityRepetition();
+
+        ArrayList<ActivityRepetition> activitiesHard =
+            arAux.create(selectedActivities, nActivityRepetitionPerWeek, maxActivitiesPerDay, user, true);
+
+        ArrayList<ActivityRepetition> activities =
+            arAux.create(selectedActivities, nActivityRepetitionPerWeek, maxActivitiesPerDay, user, false);
+
+        ActivityRepetition ar = null;
+        Activity a = null;
+        int repetitionsLeft = 0;
+
+        ActivityRepetition arHard = null;
+        Activity aHard = null;
+        int repetitionsLeftHard = 0;
+
+        boolean saturdayCanBeHard = true;
+
+        ArrayList<Event> events = new ArrayList<Event>();
+
+        for (int day = 1; day <= 7; day++) {
+
+            distinctCount = 0;
+
+            if (daysUntilHard > 0) {
+                daysUntilHard--;
+            }
+
+            if (activitiesHard.isEmpty() && activities.isEmpty()) {
+                break;
+            }
+
+            for (int i = 0; i < maxActivitiesPerDay;) {
+
+                if (activitiesHard.isEmpty() && activities.isEmpty()) {
+                    break;
+                }
+
+                if (!activities.isEmpty()) {
+                    ar = activities.get(0);
+                    a = ar.getActivity();
+                    repetitionsLeft = ar.getRepetitionsLeft();
+                }
+                else {
+                    ar = null;
+                }
+
+                if (!activitiesHard.isEmpty()) {
+                    arHard = activitiesHard.get(0);
+                    aHard = arHard.getActivity();
+                    repetitionsLeftHard = arHard.getRepetitionsLeft();
+                }
+                else {
+                    arHard = null;
+                }
+
+                int nActivityOfThisType = Math.min(repetitionsLeft, maxActivitiesPerDay - i);
+
+                if (ar == null ||
+                    (arHard != null &&
+                    aHard.calculateCalories(user) >= a.calculateCalories(user) * nActivityOfThisType &&
+                    daysUntilHard == 0 &&
+                    day != 7) ||
+                    (day == 7 && saturdayCanBeHard &&
+                    (arHard != null &&
+                    aHard.calculateCalories(user) >= a.calculateCalories(user) * nActivityOfThisType &&
+                    daysUntilHard == 0))
+                ) {
+                    // add hard activity (only one can be added)
+                    Event event = new Event(aHard, 1, day, LocalTime.of(8 + 4 * i, 0));
+                    events.add(event);
+
+                    // update repetitions
+                    repetitionsLeftHard--;
+                    arHard.setRepetitionsLeft(repetitionsLeftHard);
+
+                    // hard activities logic (reset daysUntilHard)
+                    daysUntilHard = 2;
+
+                    // total activities counter
+                    totalActivities++;
+
+                    // increment activity iterator
+                    i++;
+
+                    // re-sort
+                    activitiesHard = arAux.sort(activitiesHard, 1, user);
+
+                    // if it's sunday then saturday can't be hard activity day
+                    if (day == 1) {
+                        saturdayCanBeHard = false;
+                    }
+                }
+                else if (ar != null) {
+                    // add normal activity
+                    Event event = new Event(a, nActivityOfThisType, day, LocalTime.of(8 + 4 * i, 0));
+                    events.add(event);
+
+                    // update repetitions
+                    repetitionsLeft -= nActivityOfThisType;
+                    ar.setRepetitionsLeft(repetitionsLeft);
+
+                    // total activities counter
+                    totalActivities += nActivityOfThisType;
+
+                    // increment activity iterator
+                    i += nActivityOfThisType;
+
+                    // re-sort
+                    activities = arAux.sort(activities, maxActivitiesPerDay - i, user);
+                }
+
+                // increment distinct activities counter
+                distinctCount++;
+                if (distinctCount >= maxDisitinctActivitiesPerDay) {
+                    break;
+                }
+            }
+        }
+
+        StringBuilder output = new StringBuilder();
+        int possibleActivitiesPerWeek = Math.min(maxActivitiesPerDay * 7, nActivityRepetitionPerWeek * selectedActivities.size());
+
+        // Check if plan meets the calories goal
+        int calories = 0;
+        for (Event e : events) {
+            calories += e.getActivity().calculateCalories(user) * e.getActivityRepetitions();
+        }
+        if (calories < caloriesGoal) {
+            output.append("Based on your goals, it's impossible to create a plan.\n");
+            output.append("Total activities: " + totalActivities + " / " + possibleActivitiesPerWeek + "\n");
+            output.append("Calories: " + calories + " / " + caloriesGoal + "\n");
+            return output.toString();
+        }
+
+        // create plan
+        Plan plan = new Plan("Plan based on goals", events);
+
+        // display plan and relevant info
+        output.append(plan.getName());
+        for (Event e : plan.getEvents()) {
+            output.append(e + "\n");
+            output.append("Expected calories: " +
+                e.getActivity().calculateCalories(user) * e.getActivityRepetitions() + "\n");
+            output.append("\n");
+        }
+        output.append("Total activities: " + totalActivities + " / " + possibleActivitiesPerWeek + "\n");
+        output.append("Calories: " + calories + " / " + caloriesGoal + "\n");
+        output.append("Plan generated successfully.\n");
+
+        // add plan to user
+        user.setPlan(plan);
+
+        // update user
+        this.updateUser(user);
+
+        return output.toString();
+    }
+
     /* Simulation method */
 
     public String runSimulation(LocalDate startDate, LocalDate endDate) {
