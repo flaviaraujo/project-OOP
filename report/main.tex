@@ -747,13 +747,114 @@
 \clearpage
 \section{Estatísticas}
     \label{sec:estatisticas}
+
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[width=\textwidth]{images/statsMenu.png}
+        \caption{Submenu de Estatísticas}
+        \label{fig:menu-stats}
+    \end{figure}
+
+    Para as estatísticas, que permitam a sua visualização em um intervalo de
+    tempo ou desde de sempre, é apresentado o seguinte submenu:
+
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[width=\textwidth]{images/statsSubMenu.png}
+        \caption{Submenu de Estatísticas}
+        \label{fig:submenu-stats}
+    \end{figure}
+
+    Pode consultar os métodos para o calculo de estastísticas na classe \textit{ActivityPlanner}.
+
     \subsection{Utilizador que mais calorias dispendeu}
+        Para esta estatística é iterado sobre todos os utilizadores da aplicação,
+        e para cada um é iterado sobre todos os registos de atividades do utilizador
+        enquanto se calcula o consumo calórico com um somatório.
+
+        No fim é apresentado o nome e identificador do utilizador que mais calorias dispendeu.
+
+        Em caso de empate, é apresentado o primeiro utilizador encontrado.
+
+        Em caso de esta estatística ser executada num intervalo de tempo,
+        são apenas considerados os registos de atividades dentro desse intervalo.
+
     \subsection{Utilizador que mais atividades realizou}
+        Similarmente à estatística anterior, é iterado sobre todos os utilizadores da aplicação,
+        e para cada um é iterado sobre todos os registos de atividades do utilizador
+        enquanto se calcula o número de atividades realizadas com um somatório.
+
+        No fim é apresentado o nome e identificador utilizador que mais atividades realizou e
+        o respetivo número de atividades praticadas.
+
+        Em caso de empate, é apresentado o primeiro utilizador encontrado.
+
+        Em caso de esta estatística ser executada num intervalo de tempo,
+        são apenas considerados os registos de atividades dentro desse intervalo.
+
     \subsection{Tipo de atividade mais praticada}
+        Para o calculo do tipo de atividade mais praticada, é iterado sobre todos os utilizadores da aplicação,
+        e para cada um é iterado sobre todos os registos de atividades do utilizador,
+        e através do uso de um dicionário é contado o número de vezes que cada tipo de atividade é praticado,
+        onde a chave é o atividade e o valor é o número de vezes que esta foi praticada.
+
+        No fim é apresentado o tipo de atividade mais praticada, e em caso de empate,
+        é apresentado o primeiro tipo de atividade encontrado.
+
+        O tipo de atividade, é obtido através do método \textit{getClass().getSimpleName()},
+        e será uma das atividades implementadas no \textit{package activities}, se houverem registos,
+        caso contrário será apresentado \textit{"None"}.
+
     \subsection{Quantos km's que um utilizador percorreu}
+        Para determinar quantos km's um utilizador percorreu, em primeiro é selecionado o utilizador em questão,
+        e de seguida é iterado sobre todos os registos de atividades deste utilizador,
+        e através do método \textit{isDistanceBased} da classe \textit{Activity} é verificado se a atividade é baseada em distância,
+        se tal acontecer é somado o valor da distância da atividade ao somatório.
+
+        Para casos em um intervalo de tempo, são apenas considerados os registos de atividades dentro desse intervalo,
+        através da verificação da chave no dicionário de registos de atividades.
+
+        Como a distância é medida em metros este valor do somatório é convertido para km's,
+        e apresentado ao utilizador no fim do cálculo.
+
     \subsection{Quantos metros de altimetria que um utilizador totalizou}
+        Similarmente à estatística anterior, é selecionado o utilizador em questão,
+        e de seguida é iterado sobre todos os registos de atividades deste utilizador,
+        e através do método \textit{isAltimetryBased} da classe \textit{Activity} é
+        verificado se a atividade é baseada em altimetria, se tal acontecer é somado o valor da altimetria da atividade ao somatório.
+
+        Para casos em um intervalo de tempo, são apenas considerados os registos de atividades dentro desse intervalo,
+        através da verificação da chave no dicionário de registos de atividades.
+
+        Por fim o valor total de altimetria em metros é apresentado ao utilizador.
+
     \subsection{Qual o plano de treino mais exigente em função do dispêndio de calorias proposto}
+        Para calcular o plano de treino mais exigente em função do dispêndio de calorias proposto,
+        é iterado sobre todos os utilizadores da aplicação,
+        e os respectivos planos de treino, se existirem,
+        de seguida é calculado o dispêndio de calorias de cada plano de treino,
+        através da iteração sobre todos os eventos de cada plano de treino,
+        e a soma do dispêndio de calorias de cada evento,
+        contabilizando o número de repetições da atividade.
+
+        Por fim é apresentado o nome do plano de treino mais exigente em função do dispêndio de calorias proposto,
+        com o respetivo valor de calorias, nome do utilizador e o seu identificador único.
+
+        Em caso de empate, é apresentado o primeiro plano de treino encontrado.
+
+        Em caso de não existirem planos de treino, é apresentado \textit{"No plans to show"}.
+
     \subsection{Listar as atividades de um utilizador}
+        Para listar as atividades de um utilizador, é selecionado o utilizador em questão,
+        de seguida é iterado os seus registos de atividades,
+        e são guardados numa lista as atividades únicas.
+
+        Os métodos de \textit{equals} implementados nas subclasses de \textit{Activity}, propositadamente,
+        ignoram o consumo calórico, para que atividades com o mesmo tipo e atributos sejam consideradas iguais,
+        visto que estes valores calóricos podem variar devido a mutabilidade dos parâmetros de um utilizador
+        (peso, altura e frequência cardíaca em repouso), mas a atividade em si é a mesma.
+
+        Em caso de um utilizador não ter registos de atividades, é apresentado o resultado \textit{"No activities to show"}.
 
 \clearpage
 \section{Salvaguarda do Estado da Aplicação}
