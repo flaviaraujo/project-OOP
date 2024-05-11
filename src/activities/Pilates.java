@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Pilates extends Activity implements Serializable {
 
-    private static final double MET_VALUE = 3.8;
+    private static final double MET_VALUE = 2.8;
 
     private int repetition;
     private int weight;

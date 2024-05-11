@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Treadmill extends Activity implements Serializable {
 
-    private static final double MET_VALUE = 12.0;
+    private static final double MET_VALUE = 19.0;
 
     private int distance;
 
