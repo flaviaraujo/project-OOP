@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public class Professional extends User implements Serializable {
 
-    private final int caloriesMultiplier = 90;
+    private final int caloriesMultiplier = 70;
 
     public Professional() {
         super();
