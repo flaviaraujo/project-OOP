@@ -4,9 +4,9 @@ A Fitness program developed in Java for the Object Oriented Programming class du
 
 - [Description and Requirements](project.pdf)
 
-- [Report](report.pdf)
+- [Report](report/output/main.pdf)
 
-- [Class Diagram](diagram.pdf)
+- [Class Diagram](diagram/diagram.pdf)
 
 - [Binary Program State](data/state.ser)
 
