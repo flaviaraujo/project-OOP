@@ -483,7 +483,7 @@ public class ActivityPlanner implements Serializable {
             currentWeekDay++;
         }
 
-        output.append("Simulation completed. " + days + " days simulated.\n");
+        output.append("Simulation completed. " + (days + 1) + " days simulated.\n");
         output.append("Users with training plans: " + usersCount + "\n");
         output.append("Activities: " + activitiesCount + "\n");
         output.append("Registered activities: " + registeredActivities + "\n");
