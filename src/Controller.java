@@ -481,13 +481,7 @@ public class Controller {
                         }
                     }
 
-                    p = createBasedOnGoalsIO(user);
-                    if (p == null) {
-                        System.out.println("Plan not created.");
-                        break;
-                    }
-                    user.setPlan(p);
-                    this.m.updateUser(user);
+                    createPlanBasedOnGoalsIO(user);
                     break;
                 case 3:
                     // Delete plan
@@ -932,13 +926,7 @@ public class Controller {
                     }
                 }
 
-                p = createBasedOnGoalsIO(user);
-                if (p == null) {
-                    System.out.println("Plan not created.");
-                    break;
-                }
-                user.setPlan(p);
-                this.m.updateUser(user);
+                createPlanBasedOnGoalsIO(user);
                 break;
             case 11:
                 // Delete plan
@@ -1403,7 +1391,7 @@ public class Controller {
             while (--maxTries > 0) {
                 System.out.print("Enter the " + attribute + ": ");
                 int value = readInt();
-                if (value == -1) {
+                if (value <= 0) {
                     System.out.println("Invalid value.");
                     continue;
                 }
@@ -1489,7 +1477,6 @@ public class Controller {
                         System.out.println(e.getMessage());
                         continue;
                     }
-                    u.addActivity(a);
                     break;
                 case 2:
                     ArrayList<String> activitiesNames = this.m.getActivitiesNames(u);
@@ -1651,11 +1638,11 @@ public class Controller {
         return plan.clone();
     }
 
-    private Plan createBasedOnGoalsIO(User user) {
+    private void createPlanBasedOnGoalsIO(User user) {
         if (user.getActivities().isEmpty()) {
             System.out.println("There are no activities available.");
             System.out.println("Please add activities before trying to generate a plan.");
-            return null;
+            return;
         }
 
         int caloriesGoal = 0;
@@ -1678,7 +1665,7 @@ public class Controller {
 
         if (maxTries == 0) {
             System.out.println("Plan not created.");
-            return null;
+            return;
         }
 
         maxTries = MAX_TRIES;
@@ -1695,7 +1682,7 @@ public class Controller {
 
         if (maxTries == 0) {
             System.out.println("Plan not created.");
-            return null;
+            return;
         }
 
         maxTries = MAX_TRIES;
@@ -1712,7 +1699,7 @@ public class Controller {
 
         if (maxTries == 0) {
             System.out.println("Plan not created.");
-            return null;
+            return;
         }
 
         maxTries = MAX_TRIES;
@@ -1729,7 +1716,7 @@ public class Controller {
 
         if (maxTries == 0) {
             System.out.println("Plan not created.");
-            return null;
+            return;
         }
 
         maxTries = MAX_TRIES;
@@ -1744,18 +1731,16 @@ public class Controller {
                 continue;
             }
 
-            ArrayList<Activity> toSearch = new ArrayList<Activity>(userActivities);
+            ArrayList<Activity> toSearch = user.getActivities();
 
             for (int i = 0; i < nActivities; i++) {
                 System.out.println("Select activity number " + (i + 1) + ".");
 
                 Activity activity;
-                ArrayList<Activity> activities = user.getActivities();
-                ArrayList<String> activitiesNames = this.m.getActivitiesNames(user);
-                ArrayList<String> activitiesAvailable = this.m.getActivities();
+                ArrayList<String> activitiesNames = this.m.getActivitiesNames(toSearch);
                 try {
                     String activityName = searchActivityIO(activitiesNames);
-                    activity = this.m.getUserActivity(activities, activityName);
+                    activity = this.m.getUserActivity(toSearch, activityName);
                 }
                 catch (ActivityNotFoundException e) {
                     System.out.println(e.getMessage());
@@ -1770,197 +1755,17 @@ public class Controller {
 
         if (maxTries == 0) {
             System.out.println("Plan not created.");
-            return null;
+            return;
         }
 
-        Plan plan = new Plan();
-        plan = createBasedOnGoals(
-                    user,
-                    caloriesGoal,
-                    maxActivitiesPerDay,
-                    maxDisitinctActivitiesPerDay,
-                    nActivityRepetitionPerWeek,
-                    selectedActivities);
-        return plan;
-    }
-
-    // create plan based on user goals
-    private Plan createBasedOnGoals(
-        User user,
-        int caloriesGoal,
-        int maxActivitiesPerDay,
-        int maxDisitinctActivitiesPerDay,
-        int nActivityRepetitionPerWeek,
-        ArrayList<Activity> selectedActivities
-    ) {
-        // restrictions
-        // hard activituies can't be in the same day and consecutive days
-        // max activities per day (max 3)
-        // min distinct activities per day (max 3)
-        // nRepActivityPerWeek (min 1, no max)
-
-        // days until the next hard activity is possible
-        int daysUntilHard = 0;
-        // boolean canBeHard: (daysUntilHard == 0);
-        // reset: daysUntilHard = 2;
-
-        // number of disitinct activities added in one day
-        int distinctCount = 0;
-
-        // total number of activities (for display purposes only)
-        int totalActivities = 0;
-
-        // seperate activities by hard and not hard (sorted by calories desc)
-        ActivityRepetition arAux = new ActivityRepetition();
-
-        ArrayList<ActivityRepetition> activitiesHard =
-            arAux.create(selectedActivities, nActivityRepetitionPerWeek, maxActivitiesPerDay, user, true);
-
-        ArrayList<ActivityRepetition> activities =
-            arAux.create(selectedActivities, nActivityRepetitionPerWeek, maxActivitiesPerDay, user, false);
-
-        ActivityRepetition ar = null;
-        Activity a = null;
-        int repetitionsLeft = 0;
-
-        ActivityRepetition arHard = null;
-        Activity aHard = null;
-        int repetitionsLeftHard = 0;
-
-        boolean saturdayCanBeHard = true;
-
-        ArrayList<Event> events = new ArrayList<Event>();
-
-        for (int day = 1; day <= 7; day++) {
-
-            distinctCount = 0;
-
-            if (daysUntilHard > 0) {
-                daysUntilHard--;
-            }
-
-            if (activitiesHard.isEmpty() && activities.isEmpty()) {
-                break;
-            }
-
-            for (int i = 0; i < maxActivitiesPerDay;) {
-
-                if (activitiesHard.isEmpty() && activities.isEmpty()) {
-                    break;
-                }
-
-                if (!activities.isEmpty()) {
-                    ar = activities.get(0);
-                    a = ar.getActivity();
-                    repetitionsLeft = ar.getRepetitionsLeft();
-                }
-                else {
-                    ar = null;
-                }
-
-                if (!activitiesHard.isEmpty()) {
-                    arHard = activitiesHard.get(0);
-                    aHard = arHard.getActivity();
-                    repetitionsLeftHard = arHard.getRepetitionsLeft();
-                }
-                else {
-                    arHard = null;
-                }
-
-                int nActivityOfThisType = Math.min(repetitionsLeft, maxActivitiesPerDay - i);
-
-                if (ar == null ||
-                    (arHard != null &&
-                    aHard.calculateCalories(user) >= a.calculateCalories(user) * nActivityOfThisType &&
-                    daysUntilHard == 0 &&
-                    day != 7) ||
-                    (day == 7 && saturdayCanBeHard &&
-                    (arHard != null &&
-                    aHard.calculateCalories(user) >= a.calculateCalories(user) * nActivityOfThisType &&
-                    daysUntilHard == 0))
-                ) {
-                    // add hard activity (only one can be added)
-                    Event event = new Event(aHard, 1, day, LocalTime.of(8 + 4 * i, 0));
-                    events.add(event);
-
-                    // update repetitions
-                    repetitionsLeftHard--;
-                    arHard.setRepetitionsLeft(repetitionsLeftHard);
-
-                    // hard activities logic (reset daysUntilHard)
-                    daysUntilHard = 2;
-
-                    // total activities counter
-                    totalActivities++;
-
-                    // increment activity iterator
-                    i++;
-
-                    // re-sort
-                    activitiesHard = arAux.sort(activitiesHard, 1, user);
-
-                    // if it's sunday then saturday can't be hard activity day
-                    if (day == 1) {
-                        saturdayCanBeHard = false;
-                    }
-                }
-                else if (ar != null) {
-                    // add normal activity
-                    Event event = new Event(a, nActivityOfThisType, day, LocalTime.of(8 + 4 * i, 0));
-                    events.add(event);
-
-                    // update repetitions
-                    repetitionsLeft -= nActivityOfThisType;
-                    ar.setRepetitionsLeft(repetitionsLeft);
-
-                    // total activities counter
-                    totalActivities += nActivityOfThisType;
-
-                    // increment activity iterator
-                    i += nActivityOfThisType;
-
-                    // re-sort
-                    activities = arAux.sort(activities, maxActivitiesPerDay - i, user);
-                }
-
-                // increment distinct activities counter
-                distinctCount++;
-                if (distinctCount >= maxDisitinctActivitiesPerDay) {
-                    break;
-                }
-            }
-        }
-
-        int possibleActivitiesPerWeek = Math.min(maxActivitiesPerDay * 7, nActivityRepetitionPerWeek * selectedActivities.size());
-
-        // Check if plan meets the calories goal
-        int calories = 0;
-        for (Event e : events) {
-            calories += e.getActivity().calculateCalories(user) * e.getActivityRepetitions();
-        }
-        if (calories < caloriesGoal) {
-            System.out.println("Based on your goals, it's impossible to create a plan.");
-            System.out.println("Total activities: " + totalActivities + " / " + possibleActivitiesPerWeek);
-            System.out.println("Calories: " + calories + " / " + caloriesGoal);
-            return null;
-        }
-
-        // create plan
-        Plan plan = new Plan("Plan based on goals", events);
-
-        // display plan and relevant info
-        System.out.println(plan.getName());
-        for (Event e : plan.getEvents()) {
-            System.out.println(e);
-            System.out.println("Expected calories: " +
-                e.getActivity().calculateCalories(user) * e.getActivityRepetitions());
-            System.out.println();
-        }
-        System.out.println("Total activities: " + totalActivities + " / " + possibleActivitiesPerWeek);
-        System.out.println("Calories: " + calories + " / " + caloriesGoal);
-        System.out.println("Plan generated successfully.");
-
-        return plan.clone();
+        String output = this.m.createPlanBasedOnGoals(
+                            user,
+                            caloriesGoal,
+                            maxActivitiesPerDay,
+                            maxDisitinctActivitiesPerDay,
+                            nActivityRepetitionPerWeek,
+                            selectedActivities);
+       System.out.println(output);
     }
 
     /* Event IO methods */
