@@ -370,7 +370,7 @@ public class ActivityPlanner implements Serializable {
         Plan plan = new Plan("Plan based on goals", events);
 
         // display plan and relevant info
-        output.append(plan.getName());
+        output.append(plan.getName() + "\n");
         for (Event e : plan.getEvents()) {
             output.append(e + "\n");
             output.append("Expected calories: " +

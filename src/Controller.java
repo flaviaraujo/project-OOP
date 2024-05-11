@@ -1731,6 +1731,11 @@ public class Controller {
                 continue;
             }
 
+            if (nActivities == userActivities.size()) {
+                selectedActivities = userActivities;
+                break;
+            }
+
             ArrayList<Activity> toSearch = user.getActivities();
 
             for (int i = 0; i < nActivities; i++) {
@@ -1765,7 +1770,7 @@ public class Controller {
                             maxDisitinctActivitiesPerDay,
                             nActivityRepetitionPerWeek,
                             selectedActivities);
-       System.out.println(output);
+       System.out.print(output);
     }
 
     /* Event IO methods */
