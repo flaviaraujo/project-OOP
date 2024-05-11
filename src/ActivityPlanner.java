@@ -749,12 +749,12 @@ public class ActivityPlanner implements Serializable {
 
         String result;
         if (plan == null) {
-            result = "No plans found.";
+            result = "No plans to show.";
         }
         else {
             result = "The plan with the most calories burned is \""
                 + plan.getName() + "\" with " + max + " calories burned, by "
-                + "the user: " + user.getName();
+                + "the user: " + user.getName() + ", with the id " + user.getId() + ".\n";
         }
 
         return result;
@@ -777,7 +777,7 @@ public class ActivityPlanner implements Serializable {
         }
 
         if (result.isEmpty()) {
-            output.append("No activities found.");
+            output.append("No activities to show.");
         }
 
         return output.toString();

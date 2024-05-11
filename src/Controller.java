@@ -556,7 +556,8 @@ public class Controller {
                                 System.out.println("No users found.");
                                 break;
                             }
-                            System.out.println("The user with most calories burned is: " + user.getName());
+                            System.out.println("The user with most calories burned is: " + user.getName() +
+                                ", id " + user.getId());
                             break;
                         case 2:
                             LocalDate start = this.insertStatisticsDate(true);
@@ -571,7 +572,7 @@ public class Controller {
                                 break;
                             }
                             System.out.println("The user with most calories burned between "
-                                + start + " and " + end + " is: " + user.getName());
+                                + start + " and " + end + " is: " + user.getName() + ", id " + user.getId());
                             break;
                         case 3:
                             break;
@@ -592,8 +593,8 @@ public class Controller {
                                 System.out.println("No users found.");
                                 break;
                             }
-                            System.out.println("The user with most activities is: "
-                                + user.getName() + " with " + user.getRegisters().size() + " activities.");
+                            System.out.println("The user with most activities is: " + user.getName() + ", id " + user.getId() +
+                                " with " + user.getRegisters().size() + " activities.");
                             break;
                         case 2:
                             LocalDate start = this.insertStatisticsDate(true);
@@ -609,8 +610,8 @@ public class Controller {
                                 break;
                             }
                             System.out.println("The user with most activities between "
-                                + start + " and " + end + " is: " + user.getName() + " with "
-                                + user.getRegisters().size() + " activities.");
+                                + start + " and " + end + " is: " + user.getName() + ", id " + user.getId() +
+                                " with " + user.getRegisters().size() + " activities.");
                             break;
                         case 3:
                             break;
