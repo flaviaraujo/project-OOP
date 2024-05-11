@@ -8,6 +8,8 @@ A Fitness program developed in Java for the Object Oriented Programming class du
 
 - [Class Diagram](diagram.pdf)
 
+- [Binary Program State](data/state.ser)
+
 
 ## Description
 
