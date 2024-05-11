@@ -33,7 +33,14 @@
 \contentsline {subsection}{\numberline {2.4.4}Visualizar Plano de Treino}{33}{subsection.2.4.4}%
 \contentsline {section}{\numberline {2.5}Simulação}{34}{section.2.5}%
 \contentsline {section}{\numberline {2.6}Estatísticas}{36}{section.2.6}%
-\contentsline {section}{\numberline {2.7}Salvaguarda do Estado da Aplicação}{37}{section.2.7}%
-\contentsline {section}{\numberline {2.8}Argumentos de Linha de Comandos}{38}{section.2.8}%
-\contentsline {chapter}{\numberline {3}Conclusão}{39}{chapter.3}%
+\contentsline {subsection}{\numberline {2.6.1}Utilizador que mais calorias dispendeu}{36}{subsection.2.6.1}%
+\contentsline {subsection}{\numberline {2.6.2}Utilizador que mais atividades realizou}{37}{subsection.2.6.2}%
+\contentsline {subsection}{\numberline {2.6.3}Tipo de atividade mais praticada}{37}{subsection.2.6.3}%
+\contentsline {subsection}{\numberline {2.6.4}Quantos kms que um utilizador percorreu}{37}{subsection.2.6.4}%
+\contentsline {subsection}{\numberline {2.6.5}Quantos metros de altimetria que um utilizador totalizou}{38}{subsection.2.6.5}%
+\contentsline {subsection}{\numberline {2.6.6}Qual o plano de treino mais exigente em função do dispêndio de calorias proposto}{38}{subsection.2.6.6}%
+\contentsline {subsection}{\numberline {2.6.7}Listar as atividades de um utilizador}{38}{subsection.2.6.7}%
+\contentsline {section}{\numberline {2.7}Salvaguarda do Estado da Aplicação}{39}{section.2.7}%
+\contentsline {section}{\numberline {2.8}Argumentos de Linha de Comandos}{40}{section.2.8}%
+\contentsline {chapter}{\numberline {3}Conclusão}{41}{chapter.3}%
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 
