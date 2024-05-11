@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2024.3.14)  11 MAY 2024 19:26
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2024.4.14)  11 MAY 2024 20:32
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1353,7 +1353,10 @@ File: images/viewPlan.png Graphic file (type bmp)
 
 ] [36
 
-] [37
+]
+File: images/help_option.png Graphic file (type bmp)
+<images/help_option.png>
+ [37
 
 ]
 chapter 3.
@@ -1364,10 +1367,10 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 27633 strings out of 478174
- 579530 string characters out of 5854282
+ 27642 strings out of 478174
+ 579750 string characters out of 5854282
  1046852 words of memory out of 5000000
- 47742 multiletter control sequences out of 15000+600000
+ 47750 multiletter control sequences out of 15000+600000
  474409 words of font info for 75 fonts, out of 8000000 for 9000
  16 hyphenation exceptions out of 8191
  108i,13n,106p,10620b,1160s stack positions out of 5000i,500n,10000p,200000b,80000s

@@ -746,6 +746,19 @@ Este valor booleano é alterado para \textit{true} sempre que o estado da aplica
 
 \clearpage
 \section{Argumentos de Linha de Comandos}
+    Através do argumento \textit{--help} passado aquando à execução da aplicação, é possível visualizar a lista de argumentos disponíveis para a execução da mesma.
+
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[width=\textwidth]{images/help_option.png}
+        \caption{Argumentos de Linha de Comandos}
+        \label{fig:opcao-help}
+    \end{figure}
+
+    Como é possível visualizar na figura, uma das possibilidades é a de carregar um estado da aplicação através do argumento \textit{-l} ou \textit{--load}, onde é necessário passar o caminho do ficheiro binário a ser carregado (exemplo: \textit{java src.Controller --load data/state.ser}).
+
+    Outra possibilidade disponível é a de carregar a aplicação sobre a perspetiva de um utilizador, através do argumento \textit{-u} ou \textit{--user}. Neste caso, além de passar os argumentos para carregar o estado da aplicação e sobre a perspetiva de um utilizador, é também necessário passar um argumento que identifique o utilizador escolhido, podendo este ser o seu \textit{email} (\textit{-e} ou \textit{--email}, seguido do \textit{email} do utilizador) ou o seu id (\textit{-i} ou \textit{--id}, seguido do seu id) (exemplo: \textit{java src.Controller -l data/state.ser -u -i 1}).
+
 
 %==========================================================================
 % END DESCRIÇÃO DE FUNCIONALIDADES DA APLICAÇÃO
