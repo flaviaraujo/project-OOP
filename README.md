@@ -2,11 +2,11 @@
 
 A Fitness program developed in Java for the Object Oriented Programming class during the 2023/2024 academic year.
 
--[Description and Requirements](project.pdf)
+- [Description and Requirements](project.pdf)
 
--[Report](report.pdf)
+- [Report](report.pdf)
 
--[Class Diagram](diagram.pdf)
+- [Class Diagram](diagram.pdf)
 
 
 ## Description
