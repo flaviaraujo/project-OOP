@@ -139,13 +139,25 @@
 \pagenumbering{arabic}
 
 \chapter{Arquitetura de Classes}
-\section{Diagrama de Classes}
-    \begin{minipage}{\textwidth}
+\section{Diagrama de Classes Simplificado}
+    \begin{figure}[!ht]
         \centering
-        \includegraphics[width=\textwidth]{images/diagram.png}
-        \captionof{figure}{Diagrama de Classes}
+        \includegraphics[width=\textwidth]{images/simple-diagram.png}
+        \caption{Diagrama de Classes Simplificado}
+        \label{fig:diagrama-classes-simplificado}
+    \end{figure}
+\section{Diagrama de Classes}
+    Para uma mehor visiualização da arquitetura de classes da aplicação, apresentada
+    na seguinte figura \textit{\ref{fig:diagrama-classes}}, consulte o diagrama de classes
+    em formato \textit{pdf} em \href{diagram.pdf}{\textcolor{blue}{\underline{diagram.pdf}}}.
+    \newgeometry{top=0.5cm,left=0.2cm,right=0.2cm,bottom=3cm}
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[scale=0.19]{images/diagram.png}
+        \caption{Diagrama de Classes}
         \label{fig:diagrama-classes}
-    \end{minipage}
+    \end{figure}
+    \loadgeometry{default}
 \section{Diagrama de Exceções}
     Foram utilizadas as seguintes exceções em certas componentes da aplicação:
 
@@ -515,27 +527,127 @@
 \section{Registo e Visualização de Atividades Completas}
     \label{sec:registo-atividades}
 
-    \subsection{Registar Atividade}
-    \textcolor{red}{TODO}
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[width=\textwidth]{images/registerActivitySubMenu.png}
+        \caption{Submenu de Registo de Atividades}
+        \label{fig:submenu-register-activity}
+    \end{figure}
 
+    \clearpage
+    \subsection{Registar Atividade}
+    Em primeiro lugar, é feita a seleção do utilizador que praticou a atividade,
+    de seguida é dada opção de resgitar a atividade de interesse do utilizador ou
+    de criar uma nova atividade de interesse, caso esta não exista.
+
+    Após a seleção da atividade, é questionada a data e hora da prática da atividade,
+    havendo a possibilidade de escolher a data e hora atuais.
+
+    Com os dados recolhidos, é criado um novo registo de atividade, com a data e hora da prática,
+    a atividade praticada, e o consumo calórico da atividade, e este é adicionado ao registo de atividades do utilizador,
+    e este é atualizado na lista de utilizadores da aplicação.
+
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[width=\textwidth]{images/registerActivity.png}
+        \caption{Registo de Atividade}
+        \label{fig:register-activity}
+    \end{figure}
+
+    \clearpage
     \subsection{Visualizar Registos de Atividades}
-    \textcolor{red}{TODO}
+    Nesta opção são apresentados todos os registos de atividades de um utilizador,
+    através da iteração sobre o registo de atividades do utilizador,
+    e a apresentação dos dados de cada registo.
+
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[width=\textwidth]{images/viewActivitiesRegister.png}
+        \caption{Visualização de Registos de Atividades}
+        \label{fig:view-activities-register}
+    \end{figure}
 
 \clearpage
 \section{Gestão de Plano de Treino}
     \label{sec:gestao-plano-treino}
 
-    \subsection{Adicionar Plano de Treino Interativamente}
-    \textcolor{red}{TODO}
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[width=\textwidth]{images/managePlanSubMenu.png}
+        \caption{Submenu de Gestão de Plano de Treino}
+        \label{fig:submenu-plan}
+    \end{figure}
 
+    \clearpage
+    \subsection{Adicionar Plano de Treino Interativamente}
+    A aplicação verifica se o utlizador já tinha um plano de treino, e caso tenha,
+    é questionado se este pretende substituir o plano atual.
+
+    Inicialmente é perguntado ao utilizador o nome do plano de treino a ser criado,
+    de seguida para cada dia da semana é questionado o número de atividades a serem praticadas,
+    e são selecionadas as atividades a serem praticadas, a hora e o número de repetições destas.
+
+    A aplicação garante que o utlizador escolheu pelo menos uma atividade em toda a semana.
+
+    Por fim é apresentada uma mensagem de sucesso,
+    é criado um novo plano de treino, com o nome e os respetivos eventos, com o dia
+    da semana e a hora da prática da atividade, e este é adicionado ao plano de treino do utilizador,
+    e este é atualizado na lista de utilizadores da aplicação.
+
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[width=\textwidth]{images/createPlan1.png}
+        \caption{Adição de Plano de Treino Interativamente - Parte 1}
+        \label{fig:add-plan-1}
+    \end{figure}
+
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[width=\textwidth]{images/createPlan2.png}
+        \caption{Adição de Plano de Treino Interativamente - Parte 2}
+        \label{fig:add-plan-2}
+    \end{figure}
+
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[width=\textwidth]{images/createPlan3.png}
+        \caption{Adição de Plano de Treino Interativamente - Parte 3}
+        \label{fig:add-plan-3}
+    \end{figure}
+
+    \clearpage
     \subsection{Adicionar Plano de Treino Baseado em Objetivos}
     \textcolor{red}{TODO}
 
+    \clearpage
     \subsection{Remover Plano de Treino}
-    \textcolor{red}{TODO}
+    Nesta opção é removido o plano de treino de um utilizador se tal existir,
+    deseguida o utlizador é atualizado na lista de utilizadores da aplicação.
 
+    A remoção de um plano é feita através do método \textit{user.setPlan(null)},
+    para tal atualizados os outros métodos de forma a garantir que não hajam
+    erros na aplicação, como por exemplo, a visualização de um plano de treino,
+    ou o clone de um plano de treino não existente.
+
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[width=\textwidth]{images/deletePlan.png}
+        \caption{Remoção de Plano de Treino}
+        \label{fig:remove-plan}
+    \end{figure}
+
+    \clearpage
     \subsection{Visualizar Plano de Treino}
-    \textcolor{red}{TODO}
+    Nesta opção são apresentados todos os eventos de um plano de treino de um utilizador,
+    através da iteração sobre a lista de eventos do plano de treino do utilizador,
+    e a apresentação dos dados de cada evento.
+
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[width=\textwidth]{images/viewPlan.png}
+        \caption{Visualização de Plano de Treino}
+        \label{fig:view-plan}
+    \end{figure}
 
 \clearpage
 \section{Simulação}
