@@ -776,6 +776,10 @@ public class ActivityPlanner implements Serializable {
             }
         }
 
+        if (result.isEmpty()) {
+            output.append("No activities found.");
+        }
+
         return output.toString();
     }
 

@@ -32,8 +32,8 @@
 \contentsline {subsection}{\numberline {2.4.3}Remover Plano de Treino}{32}{subsection.2.4.3}%
 \contentsline {subsection}{\numberline {2.4.4}Visualizar Plano de Treino}{33}{subsection.2.4.4}%
 \contentsline {section}{\numberline {2.5}Simulação}{34}{section.2.5}%
-\contentsline {section}{\numberline {2.6}Estatísticas}{35}{section.2.6}%
-\contentsline {section}{\numberline {2.7}Salvaguarda do Estado da Aplicação}{36}{section.2.7}%
-\contentsline {section}{\numberline {2.8}Argumentos de Linha de Comandos}{37}{section.2.8}%
-\contentsline {chapter}{\numberline {3}Conclusão}{38}{chapter.3}%
+\contentsline {section}{\numberline {2.6}Estatísticas}{36}{section.2.6}%
+\contentsline {section}{\numberline {2.7}Salvaguarda do Estado da Aplicação}{37}{section.2.7}%
+\contentsline {section}{\numberline {2.8}Argumentos de Linha de Comandos}{38}{section.2.8}%
+\contentsline {chapter}{\numberline {3}Conclusão}{39}{chapter.3}%
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

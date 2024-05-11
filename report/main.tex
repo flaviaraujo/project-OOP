@@ -245,7 +245,7 @@
         \item \textit{\textbf{weight : int}} - Peso do utilizador, em kilogramas;
         \item \textit{\textbf{height : int}} - Altura do utilizador, em centímetros;
         \item \textit{\textbf{activities : ArrayList<Activity>}} - Conjunto de atividades de interesse de um utilizador, utlizada para a simplificação de um registo da atividade praticada ou da criação de um plano de treino;
-        \item \textit{\textbf{registers : HashMap<LocalDateTime, Activity>}} - Conjunto de actividades praticadas por um utilizador, com a respetiva data e hora de prática, atividade praticada e consumo calórico;
+        \item \textit{\textbf{registers : HashMap<LocalDateTime, Activity>}} - Conjunto de atividades praticadas por um utilizador, com a respetiva data e hora de prática, atividade praticada e consumo calórico;
         \item \textit{\textbf{plan : Plan}} - Plano de treino semanal de um utilizador.
     \end{itemize}
 
@@ -624,11 +624,11 @@
 
     De seguida é questionado as seguintes restrições à criação do plano de treino:
     \begin{itemize}
-        \item \textit{Calorias mínimas} - Calorias mínimas a serem queimadas no plano de treino;
-        \item \textit{Número máximo de atividades por dia} - Número máximo de atividades a serem praticadas por dia, máximo três;
-        \item \textit{Número máximo de atividades distintas por dia} - Número máximo de atividades distintas a serem praticadas por dia, máximo três;
-        \item \textit{Número máximo de repetições por atividade} - Número máximo de repetições a serem praticadas por atividade por semana;
-        \item \textit{Ativadades de interesse} - Atividades de interesse selecionadas pelo utilizador, que podem ser praticadas no plano de treino;
+        \item Calorias mínimas a serem queimadas no plano de treino;
+        \item Número máximo de atividades a serem praticadas por dia, máximo três;
+        \item Número máximo de atividades distintas a serem praticadas por dia, máximo três;
+        \item Número máximo de repetições a serem praticadas por atividade por semana;
+        \item Atividades de interesse selecionadas pelo utilizador, que podem ser praticadas no plano de treino;
     \end{itemize}
 
     Para além destas restrições está implícito que, se o utilizador seleciona uma atividade do tipo \textit{hard},
@@ -652,7 +652,7 @@
     É também registado se um dia têm uma atividade do tipo \textit{hard},
     para que não seja praticada uma atividade deste tipo no dia seguinte (nem no próprio dia)
     sendo o número máximo de atividades do tipo \textit{hard} por semana limitado a três
-    (exemplo: domingo, terça-feira, quinta-feira).
+    (exemplo: domingo, terça e quinta-feira).
 
     Em caso de empante entre uma atividade do tipo \textit{hard} e uma ou mais atividades normais,
     é sempre selecionada a atividade do tipo \textit{hard}, com intuito de maximizar o número de calorias queimadas,
@@ -710,12 +710,50 @@
 \clearpage
 \section{Simulação}
     \label{sec:simulacao}
-    \textcolor{red}{TODO}
+    A componente de simulação de atividades é feito por um salto no tempo,
+    esta data é questionada (na classe \textit{Controller}) e de seguida
+    é chamado o método \textit{runSimulation} da classe \textit{ActivityPlanner},
+    com a data de ínicio (data atual) e a data de fim (data questionada),
+    devendo esta ser superior à data atual.
+
+    A simulação é feita a partir dos planos de treino dos utilizadores,
+    se um utilizador não tiver um plano de treino, este é ignorado,
+    de seguida para cada evento de cada plano de treino é simulado a prática da atividade
+    no respetivo dia da semana e hora, e é criado um registo de atividade para o utilizador.
+
+    É apresentado para cada dia de simulação, as atividades praticadas,
+    por quem e a atividade praticada, a que horas, e o respetivo consumo calórico.
+
+    No final da simulação, é apresentado um resumo da simulação,
+    com o número de utlizadores com atividades praticadas,
+    o número de atividades praticadas,
+    bem como o número de repetições de todas as atividades praticadas,
+    e o consumo calórico total de todos os utilizadores que praticaram atividades.
+
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[width=\textwidth]{images/Simulation1.png}
+        \caption{Submenu de Simulação de Atividades - Parte 1}
+        \label{fig:submenu-simulate-1}
+    \end{figure}
+
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[width=\textwidth]{images/Simulation2.png}
+        \caption{Submenu de Simulação de Atividades - Parte 2}
+        \label{fig:submenu-simulate-2}
+    \end{figure}
 
 \clearpage
 \section{Estatísticas}
     \label{sec:estatisticas}
-    \textcolor{red}{TODO}
+    \subsection{Utilizador que mais calorias dispendeu}
+    \subsection{Utilizador que mais atividades realizou}
+    \subsection{Tipo de atividade mais praticada}
+    \subsection{Quantos km's que um utilizador percorreu}
+    \subsection{Quantos metros de altimetria que um utilizador totalizou}
+    \subsection{Qual o plano de treino mais exigente em função do dispêndio de calorias proposto}
+    \subsection{Listar as atividades de um utilizador}
 
 \clearpage
 \section{Salvaguarda do Estado da Aplicação}
