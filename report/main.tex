@@ -401,11 +401,11 @@
 
     \clearpage
     \subsection{Remover Utilizador}
-    É possível remover um utilizador da aplicação, através do método \textit{removeUser},
-    esta usa um método auxiliar para procurar pelo utilizador a ser removido,
+    É possível remover um utilizador da aplicação, através do método \textit{removeUser}.
+    Esta usa um método auxiliar para procurar pelo utilizador a ser removido,
     tanto pelo seu id como pelo seu email,
     e remove o utilizador da lista de utilizadores da aplicação através do método \textit{removeUser}
-    do \textit{facade} da aplicação, a classe \textit{ActivityPlanner}.
+    pertencente ao \textit{facade} da aplicação - isto é, a classe \textit{ActivityPlanner}.
 
     \begin{figure}[!ht]
         \centering
@@ -444,9 +444,9 @@
     \clearpage
     \subsection{Editar Utilizador}
     É permitido pela aplicação a edição do perfil de um utilizador,
-    onde são questionados os dados a serem alterados,
-    e estes são alterados através dos métodos \textit{set} da classe \textit{User},
-    e de seguida o respectivo utilizador é atualizado na lista de utilizadores da aplicação,
+    onde são questionados os dados a serem alterados.
+    Estes são modificados através dos métodos \textit{set} da classe \textit{User},
+    e, logo após, o respetivo utilizador é atualizado na lista de utilizadores da aplicação,
     através do método \textit{updateUser} da classe \textit{ActivityPlanner}.
 
     \begin{figure}[!ht]
@@ -460,7 +460,7 @@
 \section{Gestão de Atividades}
     \label{sec:gestao-atividades}
 
-    Antes da aplicação prosseguir com a apresentação do submenu de gestão de atividades de intersse,
+    Antes da aplicação prosseguir com a apresentação do submenu de gestão de atividades de interesse,
     é feita a seleção do utilizador a quem se as pretende gerir.
 
     \begin{figure}[!ht]
@@ -475,8 +475,7 @@
 
     A adição de uma atividade de interesse é feita de forma iterativa, em um método do \textit{Controller},
     onde são questionados os dados da atividade a ser criada dependendo do tipo de atividade,
-    e esta é adicionada à lista de atividades de interesse do utilizador,
-    e este é atualizado na lista de utilizadores da aplicação.
+    e esta é adicionada à lista de atividades de interesse do utilizador, que, posteriormente, é atualizado na lista de utilizadores da aplicação.
 
     \begin{figure}[!ht]
         \centering
@@ -487,9 +486,7 @@
 
     \clearpage
     \subsection{Remover Atividade}
-    Nesta opção são apresentadas todas os nomes das atividades de interesse de um utilizador,
-    de seguida o utilizador seleciona a atividade que pretende remover,
-    esta é removida da lista de atividades de interesse do utilizador,
+    Nesta opção, são apresentadas todos os nomes das atividades de interesse de um utilizador, e este tem a opção de selecionar a atividade que pretende remover. Esta é removida da lista de atividades de interesse do utilizador,
     e o respetivo utilizador é atualizado na lista de utilizadores da aplicação.
 
     \begin{figure}[!ht]
@@ -558,8 +555,8 @@
 
     \clearpage
     \subsection{Visualizar Registos de Atividades}
-    Nesta opção são apresentados todos os registos de atividades de um utilizador,
-    através da iteração sobre o registo de atividades do utilizador,
+    Nesta opção, são apresentados todos os registos de atividades de um utilizador,
+    através da iteração sobre o registo de atividades do utilizador 
     e a apresentação dos dados de cada registo.
 
     \begin{figure}[!ht]
@@ -582,19 +579,19 @@
 
     \clearpage
     \subsection{Adicionar Plano de Treino Interativamente}
-    A aplicação verifica se o utilizador já tinha um plano de treino, e caso tenha,
+    A aplicação verifica se o utilizador já tinha um plano de treino, e, caso tenha,
     é questionado se este pretende substituir o plano atual.
 
-    Inicialmente é perguntado ao utilizador o nome do plano de treino a ser criado,
-    de seguida para cada dia da semana é questionado o número de atividades a serem praticadas,
-    e são selecionadas as atividades a serem praticadas, a hora e o número de repetições destas.
+    Inicialmente, é perguntado ao utilizador o nome do plano de treino a ser criado,
+    de seguida, para cada dia da semana, é questionado o número de atividades a serem praticadas,
+    e estas são selecionadas, assim como a hora e o número de repetições das mesmas.
 
     A aplicação garante que o utilizador escolheu pelo menos uma atividade em toda a semana.
 
     Por fim é apresentada uma mensagem de sucesso,
     é criado um novo plano de treino, com o nome e os respetivos eventos, com o dia
-    da semana e a hora da prática da atividade, e este é adicionado ao plano de treino do utilizador,
-    e este é atualizado na lista de utilizadores da aplicação.
+    da semana e a hora da prática da atividade, e este é adicionado ao plano de treino do utilizador. 
+    Como de costume, o utilizador é atualizado na lista de utilizadores da aplicação.
 
     \begin{figure}[!ht]
         \centering
@@ -620,9 +617,9 @@
     \clearpage
     \subsection{Adicionar Plano de Treino Baseado em Objetivos}
     Como na opção anterior, a aplicação verifica se o utilizador já tinha um plano de treino,
-    e caso tenha, é questionado se este pretende substituir o plano atual.
+    e, caso tenha, é questionado se este pretende substituir o plano atual.
 
-    De seguida é questionado as seguintes restrições à criação do plano de treino:
+    De seguida, é questionado as seguintes restrições à criação do plano de treino:
     \begin{itemize}
         \item Calorias mínimas a serem queimadas no plano de treino;
         \item Número máximo de atividades a serem praticadas por dia, máximo três;
@@ -631,36 +628,36 @@
         \item Atividades de interesse selecionadas pelo utilizador, que podem ser praticadas no plano de treino;
     \end{itemize}
 
-    Para além destas restrições está implícito que, se o utilizador seleciona uma atividade do tipo \textit{hard},
+    Para além destas restrições, está implícito que, se o utilizador seleciona uma atividade do tipo \textit{hard},
     estas não podem ser praticadas no mesmo dia, nem em dias consecutivos.
 
-    Para a criação do plano de treino baseado em objetivos, é utilizado um algoritmo de maximização de calorias,
-    para tal é utilizada a classe \textit{ActivityRepetition} como um objeto auxiliar,
+    Para a criação do plano de treino baseado em objetivos, é utilizado um algoritmo de maximização de calorias.
+    Para tal, é utilizada a classe \textit{ActivityRepetition} como um objeto auxiliar,
     que é instanciada com cada atividade selecionada e o número de repetições de uma atividade por semana.
 
-    Estes objetos são guardados numa lista, que depois é ordenada de forma decrescente,
+    Estes objetos são guardados numa lista, que depois é ordenada de forma decrescente
     em relação ao número de calorias queimadas multiplicadas pelo número de repetições possíveis por dia,
-    ou seja o valor mínimo entre o número de repetições por semana restantes da atividade em questão e o
+    ou seja, o valor mínimo entre o número de repetições por semana restantes da atividade em questão e o
     número de repetições por dia restantes de atividades em geral. Se uma atividade é do tipo \textit{hard},
     o valor máximo de repetições por dia é um automaticamente.
 
     De seguida, para cada dia da semana, é selecionada a atividade (com o seu respetivo número de repetições restantes)
     com o maior valor de calorias, e se possível - não ultrapassando o número máximo de atividades por dia
     nem o número máximo de atividades distintas por dia -,
-    são adicionadas mais atividades para esse dia, até que esta condição não seja satisfeita passando para o próximo dia.
+    são adicionadas mais atividades para esse dia, até que esta condição não seja satisfeita, passando para o próximo dia.
 
     É também registado se um dia têm uma atividade do tipo \textit{hard},
-    para que não seja praticada uma atividade deste tipo no dia seguinte (nem no próprio dia)
-    sendo o número máximo de atividades do tipo \textit{hard} por semana limitado a três
+    para que não seja praticada uma atividade deste tipo no dia seguinte (nem no próprio dia),
+    sendo o número máximo de atividades por semana deste tipo limitado a apenas três
     (exemplo: domingo, terça e quinta-feira).
 
     Em caso de empante entre uma atividade do tipo \textit{hard} e uma ou mais atividades normais,
     é sempre selecionada a atividade do tipo \textit{hard}, com intuito de maximizar o número de calorias queimadas,
-    visto que estas atividades de tipo hard são restritas a três por semana é necessário, nestes casos, colocá-las em primeiro
-    lugar, caso contrário pode haver a possibilidade de não serem praticadas no resto da semana.
+    visto que as atividades deste tipo são restritas a três por semana é necessário, nestes casos, colocá-las em primeiro
+    lugar, caso contrário, pode haver a possibilidade de não serem praticadas no resto da semana.
 
     No fim do algoritmo, este verifica se o número de calorias queimadas é superior ao número de calorias mínimas desejadas,
-    e se tal acontecer o plano é criado, adicionado e apresentado ao utilizador, caso contrário é apresentada uma mensagem que
+    e se tal acontecer, o plano é criado, adicionado e apresentado ao utilizador, caso contrário, é apresentada uma mensagem que
     afirma a impossibilidade de criar um plano de treino com as restrições impostas.
 
     \begin{figure}[!ht]
@@ -679,12 +676,12 @@
 
     \clearpage
     \subsection{Remover Plano de Treino}
-    Nesta opção é removido o plano de treino de um utilizador se tal existir,
-    de seguida o utilizador é atualizado na lista de utilizadores da aplicação.
+    Nesta opção, é removido o plano de treino de um utilizador se tal existir, e, 
+    de seguida, o utilizador é atualizado na lista de utilizadores da aplicação.
 
     A remoção de um plano é feita através do método \textit{user.setPlan(null)},
-    para tal atualizados os outros métodos de forma a garantir que não hajam
-    erros na aplicação, como por exemplo, a visualização de um plano de treino,
+    para tal, atualizámos os outros métodos de forma a garantir que não hajam
+    erros na aplicação, como, por exemplo, a visualização de um plano de treino,
     ou o clone de um plano de treino não existente.
 
     \begin{figure}[!ht]
@@ -696,8 +693,8 @@
 
     \clearpage
     \subsection{Visualizar Plano de Treino}
-    Nesta opção são apresentados todos os eventos de um plano de treino de um utilizador,
-    através da iteração sobre a lista de eventos do plano de treino do utilizador,
+    Nesta opção, são apresentados todos os eventos de um plano de treino de um utilizador,
+    através da iteração sobre a lista de eventos do plano de treino do mesmo,
     e a apresentação dos dados de cada evento.
 
     \begin{figure}[!ht]
@@ -711,18 +708,18 @@
 \section{Simulação}
     \label{sec:simulacao}
     A componente de simulação de atividades é feito por um salto no tempo,
-    esta data é questionada (na classe \textit{Controller}) e de seguida
+    esta data é questionada (na classe \textit{Controller}) e, de seguida,
     é chamado o método \textit{runSimulation} da classe \textit{ActivityPlanner},
     com a data de início (data atual) e a data de fim (data questionada),
     devendo esta ser superior à data atual.
 
-    A simulação é feita a partir dos planos de treino dos utilizadores,
-    se um utilizador não tiver um plano de treino, este é ignorado,
-    de seguida para cada evento de cada plano de treino é simulado a prática da atividade
+    A simulação é feita a partir dos planos de treino dos utilizadores - 
+    se um utilizador não tiver um plano de treino, este é ignorado -, 
+    de seguida para cada evento de cada plano de treino, é simulado a prática da atividade
     no respetivo dia da semana e hora, e é criado um registo de atividade para o utilizador.
 
-    É apresentado para cada dia de simulação, as atividades praticadas,
-    por quem e a atividade praticada, a que horas, e o respetivo consumo calórico.
+    É apresentado, para cada dia de simulação, as atividades praticadas,
+    por quem, e a atividade praticada, a que horas, bem como o respetivo consumo calórico.
 
     No final da simulação, é apresentado um resumo da simulação,
     com o número de utilizadores com atividades praticadas,
@@ -772,7 +769,7 @@
         e para cada um é iterado sobre todos os registos de atividades do utilizador
         enquanto se calcula o consumo calórico com um somatório.
 
-        No fim é apresentado o nome e identificador do utilizador que mais calorias dispendeu.
+        No fim, é apresentado o nome e identificador do utilizador que mais calorias dispendeu.
 
         Em caso de empate, é apresentado o primeiro utilizador encontrado.
 
@@ -781,63 +778,63 @@
 
     \subsection{Utilizador que mais atividades realizou}
         Similarmente à estatística anterior, é iterado sobre todos os utilizadores da aplicação,
-        e para cada um é iterado sobre todos os registos de atividades do utilizador
+        e, para cada um, é iterado sobre todos os registos de atividades do utilizador
         enquanto se calcula o número de atividades realizadas com um somatório.
 
-        No fim é apresentado o nome e identificador utilizador que mais atividades realizou e
+        No fim, é apresentado o nome e identificador utilizador que mais atividades realizou e
         o respetivo número de atividades praticadas.
 
         Em caso de empate, é apresentado o primeiro utilizador encontrado.
 
-        Em caso de esta estatística ser executada num intervalo de tempo,
+        No caso de esta estatística ser executada num intervalo de tempo,
         são apenas considerados os registos de atividades dentro desse intervalo.
 
     \subsection{Tipo de atividade mais praticada}
-        Para o calculo do tipo de atividade mais praticada, é iterado sobre todos os utilizadores da aplicação,
-        e para cada um é iterado sobre todos os registos de atividades do utilizador,
-        e através do uso de um dicionário é contado o número de vezes que cada tipo de atividade é praticado,
+        Para o cálculo do tipo de atividade mais praticada, é iterado sobre todos os utilizadores da aplicação,
+        e, para cada um, é iterado sobre todos os registos de atividades do utilizador.
+        Seguidamente, através do uso de um dicionário, é contado o número de vezes que cada tipo de atividade é praticado,
         onde a chave é o atividade e o valor é o número de vezes que esta foi praticada.
 
-        No fim é apresentado o tipo de atividade mais praticada, e em caso de empate,
+        No fim, é apresentado o tipo de atividade mais praticada, e, em caso de empate,
         é apresentado o primeiro tipo de atividade encontrado.
 
-        O tipo de atividade, é obtido através do método \textit{getClass().getSimpleName()},
+        O tipo de atividade é obtido através do método \textit{getClass().getSimpleName()},
         e será uma das atividades implementadas no \textit{package activities}, se houverem registos,
         caso contrário será apresentado \textit{"None"}.
 
     \subsection{Quantos kms que um utilizador percorreu}
-        Para determinar quantos kilómetros um utilizador percorreu, em primeiro é selecionado o utilizador em questão,
-        e de seguida é iterado sobre todos os registos de atividades deste utilizador,
-        e através do método \textit{isDistanceBased} da classe \textit{Activity} é verificado se a atividade é baseada em distância,
+        Para determinar quantos kilómetros um utilizador percorreu, em primeiro lugar, é selecionado o utilizador em questão,
+        e, de seguida, é iterado sobre todos os registos de atividades deste utilizador. De seguida,
+        através do método \textit{isDistanceBased} da classe \textit{Activity} é verificado se a atividade é baseada em distância,
         se tal acontecer é somado o valor da distância da atividade ao somatório.
 
         Para casos em um intervalo de tempo, são apenas considerados os registos de atividades dentro desse intervalo,
         através da verificação da chave no dicionário de registos de atividades.
 
-        Como a distância é medida em metros este valor do somatório é convertido para kilómetros,
+        Como a distância é medida em metros, este valor do somatório é convertido para kilómetros,
         e apresentado ao utilizador no fim do cálculo.
 
     \subsection{Quantos metros de altimetria que um utilizador totalizou}
         Similarmente à estatística anterior, é selecionado o utilizador em questão,
-        e de seguida é iterado sobre todos os registos de atividades deste utilizador,
-        e através do método \textit{isAltimetryBased} da classe \textit{Activity} é
-        verificado se a atividade é baseada em altimetria, se tal acontecer é somado o valor da altimetria da atividade ao somatório.
+        e, de seguida, é iterado sobre todos os registos de atividades deste utilizador,
+        e, através do método \textit{isAltimetryBased} da classe \textit{Activity}, é
+        verificado se a atividade é baseada em altimetria. Se tal acontecer, é somado o valor da altimetria da atividade ao somatório.
 
         Para casos em um intervalo de tempo, são apenas considerados os registos de atividades dentro desse intervalo,
         através da verificação da chave no dicionário de registos de atividades.
 
-        Por fim o valor total de altimetria em metros é apresentado ao utilizador.
+        Por fim, o valor total de altimetria (em metros) é apresentado ao utilizador.
 
     \subsection{Qual o plano de treino mais exigente em função do dispêndio de calorias proposto}
         Para calcular o plano de treino mais exigente em função do dispêndio de calorias proposto,
         é iterado sobre todos os utilizadores da aplicação,
-        e os respectivos planos de treino, se existirem,
-        de seguida é calculado o dispêndio de calorias de cada plano de treino,
-        através da iteração sobre todos os eventos de cada plano de treino,
+        e os respectivos planos de treino, se existirem.
+        Seguidamente, é calculado o dispêndio de calorias de cada plano de treino,
+        através da iteração sobre todos os eventos de cada um,
         e a soma do dispêndio de calorias de cada evento,
         contabilizando o número de repetições da atividade.
 
-        Por fim é apresentado o nome do plano de treino mais exigente em função do dispêndio de calorias proposto,
+        Por fim, é apresentado o nome do plano de treino mais exigente em função do dispêndio de calorias proposto,
         com o respetivo valor de calorias, nome do utilizador e o seu identificador único.
 
         Em caso de empate, é apresentado o primeiro plano de treino encontrado.
@@ -846,7 +843,7 @@
 
     \subsection{Listar as atividades de um utilizador}
         Para listar as atividades de um utilizador, é selecionado o utilizador em questão,
-        de seguida é iterado os seus registos de atividades,
+        de seguida, é iterado os seus registos de atividades,
         e são guardados numa lista as atividades únicas.
 
         Os métodos de \textit{equals} implementados nas subclasses de \textit{Activity}, propositadamente,
@@ -864,7 +861,7 @@ permite guardar e carregar o estado atual através de um ficheiro binário.
 As opcões de guardar e carregar o estado do programa estão disponíveis no menu principal da aplicação. Adicionalmente o ficheiro binário pode ser carregado diretamente no início da execução do programa através da passagem da localização deste na linha de comandos.
 Este ficheiro, por definição, é guardado na diretoria \textit{data} e tem o nome \textit{state.ser}, havendo a opção de carregar diferentes estados através da funcionalidade da linha de comandos supramencionada.
 
-Para a implementação desta funcionalidade foram definidos dois métodos na classe \textit{Main}:
+Para a implementação desta funcionalidade, foram definidos dois métodos na classe \textit{Main}:
 \begin{itemize}
     \item \textit{saveState} - Método que guarda o estado atual da aplicação num ficheiro binário, passado como argumento. Este método deteta se alguma mudança foi feita no estado do programa antes de a guardar, de forma evitar salvar o mesmo estado.
     \item \textit{loadState} - Método que carrega o estado da aplicação a partir de um ficheiro binário, passado como argumento.
