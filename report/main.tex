@@ -111,21 +111,16 @@
 % BEGIN INDEXES PAGES
 %==========================================================================
 
-%% Changes table of content name
-%% Portuguese babel default : "Conteúdo"
-%% Personally I prefer "índice"
 \renewcommand{\contentsname}{Índice}
 \renewcommand{\listfigurename}{Índice de Figuras}
-% \renewcommand{\listtablename}{Índice de Tabelas}
 
-\newgeometry{top=2cm,left=3cm,right=3cm,bottom=4cm}
-\tableofcontents
+\begin{minipage}{\textwidth}
+    \tableofcontents
+\end{minipage}
+\begin{minipage}{\textwidth}
+    \listoffigures
+\end{minipage}
 \pagebreak
-\listoffigures
-\pagebreak
-% \listoftables
-% \pagebreak
-\loadgeometry{default}
 
 %==========================================================================
 % END INDEXES PAGES
@@ -531,6 +526,17 @@
         \includegraphics[width=\textwidth]{images/registerActivitySubMenu.png}
         \caption{Submenu de Registo de Atividades}
         \label{fig:submenu-register-activity}
+    \end{figure}
+
+    \vspace{2cm}
+
+    Segue-se um exemplo de como as calorias são calculadas para uma atividade de corrida no monte:
+
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[width=\textwidth]{images/calories.png}
+        \caption{Exemplo do Cálculo de Calorias}
+        \label{fig:calories}
     \end{figure}
 
     \clearpage
