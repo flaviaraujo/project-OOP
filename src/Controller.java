@@ -481,7 +481,7 @@ public class Controller {
                         }
                     }
 
-                    createPlanBasedOnGoalsIO(user);
+                    this.createPlanBasedOnGoalsIO(user);
                     break;
                 case 3:
                     // Delete plan
@@ -926,7 +926,7 @@ public class Controller {
                     }
                 }
 
-                createPlanBasedOnGoalsIO(user);
+                this.createPlanBasedOnGoalsIO(user);
                 break;
             case 11:
                 // Delete plan

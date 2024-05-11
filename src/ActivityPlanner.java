@@ -203,7 +203,7 @@ public class ActivityPlanner implements Serializable {
     /* Plan method */
 
     public String createPlanBasedOnGoals(
-        User u,
+        User user,
         int caloriesGoal,
         int maxActivitiesPerDay,
         int maxDisitinctActivitiesPerDay,
@@ -215,9 +215,6 @@ public class ActivityPlanner implements Serializable {
         // max activities per day (max 3)
         // min distinct activities per day (max 3)
         // nRepActivityPerWeek (min 1, no max)
-
-        // encapsulate user to avoid changes
-        User user = u.clone();
 
         // days until the next hard activity is possible
         int daysUntilHard = 0;
