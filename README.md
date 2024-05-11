@@ -6,7 +6,7 @@ A Fitness program developed in Java for the Object Oriented Programming class du
 
 - [Report](report/output/main.pdf)
 
-- [Class Diagram](diagram/diagram.pdf)
+- [Class Diagram (pdf)](diagram/diagram.pdf) or [Class Diagram (png)](diagram/diagram.png)
 
 - [Binary Program State](data/state.ser)
 
