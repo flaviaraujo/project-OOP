@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 public class TrailRunning extends Activity implements Serializable {
 
-    private static final double MET_VALUE = 10.0;
-    private static final int ALTIMETRY_FACTOR = 4;
+    private static final double MET_VALUE = 20.0;
+    private static final int ALTIMETRY_FACTOR = 5;
 
     private int distance;
     private int altimetry;
@@ -114,29 +114,23 @@ public class TrailRunning extends Activity implements Serializable {
     public int calculateCalories(User u) {
 
         // User parameters
-        int nutritionMultiplier = u.getCaloriesMultiplier();
-        double nutritionFactor = nutritionMultiplier / 100.0;
+        double nutritionFactor = u.getCaloriesMultiplier() / 100.0;
 
-        int weight = u.getWeight();
-        int height = u.getHeight();
-        double weightFactor = Math.min((weight * 2) / User.MAX_WEIGHT, 0.6);
-        double heightFactor = Math.min((height * 2) / User.MAX_HEIGHT, 0.6);
-        double weightHeightFactor = weightFactor * heightFactor;
-
-        int bpm = u.getHeartRate();
-        double bpmFactor = (bpm / User.MAX_HEART_RATE) + 1;
-
-        double met = MET_VALUE * ((weightHeightFactor + bpmFactor) / 2);
+        double weightFactor = 1 + ((double) u.getWeight() / User.MAX_WEIGHT);
+        double heightFactor = 1 + ((double) u.getHeight() / User.MAX_HEIGHT);
+        double weightHeightFactor = weightFactor + heightFactor;
+        double bpmFactor = 1 + ((double) u.getHeartRate() / User.MAX_HEART_RATE);
+        double met = MET_VALUE * (weightHeightFactor + bpmFactor);
 
         // Activity parameters
-        int altimetry = this.getAltimetry();
-        int intensity = this.getIntensity();
+        double intensity = 1 + (this.getIntensity() / 100.0);
         int distance = this.getDistance();
+        int altimetry = this.getAltimetry();
 
         return (int) (
             met * nutritionFactor *
-            intensity / 100.0 *
-            (distance + altimetry * ALTIMETRY_FACTOR) / 1000.0
+            intensity *
+            ((distance + altimetry * ALTIMETRY_FACTOR) / 1000.0)
         );
     }
 

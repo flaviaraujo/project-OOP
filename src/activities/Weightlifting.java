@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Weightlifting extends Activity implements Serializable {
 
-    private static final double MET_VALUE = 5.0;
+    private static final double MET_VALUE = 6.0;
 
     private int repetition;
     private int weight;
@@ -111,22 +111,16 @@ public class Weightlifting extends Activity implements Serializable {
     public int calculateCalories(User u) {
 
         // User parameters
-        int nutritionMultiplier = u.getCaloriesMultiplier();
-        double nutritionFactor = nutritionMultiplier / 100.0;
+        double nutritionFactor = u.getCaloriesMultiplier() / 100.0;
 
-        int weight = u.getWeight();
-        int height = u.getHeight();
-        double weightFactor = Math.min((weight * 2) / User.MAX_WEIGHT, 0.6);
-        double heightFactor = Math.min((height * 2) / User.MAX_HEIGHT, 0.6);
-        double weightHeightFactor = weightFactor * heightFactor;
-
-        int bpm = u.getHeartRate();
-        double bpmFactor = (bpm / User.MAX_HEART_RATE) + 1;
-
-        double met = MET_VALUE * ((weightHeightFactor + bpmFactor) / 2);
+        double weightFactor = 1 + ((double) u.getWeight() / User.MAX_WEIGHT);
+        double heightFactor = 1 + ((double) u.getHeight() / User.MAX_HEIGHT);
+        double weightHeightFactor = weightFactor + heightFactor;
+        double bpmFactor = 1 + ((double) u.getHeartRate() / User.MAX_HEART_RATE);
+        double met = MET_VALUE * (weightHeightFactor + bpmFactor);
 
         // Activity parameters
-        int intensity = this.getIntensity();
+        double intensity = 1 + (this.getIntensity() / 100.0);
         int repetition = this.getRepetition();
         int weightActivity = Math.min(this.getWeight(), 200);
         double weightFactorActivity = (200 + weightActivity) / 200.0;
@@ -134,7 +128,7 @@ public class Weightlifting extends Activity implements Serializable {
 
         return (int) (
             met * nutritionFactor *
-            intensity / 100.0 *
+            intensity *
             repetition
         );
     }
