@@ -83,5 +83,4 @@ All of the following requirements were implemented:
 - Flávia Araújo - [@flaviaraujo](https://github.com/flaviaraujo)
 - Miguel Carvalho - [@migueltc13](https://github.com/migueltc13)
 
-## Final Grade
-17
+#### Final Grade: 17
